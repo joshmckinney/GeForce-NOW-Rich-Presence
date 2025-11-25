@@ -1,0 +1,47 @@
+import logging
+from pathlib import Path
+from typing import Dict, Optional
+from src.core.utils import safe_json_load, CONFIG_DIR
+
+logger = logging.getLogger('geforce_presence')
+
+class ConfigManager:
+    def __init__(self, config_path_file: Path):
+        self.config_path_file = Path(config_path_file)
+        self.games_config: Dict = {}
+        self.games_config_path: Optional[Path] = None
+        self._load()
+
+    def _load(self):
+        # Ruta fija al archivo que siempre queremos cargar
+        fixed_path = CONFIG_DIR / "games_config_merged.json"
+
+        # Si no existe, mostrar error en logs pero NO abrir Tkinter
+        if not fixed_path.exists():
+            logger.error(f"❌ No se encontró {fixed_path}. Se cargará un JSON vacío.")
+            self.games_config = {}
+            self.games_config_path = fixed_path
+            return
+
+        # Cargar JSON fijo directamente sin pedir nada al usuario
+        data = safe_json_load(fixed_path)
+        if isinstance(data, dict):
+            self.games_config = data
+            self.games_config_path = fixed_path
+            logger.info(f"✅ games_config_merged.json cargado automáticamente: {fixed_path}")
+            self._log_games_summary()
+        else:
+            logger.warning("⚠️ games_config_merged.json no contiene un objeto JSON válido.")
+            self.games_config = {}
+            self.games_config_path = fixed_path
+
+    def _log_games_summary(self, verbose=False):
+        count = len(self.games_config)
+        if count == 0:
+            logger.warning("⚠️ No se encontraron juegos en la configuración.")
+            return
+        
+        logger.info(f"📦 Juegos cargados: {count}")
+
+    def get_game_mapping(self):
+        return self.games_config

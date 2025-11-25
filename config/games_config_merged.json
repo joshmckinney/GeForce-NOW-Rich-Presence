@@ -3803,6 +3803,12 @@
         "client_id": "425731190570483757",
         "executable_path": "delta force black hawk down/dfbhd.exe"
     },
+    "Delta Force":{
+        "name": "Delta Force",
+        "steam_appid": 2507950,
+        "client_id": "1314682894106497096",
+        "executable_path": "launcher/df_launcher_global.exe"
+    },
     "Painkiller: Black Edition": {
         "name": "Painkiller: Black Edition",
         "steam_appid": 39530,
@@ -70880,5 +70886,12 @@
     "arc raiders": {
         "executable_path": "pioneergame.exe",
         "client_id": "1432419613165228174"
+    },
+    "Where Winds Meet": {
+        "name": "Where Winds Meet",
+        "steam_appid": "3564740",
+        "image": "steam",
+        "executable_path": "where winds meet.exe",
+        "client_id": "1437509662303059998"
     }
 }

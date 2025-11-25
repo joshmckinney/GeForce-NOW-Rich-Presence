@@ -1,0 +1,178 @@
+import logging
+import threading
+import time
+from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction, QApplication, QMessageBox
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QDialog
+from src.core.utils import ASSETS_DIR, LOG_FILE
+from src.core.app_launcher import AppLauncher
+from src.ui.dialogs import AskGameDialog, MatchSelectionDialog
+
+logger = logging.getLogger('geforce_presence')
+
+class SystemTrayIcon(QSystemTrayIcon):
+    def __init__(self, presence_manager, texts, parent=None):
+        super().__init__(parent)
+        self.pm = presence_manager
+        self.texts = texts
+        
+        self.setIcon(QIcon(str(ASSETS_DIR / "geforce.ico")))
+        self.setToolTip("GeForce NOW Presence")
+        
+        self.menu = QMenu(parent)
+        self.create_menu()
+        self.setContextMenu(self.menu)
+        
+        # Connect signals
+        self.pm.request_match_selection.connect(self.on_match_selection_requested)
+        self.activated.connect(self.on_activated)
+
+    def create_menu(self):
+        self.menu.clear()
+        
+        # Force Game
+        force_text = self.texts.get("tray_force_game", "Force game...")
+        if self.pm.forced_game:
+            game_name = self.pm.forced_game.get('name', 'Unknown')
+            if len(game_name) > 20:
+                game_name = game_name[:17] + "..."
+            force_text = f"Stop forcing: {game_name}"
+            
+        force_action = QAction(force_text, self.menu)
+        force_action.triggered.connect(self.toggle_force_game)
+        self.menu.addAction(force_action)
+        
+        # Obtain Cookie
+        cookie_action = QAction(self.texts.get("tray_get_cookie", "Obtain Steam cookie"), self.menu)
+        cookie_action.triggered.connect(self.obtain_cookie)
+        self.menu.addAction(cookie_action)
+        
+        # Open GeForce
+        open_gf_action = QAction(self.texts.get("tray_open_geforce", "Open GeForce NOW"), self.menu)
+        open_gf_action.triggered.connect(self.open_geforce)
+        self.menu.addAction(open_gf_action)
+        
+        # Open Logs
+        logs_action = QAction(self.texts.get("tray_open_logs", "Open logs"), self.menu)
+        logs_action.triggered.connect(self.open_logs)
+        self.menu.addAction(logs_action)
+        
+        self.menu.addSeparator()
+        
+        # Exit
+        exit_action = QAction(self.texts.get("tray_exit", "Exit"), self.menu)
+        exit_action.triggered.connect(QApplication.instance().quit)
+        self.menu.addAction(exit_action)
+
+    def update_menu(self):
+        self.create_menu()
+
+    def on_activated(self, reason):
+        if reason == QSystemTrayIcon.DoubleClick:
+            self.open_geforce()
+
+    def toggle_force_game(self):
+        if self.pm.forced_game:
+            self.pm.stop_force_game()
+            self.showMessage("OK", "Forzado de juego detenido.", QSystemTrayIcon.Information, 3000)
+            self.update_menu()
+            return
+
+        dialog = AskGameDialog(title="Forzar juego", message="Nombre del juego:")
+        if dialog.exec_() == QDialog.Accepted:
+            game_name = dialog.get_game_name()
+            if not game_name:
+                return
+            
+            self.process_force_game(game_name)
+
+    def process_force_game(self, game_name):
+        gm = self.pm.games_map or {}
+        candidates = [k for k in gm if game_name.lower() in k.lower()]
+        
+        options = []
+        if candidates:
+            for k in candidates:
+                options.append({"name": k, "id": gm[k].get("client_id"), "exe": gm[k].get("executable_path"), "score": 1.0})
+        else:
+            # Search in Discord
+            options = self.pm._find_discord_matches(game_name, max_candidates=5)
+            for c in options:
+                self.pm._apply_discord_match(game_name, c)
+
+        if not options:
+            self.showMessage("Info", "Sin coincidencias en JSON ni Discord.", QSystemTrayIcon.Information, 3000)
+            return
+
+        # Show selection dialog
+        sel_dialog = MatchSelectionDialog("Seleccionar juego", options)
+        if sel_dialog.exec_() == QDialog.Accepted and sel_dialog.selected_match:
+            match = sel_dialog.selected_match
+            self.apply_force_game(match)
+
+    def apply_force_game(self, match):
+        name = match["name"]
+        cid = match.get("id")
+        exe = match.get("exe")
+        
+        if cid:
+            try:
+                def reconnect_after_delay():
+                    time.sleep(11)
+                
+                self.pm._disconnect_rpc_temporarily()
+                
+                self.pm.client_id = cid
+                self.pm._connect_rpc(cid)
+                logger.info(f"🔁 RPC reconectado con client_id forzado: {cid}")
+            except Exception as e:
+                logger.error(f"❌ Error reconectando RPC tras forzar juego: {e}")
+                threading.Thread(target=reconnect_after_delay, daemon=True).start()
+
+        if exe:
+            try:
+                self.pm.close_fake_executable()
+            except Exception as e:
+                logger.debug(f"No se pudo cerrar ejecutable previo: {e}")
+            self.pm.launch_fake_executable(exe)
+
+        self.pm.forced_game = {
+            "name": name,
+            "client_id": cid,
+            "executable_path": exe
+        }
+        self.pm.last_game = dict(self.pm.forced_game)
+        logger.info(f"🎮 Juego forzado activado: {name} (id={cid})")
+        
+        self.showMessage("OK", f"Juego forzado: {name}", QSystemTrayIcon.Information, 3000)
+        self.update_menu()
+
+    def obtain_cookie(self):
+        def confirm_callback(title, message):
+            reply = QMessageBox.question(None, title, message, QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            return reply == QMessageBox.Yes
+
+        cookie = self.pm.cookie_manager.ask_and_obtain_cookie(confirm_callback)
+        if cookie:
+            self.showMessage("Cookie", "Cookie obtenida correctamente.", QSystemTrayIcon.Information, 3000)
+        else:
+            self.showMessage("Cookie", "No se pudo obtener la cookie.", QSystemTrayIcon.Warning, 3000)
+
+    def open_geforce(self):
+        AppLauncher.launch_geforce_now()
+
+    def open_logs(self):
+        import os
+        if LOG_FILE.exists():
+            os.startfile(LOG_FILE)
+        else:
+            self.showMessage("Error", "No log file found.", QSystemTrayIcon.Warning, 3000)
+
+    def on_match_selection_requested(self, game_key, candidates):
+        # This is called from PresenceManager when it finds a new game and needs user input
+        # We need to run this in the main thread (which signals do automatically)
+        dialog = MatchSelectionDialog(game_key, candidates)
+        if dialog.exec_() == QDialog.Accepted:
+            self.pm.on_match_selected(game_key, dialog.selected_match)
+        else:
+            self.pm.on_match_selected(game_key, None)
