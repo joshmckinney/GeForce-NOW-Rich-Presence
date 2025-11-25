@@ -18,11 +18,11 @@ class AppMonitor:
             if name.lower() in (proc.info['name'] or "").lower():
                 try:
                     proc.kill()
-                    logger.info(f"💀 Proceso {name} cerrado.")
+                    logger.info(TEXTS.get("kill_process", "💀 Proceso {name} cerrado."))
                 except psutil.NoSuchProcess:
                     pass
                 except Exception as e:
-                    logger.error(f"⚠️ No se pudo cerrar {name}: {e}")
+                    logger.error(TEXTS.get("kill_process_error", "⚠️ No se pudo cerrar {name}: {e}"))
 
     @staticmethod
     def monitor_geforce_and_dumb():
@@ -33,4 +33,4 @@ class AppMonitor:
     def launch_dumb(path_dumb: str):
         AppMonitor.kill_process("dumb.exe")
         subprocess.Popen([path_dumb])
-        logger.info("🚀 dumb.exe iniciado.")
+        logger.info(TEXTS.get("launching_dumb", "🚀 dumb.exe iniciado."))

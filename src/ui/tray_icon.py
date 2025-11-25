@@ -7,6 +7,14 @@ from PyQt5.QtWidgets import QDialog
 from src.core.utils import ASSETS_DIR, LOG_FILE
 from src.core.app_launcher import AppLauncher
 from src.ui.dialogs import AskGameDialog, MatchSelectionDialog
+from src.core.utils import get_lang_from_registry, load_locale
+
+try:
+    LANG = get_lang_from_registry()
+    TEXTS = load_locale(LANG)
+except Exception:
+    LANG = os.getenv('GEFORCE_LANG', 'en')
+    TEXTS = load_locale(LANG)
 
 logger = logging.getLogger('geforce_presence')
 
@@ -144,7 +152,7 @@ class SystemTrayIcon(QSystemTrayIcon):
         self.pm.last_game = dict(self.pm.forced_game)
         logger.info(f"🎮 Juego forzado activado: {name} (id={cid})")
         
-        self.showMessage("OK", f"Juego forzado: {name}", QSystemTrayIcon.Information, 3000)
+        self.showMessage("OK", f"{TEXTS.get('tray_forced_game', 'Forced game')}: {name}", QSystemTrayIcon.Information, 3000)
         self.update_menu()
 
     def obtain_cookie(self):
@@ -154,9 +162,9 @@ class SystemTrayIcon(QSystemTrayIcon):
 
         cookie = self.pm.cookie_manager.ask_and_obtain_cookie(confirm_callback)
         if cookie:
-            self.showMessage("Cookie", "Cookie obtenida correctamente.", QSystemTrayIcon.Information, 3000)
+            self.showMessage(TEXTS.get("cookie_saved", "Cookie saved"), QSystemTrayIcon.Information, 3000)
         else:
-            self.showMessage("Cookie", "No se pudo obtener la cookie.", QSystemTrayIcon.Warning, 3000)
+            self.showMessage(TEXTS.get("cookie_invalid", "Cookie invalid"), QSystemTrayIcon.Warning, 3000)
 
     def open_geforce(self):
         AppLauncher.launch_geforce_now()
@@ -166,7 +174,7 @@ class SystemTrayIcon(QSystemTrayIcon):
         if LOG_FILE.exists():
             os.startfile(LOG_FILE)
         else:
-            self.showMessage("Error", "No log file found.", QSystemTrayIcon.Warning, 3000)
+            self.showMessage(TEXTS.get("open_logs_error", "No log file found."), QSystemTrayIcon.Warning, 3000)
 
     def on_match_selection_requested(self, game_key, candidates):
         # This is called from PresenceManager when it finds a new game and needs user input

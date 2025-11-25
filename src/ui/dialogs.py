@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from src.core.utils import ASSETS_DIR
 
 class AskGameDialog(QDialog):
-    def __init__(self, parent=None, title="Forzar juego", message="Nombre del juego:"):
+    def __init__(self, parent=None, title=TEXTS.get("tray_force_game", "Forzar juego"), message=TEXTS.get("game_name", "Nombre del juego:")):
         super().__init__(parent)
         self.setWindowTitle(title)
         self.setWindowIcon(QIcon(str(ASSETS_DIR / "geforce.ico")))
@@ -21,9 +21,9 @@ class AskGameDialog(QDialog):
         layout.addWidget(self.entry)
         
         btn_layout = QHBoxLayout()
-        self.ok_btn = QPushButton("Aceptar")
+        self.ok_btn = QPushButton(TEXTS.get("ok", "Aceptar"))
         self.ok_btn.clicked.connect(self.accept)
-        self.cancel_btn = QPushButton("Cancelar")
+        self.cancel_btn = QPushButton(TEXTS.get("cancel", "Cancelar"))
         self.cancel_btn.clicked.connect(self.reject)
         
         btn_layout.addWidget(self.ok_btn)
@@ -38,7 +38,7 @@ class AskGameDialog(QDialog):
 class MatchSelectionDialog(QDialog):
     def __init__(self, game_key, candidates, parent=None):
         super().__init__(parent)
-        self.setWindowTitle(f"Coincidencia Discord: {game_key}")
+        self.setWindowTitle(TEXTS.get("apply_discord_match", "Coincidencia Discord: {game_key}"))
         self.setWindowIcon(QIcon(str(ASSETS_DIR / "geforce.ico")))
         self.setMinimumWidth(500)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
@@ -48,7 +48,7 @@ class MatchSelectionDialog(QDialog):
         
         layout = QVBoxLayout()
         
-        lbl = QLabel(f"Se encontró un nuevo juego: '{game_key}'.\nSelecciona la coincidencia correcta (si alguna):")
+        lbl = QLabel(TEXTS.get("ask_discord_match", "Se encontró un nuevo juego: '{game_key}'.\nSelecciona la coincidencia correcta (si alguna):"))
         layout.addWidget(lbl)
         
         self.list_widget = QListWidget()
@@ -60,9 +60,9 @@ class MatchSelectionDialog(QDialog):
         layout.addWidget(self.list_widget)
         
         btn_layout = QHBoxLayout()
-        self.confirm_btn = QPushButton("Confirmar")
+        self.confirm_btn = QPushButton(TEXTS.get("confirm", "Confirmar"))
         self.confirm_btn.clicked.connect(self.on_confirm)
-        self.ignore_btn = QPushButton("Ignorar")
+        self.ignore_btn = QPushButton(TEXTS.get("ignore", "Ignorar"))
         self.ignore_btn.clicked.connect(self.reject)
         
         btn_layout.addWidget(self.confirm_btn)
@@ -77,5 +77,5 @@ class MatchSelectionDialog(QDialog):
             self.selected_match = self.candidates[row]
             self.accept()
         else:
-            QMessageBox.warning(self, "Selección requerida", "Por favor selecciona una opción de la lista.")
+            QMessageBox.warning(self, TEXTS.get("selection_required", "Selección requerida"), TEXTS.get("selection_required_msg", "Por favor selecciona una opción de la lista."))
 

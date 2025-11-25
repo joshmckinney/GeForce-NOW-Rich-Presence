@@ -1,5 +1,9 @@
 {
     "already_running": "GeForce Presence ya se está ejecutando",
+    "launching": "🚀 Lanzando GeForce NOW...",
+    "launching_discord": "🚀 Lanzando Discord...",
+    "tray_forced_game": "Juego forzado",
+    "already_running_discord": "💡 Discord ya se está ejecutando",
     "ask_cookie": "¿Quieres obtener la cookie de Steam para Rich Presence?\nAsegúrate de haber iniciado sesión en Steam en Microsoft Edge.",
     "edge_open_confirm": "Microsoft Edge está abierto.\n\nDebe cerrarse para continuar.\n¿Cerrar automáticamente ahora?",
     "cookie_saved": "Cookie de Steam guardada en .env correctamente.",
@@ -9,6 +13,7 @@
     "tray_title": "GeForce NOW Presence",
     "playing_solo": "Jugando solo",
     "playing_in_group": "En grupo",
+    "game_name": "Nombre del juego: ",
     "tray_menu_open_logs": "Abrir registros",
     "tray_menu_exit": "Salir",
     "menu": "Menú Principal",
@@ -18,7 +23,14 @@
     "tray_open_geforce": "Abrir GeForce NOW",
     "tray_open_logs": "Abrir logs",
     "tray_exit": "Salir",
+    "selection_required": "Selección requerida",
+    "selection_required_msg": "Por favor selecciona una opción de la lista.",
     "notify_title": "GeForce NOW Presence",
+    "launching_dumb": "🚀 Lanzando dumb.exe...",
+    "kill_process": "💀 Proceso {name} cerrado.",
+    "kill_process_error": "⚠️ No se pudo cerrar {name}: {e}",
+    "games_config_merged": "✅ games_config_merged.json cargado automáticamente: {fixed_path}",
+    "games_config_invalid": "⚠️ games_config_merged.json no contiene un objeto JSON válido.",
     "notify_background": "El programa se está ejecutando en segundo plano",
     "select_config_prompt": "Selecciona tu archivo games_config.json",
     "no_file_selected": "No se seleccionó ningún archivo.",
@@ -48,5 +60,9 @@
     "fetch_discord_error": "Error al obtener las aplicaciones detectables de Discord: {err}",
     "apply_auto_match": "Coincidencia automática de Discord aplicada: {name} (puntaje {score})",
     "ask_discord_match": "Se encontró un nuevo juego '{game_key}'. Selecciona la coincidencia correcta de Discord (si existe):",
-    "error_no_config": "No se encontró ningún archivo de configuración. Por favor selecciona uno."
+    "error_no_config": "No se encontró ningún archivo de configuración. Por favor selecciona uno.",
+    "ok": "OK",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "ignore": "Ignore"
 }
