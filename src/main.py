@@ -16,6 +16,7 @@ from src.core.config_manager import ConfigManager
 from src.core.cookie_manager import CookieManager
 from src.core.presence_manager import PresenceManager
 from src.ui.tray_icon import SystemTrayIcon
+from src.core.updater import Updater
 
 # Setup Logging
 CONFIG_DIR.mkdir(parents=True, exist_ok=True)
@@ -67,7 +68,11 @@ def main():
     app = QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False) # Important for tray apps
 
-    # 5. Initialize Managers
+    # 5. Check for Updates
+    updater = Updater()
+    updater.check_for_updates(silent=True)
+
+    # 6. Initialize Managers
     config_manager = ConfigManager(CONFIG_DIR / "config_path.txt")
     
     test_rich_url = os.getenv("TEST_RICH_URL", "").strip()
@@ -86,17 +91,17 @@ def main():
         update_interval=update_interval
     )
 
-    # 6. Initialize UI
+    # 7. Initialize UI
     tray_icon = SystemTrayIcon(presence_manager, texts)
     tray_icon.show()
 
-    # 7. Start Monitoring
+    # 8. Start Monitoring
     presence_manager.start_monitoring()
 
-    # 8. Handle Signals
+    # 9. Handle Signals
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-    # 9. Run Loop
+    # 10. Run Loop
     exit_code = app.exec_()
     
     # Cleanup

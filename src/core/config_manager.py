@@ -2,6 +2,15 @@ import logging
 from pathlib import Path
 from typing import Dict, Optional
 from src.core.utils import safe_json_load, CONFIG_DIR
+from src.core.utils import get_lang_from_registry, load_locale
+
+try:
+    LANG = get_lang_from_registry()
+    TEXTS = load_locale(LANG)
+except Exception:
+    LANG = os.getenv('GEFORCE_LANG', 'en')
+    TEXTS = load_locale(LANG)
+
 
 logger = logging.getLogger('geforce_presence')
 

@@ -62,5 +62,11 @@
     "ok": "OK",
     "cancel": "Cancel",
     "confirm": "Confirm",
-    "ignore": "Ignore"
+    "ignore": "Ignore",
+    "update_available_title": "Update Available",
+    "new_version_found": "New version found:",
+    "release_notes": "Release Notes:",
+    "update_now": "Update Now",
+    "no_updates": "No Updates",
+    "latest_version_msg": "You are using the latest version."
 }

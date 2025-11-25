@@ -3,6 +3,18 @@ from PyQt5.QtWidgets import (QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButto
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 from src.core.utils import ASSETS_DIR
+from src.core.utils import get_lang_from_registry, load_locale
+import os
+import logging
+try:
+    LANG = get_lang_from_registry()
+    TEXTS = load_locale(LANG)
+except Exception:
+    LANG = os.getenv('GEFORCE_LANG', 'en')
+    TEXTS = load_locale(LANG)
+
+logger = logging.getLogger('geforce_presence')
+
 
 class AskGameDialog(QDialog):
     def __init__(self, parent=None, title=TEXTS.get("tray_force_game", "Forzar juego"), message=TEXTS.get("game_name", "Nombre del juego:")):
