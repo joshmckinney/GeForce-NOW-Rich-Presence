@@ -18,6 +18,13 @@ Perfect for Discord Quests, GFN users, and streamers who want their status updat
   <img src="https://img.shields.io/badge/💖%20Paypal%20Donations-0070ba?style=for-the-badge&logo=paypal&logoColor=white" alt="Paypal Donations">
 </a>
 </p>
+<p align="center">
+  <a href="https://discord.gg/geforce-now-by-digevo-1412524071878525050">
+    <img src="https://img.shields.io/badge/%C2%BFNeed%20support?%3F%20➡️-2962FF?style=for-the-badge&logo=discord&logoColor=white" alt="GeForce NOW by Digevo"/>
+  </a>
+</p>
+
+
 
 
 <p align="center">
@@ -108,7 +115,4 @@ This project was created by [**KarmaDevz**](https://github.com/KarmaDevz) to mak
 If you like it, consider giving the repo a ⭐ on GitHub!
 Do you need support? Visit GeForce NOW by Digevo official server for contact support
 
-<p align=center href="https://discord.gg/geforce-now-by-digevo-1412524071878525050">
-    <img src="https://img.shields.io/badge/Download%20Now%20➡️-2962FF?style=for-the-badge&logo=discord&logoColor=white" alt="GeForce NOW by Digevo"/>
-  </a>
-</p>
+
