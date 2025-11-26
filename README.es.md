@@ -11,6 +11,11 @@
   <img src="https://img.shields.io/badge/💖%20Apoyar%20en%20PayPal-0070ba?style=for-the-badge&logo=paypal&logoColor=white" alt="Donar en PayPal">
 </a>
 </p>
+<p align="center">
+  <a href="https://discord.gg/geforce-now-by-digevo-1412524071878525050">
+    <img src="https://img.shields.io/badge/%C2%BFNecesitas%20soporte%3F%20➡️-2962FF?style=for-the-badge&logo=discord&logoColor=white" alt="GeForce NOW by Digevo"/>
+  </a>
+</p>
 
 <p align="center">
   <img src="assets/asset1.jpg" alt="Captura de Presencia Enriquecida de GeForce NOW" width="100%"/>
