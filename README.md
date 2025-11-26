@@ -106,11 +106,9 @@ A: 100%. No login or account information is required.
 
 This project was created by [**KarmaDevz**](https://github.com/KarmaDevz) to make **GeForce NOW + Discord** integration as smooth and automatic as possible.  
 If you like it, consider giving the repo a ⭐ on GitHub!
+Do you need support? Visit GeForce NOW by Digevo official server for contact support
 
----
-
-<p align="center">
-  <a href="https://github.com/KarmaDevz/discord-rich-presence-for-geforcenow/releases/latest">
-    <img src="https://img.shields.io/badge/Download%20Now%20➡️-2962FF?style=for-the-badge&logo=discord&logoColor=white" alt="Download Now"/>
+<p align=center href="https://discord.gg/geforce-now-by-digevo-1412524071878525050">
+    <img src="https://img.shields.io/badge/Download%20Now%20➡️-2962FF?style=for-the-badge&logo=discord&logoColor=white" alt="GeForce NOW by Digevo"/>
   </a>
 </p>
