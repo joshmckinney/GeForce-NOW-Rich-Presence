@@ -8,13 +8,7 @@ config/config_path.txt
 dist/
 build/
 scripts/
-gameslist.json
-src/geforce_presence.exe
-src/gfn.ico
-Oportunidades.txt
 pagina/
 rocket/
-my-app/
 pyinstaller.bat
 instalador.iss
-[PRUEBA MIGRACIÓN]]geforce_presence.py
