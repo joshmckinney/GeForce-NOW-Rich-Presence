@@ -31,7 +31,8 @@
     "Skyrim": {
         "name": "The Elder Scrolls V: Skyrim",
         "steam_appid": 72850,
-        "client_id": "359507724 196773888"
+        "client_id": "359507724 196773888",
+        "executable_path": "skyrim special edition/skyrimselauncher.exe"
     },
     "7 Days to Die": {
         "name": "7 Days to Die",
@@ -3803,7 +3804,7 @@
         "client_id": "425731190570483757",
         "executable_path": "delta force black hawk down/dfbhd.exe"
     },
-    "Delta Force":{
+    "Delta Force": {
         "name": "Delta Force",
         "steam_appid": 2507950,
         "client_id": "1314682894106497096",
@@ -45662,7 +45663,7 @@
     },
     "Counter-Strike 2": {
         "name": "Counter-Strike 2",
-        "steam_appid": null,
+        "steam_appid": "730",
         "client_id": "1158877933042143272",
         "executable_path": "win64/cs2.exe",
         "cmsId": "7315111",

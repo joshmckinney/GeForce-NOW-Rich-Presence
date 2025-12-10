@@ -1097,6 +1097,7 @@ class PresenceManager(QObject):
             try:
                 self.rpc.clear()
                 self.rpc.close()
+                time.sleep(0.1)  # Allow loop to close gracefully
                 self._connected_client_id = None
                 self.close_fake_executable()
                 logger.info("🔴 Discord RPC cerrado correctamente.")

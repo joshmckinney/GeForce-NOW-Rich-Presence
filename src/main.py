@@ -119,6 +119,13 @@ def main():
     # Cleanup
     presence_manager.stop_monitoring()
     release_lock()
+    
+    # Clean shutdown for asyncio/Windows
+    import gc
+    import time
+    gc.collect()
+    time.sleep(0.2)
+    
     sys.exit(exit_code)
 
 if __name__ == "__main__":

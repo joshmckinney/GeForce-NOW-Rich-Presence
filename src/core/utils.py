@@ -44,7 +44,7 @@ else:
 LOG_FILE = LOGS_DIR / "geforce_presence.log"
 ENV_PATH = resource_path(".env")
 DISCORD_CACHE_PATH = CONFIG_DIR / "discord_apps_cache.json"
-DISCORD_DETECTABLE_URL = "https://discord.com/api/v9/applications/@me"
+DISCORD_DETECTABLE_URL = "https://discord.com/api/v9/applications/detectable"
 DISCORD_CACHE_TTL = 60 * 60 * 24  # 1 day
 DISCORD_AUTO_APPLY_THRESHOLD = 0.85
 DISCORD_ASK_TIMEOUT = 10

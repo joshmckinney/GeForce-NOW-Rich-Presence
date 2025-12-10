@@ -7,7 +7,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog
 from src.core.utils import ASSETS_DIR, LOG_FILE
 from src.core.app_launcher import AppLauncher
-from src.ui.dialogs import AskGameDialog, MatchSelectionDialog
+from src.ui.dialogs import AskGameDialog, MatchSelectionDialog, GamingMessageBox, GamingInputDialog, GAMING_STYLESHEET
 from src.core.utils import get_lang_from_registry, load_locale
 
 try:
@@ -29,6 +29,33 @@ class SystemTrayIcon(QSystemTrayIcon):
         self.setToolTip("GeForce NOW Presence")
         
         self.menu = QMenu(parent)
+        
+        # Apply dark theme / advanced visual stylesheet
+        self.menu.setStyleSheet("""
+            QMenu {
+                background-color: #1e1f22; /* Discord-like dark background */
+                color: #dcddde;            /* Light gray text */
+                border: 1px solid #111111;
+                border-radius: 8px;
+                padding: 5px;
+            }
+            QMenu::item {
+                background-color: transparent;
+                padding: 8px 24px 8px 12px;
+                border-radius: 4px;
+                margin: 2px 4px;
+            }
+            QMenu::item:selected {
+                background-color: #045D0E; /* Discord Blurple */
+                color: white;
+            }
+            QMenu::separator {
+                height: 1px;
+                background: #3f4145;
+                margin: 6px 8px;
+            }
+        """)
+
         self.create_menu()
         self.setContextMenu(self.menu)
         
@@ -174,8 +201,7 @@ class SystemTrayIcon(QSystemTrayIcon):
 
     def obtain_cookie(self):
         def confirm_callback(title, message):
-            reply = QMessageBox.question(None, title, message, QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-            return reply == QMessageBox.Yes
+            return GamingMessageBox.show_question(None, title, message)
 
         cookie = self.pm.cookie_manager.ask_and_obtain_cookie(confirm_callback)
         if cookie:
@@ -198,7 +224,7 @@ class SystemTrayIcon(QSystemTrayIcon):
         from PyQt5.QtWidgets import QInputDialog
         
         if not self.pm.last_game and not self.pm.forced_game:
-            QMessageBox.warning(None, "Party Size", "No hay ningún juego en ejecución (ni forzado).")
+            GamingMessageBox.show_warning(None, "Party Size", "No hay ningún juego en ejecución (ni forzado).")
             return
 
         current_max = 4
@@ -212,7 +238,7 @@ class SystemTrayIcon(QSystemTrayIcon):
                 if existing:
                     current_max = int(existing)
 
-        i, ok = QInputDialog.getInt(None, "Set Party Size", 
+        i, ok = GamingInputDialog.get_int(None, "Set Party Size", 
                                     f"Tamaño MÁXIMO del grupo:", 
                                     current_max, 1, 100, 1)
         if ok:
@@ -238,13 +264,13 @@ class SystemTrayIcon(QSystemTrayIcon):
         if status["status"] == "FRESH":
             hours = status["hours"]
             msg = f"El archivo de caché se actualizó hace {hours:.1f} horas.\n¿Desea actualizarlo nuevamente?"
-            reply = QMessageBox.question(None, "Sincronizar Juegos", msg, QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-            if reply == QMessageBox.Yes:
+            if GamingMessageBox.show_question(None, "Sincronizar Juegos", msg):
                 force = True
             # If No, we proceed with force=False (just local matching)
         
         # Create Progress Dialog
         self.progress = QProgressDialog("Sincronizando juegos...", "Cancelar", 0, 100, None)
+        self.progress.setStyleSheet(GAMING_STYLESHEET)
         self.progress.setWindowModality(Qt.WindowModal)
         self.progress.setMinimumDuration(0)
         self.progress.setValue(0)
@@ -280,10 +306,10 @@ class SystemTrayIcon(QSystemTrayIcon):
             self.progress.close()
             self.progress = None
         
-        QMessageBox.information(None, "Sincronización Completada", f"Se han actualizado {updated} juegos de un total de {total} procesados.")
+        GamingMessageBox.show_info(None, "Sincronización Completada", f"Se han actualizado {updated} juegos de un total de {total} procesados.")
         
     def on_sync_error(self, error_msg):
         if getattr(self, 'progress', None):
             self.progress.close()
             self.progress = None
-        QMessageBox.critical(None, "Error de Sincronización", f"Ocurrió un error: {error_msg}")
+        GamingMessageBox.show_warning(None, "Error de Sincronización", f"Ocurrió un error: {error_msg}")

@@ -3,3 +3,5 @@
 [In progress] Ver como manejar la cantidad maxima de equipo para todos los juegos 
 [Solved] El tiempo se reinicia cuando cambian los detalles del presence aunque esté en el mismo juego. 
 [Solved] En windows 11 las ventanas no se enfocan 
+[In progress] Cambiar estilo de las ventanas
+[In progress] Cambiar resolución del gif
