@@ -232,7 +232,7 @@ class GamingInputDialog(QDialog):
 
 class AskGameDialog(QDialog):
     def __init__(self, parent=None, title=TEXTS.get("force_game", "Force Game"),
-                 message=TEXTS.get("game_name", "Game Name:")):
+                 message=TEXTS.get("game_name", "GAME NAME:")):
         super().__init__(parent)
 
         self.setWindowTitle(title)
