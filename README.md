@@ -87,7 +87,7 @@ From there, you can:
 
 ---
 
-## 🖼️ Screenshots
+## 📸 Instructions
 
 <p align="center">
   <img src="assets/instructions.png" width="100%" alt="Discord Rich Presence Instructions"/>

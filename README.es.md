@@ -76,11 +76,10 @@ Desde ahí puedes:
 
 ---
 
-## 🖼️ Capturas de pantalla
+## 📸 Instrucciones
 
 <p align="center">
-  <img src="assets/discord_status.jpg" width="45%" alt="Ejemplo de Presencia Enriquecida en Discord 1"/>
-  <img src="assets/discord_status2.jpg" width="45%" alt="Ejemplo de Presencia Enriquecida en Discord 2"/>
+  <img src="assets/instructions.png" width="100%" alt="Discord Rich Presence Instrucciones"/>
 </p>
 
 ---
