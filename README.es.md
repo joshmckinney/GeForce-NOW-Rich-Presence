@@ -65,14 +65,17 @@ Es 100% automática — no necesitas configurar nada.
 
 ---
 
-## 🪄 Opciones del icono en la bandeja
+## ⚙️ Opciones del icono en la bandeja
 
 Cuando está en ejecución, la aplicación muestra un icono en la bandeja del sistema de Windows (parte inferior derecha).  
 Desde ahí puedes:
-- 🎮 **Forzar juego** — elegir manualmente qué juego mostrar  
-- 🔄 **Reiniciar detección** — refrescar la sesión actual  
-- 🚀 **Abrir GeForce NOW**  
-- ❌ **Salir de la aplicación**
+- 🎮 **Forzar Juego** — Manualmente elige el juego que quieres mostrar 
+- ✅ **Obtener Cookie de Steam** — Para mostrar la presencia de steam
+- 🚀 **Abrir GeForce NOW**  — Abre la aplicación de GeForce NOW
+- 📊 **Sincronizar Juegos** — Actualiza la lista de juegos
+- 👥 **Establecer tamaño máximo del grupo...** — Establece el tamaño máximo del grupo
+- 📝 **Abrir Logs** — Abrir la carpeta de logs
+- ❌ **Salir de la aplicación** — Cierra la aplicación
 
 ---
 
