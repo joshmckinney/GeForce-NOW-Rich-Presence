@@ -67336,8 +67336,9 @@
         "uuid": "25cee06b-1f6d-4cf3-a390-7192d81cbf6b",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
-        "executable_path": ""
+        "client_id": "1440131866962165860",
+        "executable_path": "win_x64/huntgame.exe",
+        "steam_appid": "594650"
     },
     "HUNTER×HUNTER NEN×IMPACT": {
         "title": "HUNTER×HUNTER NEN×IMPACT",

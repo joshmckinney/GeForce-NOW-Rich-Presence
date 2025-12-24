@@ -90,8 +90,7 @@ From there, you can:
 ## 🖼️ Screenshots
 
 <p align="center">
-  <img src="assets/discord_status.jpg" width="45%" alt="Discord Rich Presence Example 1"/>
-  <img src="assets/discord_status2.jpg" width="45%" alt="Discord Rich Presence Example 2"/>
+  <img src="assets/instructions.jpg" width="45%" alt="Discord Rich Presence Example 1"/>
 </p>
 
 ---
