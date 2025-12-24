@@ -109,6 +109,7 @@ Si te gusta, considera darle una ⭐ al repositorio en GitHub.
 
 <p align="center">
   <a href="https://github.com/KarmaDevz/discord-rich-presence-for-geforcenow/releases/latest">
-    <img src="https://img.shields.io/badge/Descargar%20Ahora%20➡️-2962FF?style=for-the-badge&logo=discord&logoColor=white" alt="Descargar ahora"/>
+    <img src="https://img.shields.io/badge/Descargar%20Ahora%20➡️-1B5E20?style=for-the-badge&logo=nvidia&logoColor=white"
+         alt="Descargar ahora"/>
   </a>
 </p>

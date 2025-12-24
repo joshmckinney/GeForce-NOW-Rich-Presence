@@ -118,3 +118,9 @@ If you like it, consider giving the repo a ⭐ on GitHub!
 Do you need support? Visit GeForce NOW by Digevo official server for contact support
 
 
+<p align="center">
+  <a href="https://github.com/KarmaDevz/discord-rich-presence-for-geforcenow/releases/latest">
+    <img src="https://img.shields.io/badge/Download%20Now%20➡️-1B5E20?style=for-the-badge&logo=nvidia&logoColor=white"
+         alt="Download now"/>
+  </a>
+</p>
