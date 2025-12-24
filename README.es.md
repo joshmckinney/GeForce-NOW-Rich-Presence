@@ -79,7 +79,7 @@ Desde ahí puedes:
 ## 📸 Instrucciones
 
 <p align="center">
-  <img src="assets/instructions.png" width="100%" alt="Discord Rich Presence Instrucciones"/>
+  <img src="assets/instrucciones.png" width="100%" alt="Discord Rich Presence Instrucciones"/>
 </p>
 
 ---
