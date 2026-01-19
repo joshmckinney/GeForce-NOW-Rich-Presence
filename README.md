@@ -6,7 +6,7 @@ Detect your GeForce NOW games on Discord, perfect for Discord Quests, GFN users,
 [🇪🇸 Leer en Español](./README.es.md)
 
 <h1 align="center">🎮 GeForce NOW Rich Presence for Discord</h1>
-![GitHub all releases](https://img.shields.io/github/downloads/KarmaDevz/GeForce-NOW-Rich-Presence/total?style=for-the-badge)
+
 
 <p align="center">
   Show your real game on Discord while playing on <strong>GeForce NOW</strong> — automatically and beautifully.
