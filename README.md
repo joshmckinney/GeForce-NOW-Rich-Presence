@@ -15,7 +15,7 @@ Detect your GeForce NOW games on Discord, perfect for Discord Quests, GFN users,
   </a>
   <br>
 <a href="https://paypal.me/KarmaDevz" target="_blank">
-  <img src="https://img.shields.io/badge/💖%20Paypal%20Donations-0070ba?style=for-the-badge&logo=paypal&logoColor=white" alt="Paypal Donations">
+  <img src="https://img.shields.io/badge/💖%20Sponsor%20this%20project-0070ba?style=for-the-badge&logo=paypal&logoColor=white" alt="Paypal Donations">
 </a>
 </p>
 <p align="center">
