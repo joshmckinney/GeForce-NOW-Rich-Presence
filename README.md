@@ -1,126 +1,125 @@
-<p align="center"> GeForce NOW Rich Presence for Discord:
-Automatically show your real GeForce NOW game in your Discord Rich Presence  
-Detect your GeForce NOW games on Discord, perfect for Discord Quests, GFN users, and streamers who want their status updated beautifully in real time. 
-</p>
+<div align="center">
+  <img src="assets/asset1.jpg" alt="GeForce NOW Rich Presence Banner" width="100%" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" />
+  <br/>
+  <h1>🎮 GeForce NOW Rich Presence for Discord</h1>
+  <p>
+    <strong>Show your real game on Discord while playing on GeForce NOW — automatically and beautifully.</strong>
+  </p>
+  
+  [🇪🇸 Leer en Español](./README.es.md) • [📥 Download Latest](#-installation) • [💬 Support](#-about--support)
+  
+  <br/>
 
-[🇪🇸 Leer en Español](./README.es.md)
-
-<h1 align="center">🎮 GeForce NOW Rich Presence for Discord</h1>
-
-<p align="center">
-  Show your real game on Discord while playing on <strong>GeForce NOW</strong> — automatically and beautifully.
-  <br/><br/>
   <a href="https://github.com/KarmaDevz/discord-rich-presence-for-geforcenow/releases/latest">
-    <img src="https://img.shields.io/badge/⬇️%20Download%20Latest%20Release-00C853?style=for-the-badge&logo=github&logoColor=white" alt="Download Latest Release"/>
+    <img src="https://img.shields.io/github/v/release/KarmaDevz/discord-rich-presence-for-geforcenow?style=for-the-badge&color=00C853&logo=github&label=Latest%20Release" alt="Latest Release"/>
   </a>
-  <br>
-<a href="https://paypal.me/KarmaDevz" target="_blank">
-  <img src="https://img.shields.io/badge/💖%20Paypal%20Donations-0070ba?style=for-the-badge&logo=paypal&logoColor=white" alt="Paypal Donations">
-</a>
-</p>
-<p align="center">
-  <a href="https://discord.gg/geforce-now-by-digevo-1412524071878525050">
-    <img src="https://img.shields.io/badge/Need%20support%3F%20➡️-2962FF?style=for-the-badge&logo=discord&logoColor=white" alt="GeForce NOW by Digevo"/>
+  <a href="https://github.com/KarmaDevz/GeForce-NOW-Rich-Presence/releases">
+    <img src="https://img.shields.io/github/downloads/KarmaDevz/GeForce-NOW-Rich-Presence/total?style=for-the-badge&color=2962FF&logo=github&label=Total%20Downloads" alt="Total Downloads" />
   </a>
-</p>
-
-
-
-
-<p align="center">
-  <img src="assets/asset1.jpg" alt="GeForce NOW Rich Presence Screenshot 1" width="100%"/>
-</p>
-
+</div>
 
 ---
 
 ## 🕹️ What is this?
 
-**GeForce NOW Rich Presence for Discord** lets you display the **actual game you're playing on GeForce NOW** directly on your Discord profile.  
-No more just “Playing GeForce NOW” — now it shows the **real title, image, and custom status** in real time.
+**GeForce NOW Rich Presence for Discord** lets you display the **actual game you're playing on GeForce NOW** directly on your Discord profile. No more vague "Playing GeForce NOW" statuses! 
 
-Perfect for streamers, gamers, and anyone who loves showing off what they’re playing 🎮💚
+Now you can show off the **real title, game art, and custom status** in real time. Perfect for streamers, gamers, and anyone who wants their Discord presence to truly reflect their gaming sessions. 🎮💚
 
 ---
 
 ## ✨ Features
 
-- ✅ **Automatic detection** of the game you're running on GeForce NOW  
-- ✅ Displays **real game names and images** on Discord  
-- ✅ **Tray icon menu** to force a game, open GeForce NOW, or exit easily  
-- ✅ Works out of the box — **no Python, no setup, no configuration**  
-- ✅ Lightweight installer built with **Inno Setup**  
-- ✅ Fully compatible with Windows and Discord Desktop
+- ✅ **Automatic Detection**: Instantly recognizes the game you're running on GeForce NOW.
+- 🖼️ **Rich Game Art**: Displays real game names and high-quality images on Discord.
+- 🖱️ **System Tray Menu**: Easily force a game, open GeForce NOW, or exit from the Windows taskbar.
+- ⚡ **Plug & Play**: Works immediately out of the box — **no Python, no setup, no configuration**.
+- 📦 **Simple Installation**: Lightweight installer built with Inno Setup.
+- 💻 **Perfect Compatibility**: Fully compatible with Windows and Discord Desktop.
 
 ---
 
-## 📦 Installation
+## � Installation
 
-1. Click the button above or go to the [**Latest Release**](https://github.com/KarmaDevz/discord-rich-presence-for-geforcenow/releases/latest).  
-2. Download the installer `.exe` file.  
-3. Run the installer and follow the simple steps.  
-4. Once installed, just open the app — it will automatically detect your GeForce NOW session and update your Discord Rich Presence.  
-5. That’s it! Sit back and let your friends see what you’re playing 😎  
+Get up and running in less than a minute!
+
+1. Download the latest installer from the [Releases Page](https://github.com/KarmaDevz/discord-rich-presence-for-geforcenow/releases/latest).
+2. Run the `.exe` installer and follow the simple steps.
+3. Open the app — it will automatically run in the background.
+4. Launch a game on GeForce NOW and watch your Discord Rich Presence update automatically! 😎
 
 ---
 
-## 🧠 How it works (simplified)
+## 🧠 How it Works
 
-The app runs quietly in the background and:
-- Detects when a game is launched on **GeForce NOW**  
-- Matches it with a built-in game list  
-- Sends the correct **Rich Presence** to Discord  
-- Updates it automatically as long as the game is running  
+The application runs quietly and efficiently in the background:
+1. **Monitors** GeForce NOW activity.
+2. **Matches** the launched game against a robust built-in game list.
+3. **Pushes** the accurate Rich Presence data to your Discord client.
+4. **Maintains** the status as long as you're playing.
 
-It’s 100% automatic — no need to configure anything.
+*It’s 100% automatic — you literally don't have to configure anything.*
 
 ---
 
 ## ⚙️ Tray Icon Options
 
-When running, the app shows an icon in your Windows tray (bottom-right corner).  
-From there, you can:
-- 🎮 **Force Game** — Manually choose which game to display  
-- ✅ **Get Steam Cookie** — For show Steam Rich Presence
-- 🚀 **Open GeForce NOW**  — Open GeForce NOW
-- 📊 **Sync Games** — Update the game list
-- 👥 **Set Max party size** — Set the max party size
-- 📝 **Open Logs** — Open the logs folder
-- ❌ **Exit the app** — Exit the app
+Access powerful features directly from your Windows system tray (bottom-right corner):
+
+| Option | Description |
+| :--- | :--- |
+| 🎮 **Force Game** | Manually override and choose a specific game to display. |
+| ✅ **Get Steam Cookie**| Extract your Steam cookie to show deeper Steam Rich Presence. |
+| 🚀 **Open GeForce NOW**| Quickly launch the NVIDIA GeForce NOW app. |
+| 📊 **Sync Games** | Refresh and update the internal game recognition list. |
+| 👥 **Set Max party size**| Customize your displayed maximum party size. |
+| 📝 **Open Logs** | Access troubleshooting logs easily. |
+| ❌ **Exit** | Close the application completely. |
 
 ---
 
-## 📸 Instructions
+## 📸 In Action
 
-<p align="center">
-  <img src="assets/instructions.png" width="100%" alt="Discord Rich Presence Instructions"/>
-</p>
+<div align="center">
+  <img src="assets/instructions.png" width="90%" alt="Discord Rich Presence Instructions" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);"/>
+</div>
 
 ---
 
 ## 🧩 FAQ
 
-**Q: Do I need Python or any dependencies?**  
-A: Nope! Everything is bundled — just install and run.
+**Q: Do I need Python or any dependencies installed?**  
+A: Nope! Everything is fully bundled in the executable. Just install and run.
 
 **Q: Does it work with Steam or Epic Games?**  
-A: Yes! It detects games streamed through GeForce NOW, regardless of the platform.
+A: Yes! It detects games streamed through GeForce NOW, regardless of the underlying storefront platform.
 
-**Q: Is it safe?**  
-A: 100%. No login or account information is required.
+**Q: Is it safe to use?**  
+A: Absolutely. It's 100% safe. No login credentials or account information are ever required.
 
 ---
 
-## 💬 About
+## 💬 About & Support
 
-This project was created by [**KarmaDevz**](https://github.com/KarmaDevz) to make **GeForce NOW + Discord** integration as smooth and automatic as possible.  
-If you like it, consider giving the repo a ⭐ on GitHub!
-Do you need support? Visit GeForce NOW by Digevo official server for contact support
+This project was passionately created by [**KarmaDevz**](https://github.com/KarmaDevz) to make the **GeForce NOW + Discord** integration as seamless as possible.
 
+⭐️ **Love the project?** Please consider giving this repository a star! It helps a lot!
 
-<p align="center">
+<div align="center">
   <a href="https://github.com/KarmaDevz/discord-rich-presence-for-geforcenow/releases/latest">
-    <img src="https://img.shields.io/badge/Download%20Now%20➡️-1B5E20?style=for-the-badge&logo=nvidia&logoColor=white"
-         alt="Download now"/>
+    <img src="https://img.shields.io/badge/Download%20Now%20➡️-1B5E20?style=for-the-badge&logo=nvidia&logoColor=white" alt="Download now"/>
   </a>
-</p>
+  <a href="https://paypal.me/KarmaDevz" target="_blank">
+    <img src="https://img.shields.io/badge/💖%20Sponsor%20this%20Project-0070ba?style=for-the-badge&logo=paypal&logoColor=white" alt="Paypal Donations">
+  </a>
+</div>
+
+<br/>
+
+<div align="center">
+  <h3>🆘 Need Support?</h3>
+  <p>Join the official <strong>GeForce NOW by Digevo</strong> server to get help from the community!</p>
+  <a href="https://discord.gg/geforce-now-by-digevo-1412524071878525050">
+    <img src="https://img.shields.io/badge/Join%20Discord%20Server-2962FF?style=for-the-badge&logo=discord&logoColor=white" alt="GeForce NOW by Digevo"/>
+  </a>
+</div>
