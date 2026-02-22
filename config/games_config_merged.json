@@ -55534,6 +55534,12 @@
         "client_id": "1306357637893587014",
         "executable_path": "call of duty/content/cod.exe"
     },
+    "Call of Duty® Black Ops 7": {
+        "name": "Call of Duty® Black Ops 7",
+        "steam_appid": null,
+        "client_id": "1394809802567192656",
+        "executable_path": "cod25-cod.exe"
+    },
     "Teenage Mutant Ninja Turtles: Splintered Fate": {
         "name": "Teenage Mutant Ninja Turtles: Splintered Fate",
         "steam_appid": null,
@@ -70912,5 +70918,18 @@
     "Forza 5": {
         "executable_path": "forzahorizon5.exe",
         "client_id": "905961880789590076"
+    },
+    "Highguard": {
+        "executable_path": "highguardclient-win64-shipping.exe",
+        "client_id": "1464362520692129866"
+    },
+    "Application Launch failed": {
+        "name": "Application Launch failed",
+        "steam_appid": null,
+        "image": "steam"
+    },
+    "John Carpenter's Toxic Commando": {
+        "client_id": "1442714232331436062",
+        "executable_path": "bin/pc/John Carpenter's Toxic Commando.exe"
     }
 }

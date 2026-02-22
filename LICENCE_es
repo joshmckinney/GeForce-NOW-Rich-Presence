@@ -1,0 +1,30 @@
+MIT License
+
+Copyright (c) 2026 KarmaDevz
+
+Por la presente se concede permiso, de forma gratuita, a cualquier persona que obtenga una copia de este software y de los archivos de documentación asociados (el "Software"), para utilizar el Software sin restricción alguna, incluyendo sin limitación los derechos de usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y/o vender copias del Software, y permitir a las personas a quienes se les proporcione el Software hacer lo mismo, sujeto a las siguientes condiciones:
+
+El aviso de copyright anterior y este aviso de permiso deberán incluirse en todas las copias o partes sustanciales del Software.
+
+EL SOFTWARE SE PROPORCIONA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O IMPLÍCITA, INCLUYENDO PERO NO LIMITÁNDOSE A LAS GARANTÍAS DE COMERCIABILIDAD, IDONEIDAD PARA UN PROPÓSITO PARTICULAR Y NO INFRACCIÓN. EN NINGÚN CASO LOS AUTORES O TITULARES DEL COPYRIGHT SERÁN RESPONSABLES DE NINGUNA RECLAMACIÓN, DAÑO U OTRA RESPONSABILIDAD, YA SEA EN UNA ACCIÓN CONTRACTUAL, EXTRACONTRACTUAL (TORT) O DE CUALQUIER OTRO TIPO, QUE SURJA DE, O EN CONEXIÓN CON, EL SOFTWARE O EL USO U OTROS TRATOS EN EL SOFTWARE.
+
+================================================================================
+DESCARGO DE RESPONSABILIDAD Y TÉRMINOS DE USO
+
+1. SIN AFILIACIÓN:
+Este software es un proyecto independiente impulsado por la comunidad. NO está afiliado, respaldado ni patrocinado por NVIDIA Corporation, GeForce NOW, Discord Inc., Valve Corporation (Steam) ni por ninguna otra empresa de terceros. Todos los nombres de productos, logotipos y marcas comerciales pertenecen a sus respectivos propietarios.
+
+2. TÉRMINOS DE SERVICIO DE TERCEROS (ToS):
+Esta aplicación utiliza métodos para interactuar con la API de Rich Presence (RPC) de Discord y crea/ejecuta procesos ejecutables ficticios para activar la detección de juegos en aplicaciones de terceros. Además, este software accede y utiliza cookies del navegador para leer información de tu cuenta de Steam.
+
+Al utilizar este software, reconoces que estas acciones podrían violar los Términos de Servicio o los Acuerdos de Licencia de Usuario Final de las plataformas correspondientes (Discord, Steam, NVIDIA). Eres el único responsable de asegurarte de que el uso de este software cumpla con todos los Términos de Servicio aplicables.
+
+3. SEGURIDAD DE LA CUENTA Y SANCIONES:
+El/los autor(es) y colaboradores de este software NO serán responsables de ninguna acción disciplinaria tomada contra tus cuentas, incluyendo, pero no limitándose a, suspensiones de cuenta, bloqueos permanentes (bans), límites de uso de API o advertencias por parte de Discord, Steam u otros terceros. UTILIZAS ESTA APLICACIÓN BAJO TU PROPIO RIESGO.
+
+4. PRIVACIDAD Y SEGURIDAD DE LOS DATOS:
+Este software accede a datos de autenticación altamente sensibles (por ejemplo, cookies de Steam) almacenados en tu dispositivo para automatizar la sincronización de la biblioteca. Aunque el software está diseñado para utilizar estos datos localmente y comunicarse únicamente con las APIs oficiales de las plataformas, el/los autor(es) no pueden garantizar una seguridad absoluta. Eres el único responsable de la seguridad de tu dispositivo. El/los autor(es) rechazan expresamente cualquier responsabilidad por accesos no autorizados, robo de tokens o robo de cuentas derivados del uso de este software o de malware presente en tu sistema.
+
+Al descargar, compilar o ejecutar este software, reconoces explícitamente que has leído, entendido y aceptado quedar sujeto a estos términos, además de la Licencia MIT estándar.
+
+Si quieres, puedo ajustarlo para que suene más formal/legal estilo jurídico español (más técnico) o dejarlo en este tono claro y directo que es más común en proyectos open-source.

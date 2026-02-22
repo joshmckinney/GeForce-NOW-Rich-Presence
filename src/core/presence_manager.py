@@ -44,6 +44,7 @@ class PresenceManager(QObject):
     sync_progress = pyqtSignal(int, int) # current, total
     sync_finished = pyqtSignal(int, int) # updated_count, total_processed
     sync_error = pyqtSignal(str)
+    gfn_error_detected = pyqtSignal()
     
     def __init__(self, client_id: str, games_map: dict, cookie_manager: CookieManager, test_rich_url: str, texts: Dict,
                  update_interval: int = 10, keep_alive: bool = False):
@@ -307,6 +308,7 @@ class PresenceManager(QObject):
             
             try:
                 if self.rpc:
+                    self.rpc.clear()
                     self.rpc.close()
             except Exception:
                 pass
@@ -566,7 +568,7 @@ class PresenceManager(QObject):
             start = data.get("start_time", 0)
             elapsed = now - start
             
-            if elapsed >= 15 * 60: # 15 minutes
+            if elapsed >= (16 * 60) + 30: # 16 minutes 30 seconds
                 logger.info(f"⏰ Tiempo de Quest completado para {data['name']}.")
                 self.stop_quest_game(gid, keep_in_list=True)
             else:
@@ -1052,6 +1054,14 @@ class PresenceManager(QObject):
                 pass
             else:
                 setattr(self, "_last_window_title", title)
+
+            if "Application Launch failed" in title or "Application resource corrupted" in title:
+                now = time.time()
+                last_time = getattr(self, "_last_gfn_error_time", 0)
+                if now - last_time > 60:
+                    setattr(self, "_last_gfn_error_time", now)
+                    self.gfn_error_detected.emit()
+                return None
 
             clean = re.sub(r'\s*(en|on|in|via)?\s*GeForce\s*NOW.*$', '', title, flags=re.IGNORECASE).strip()
             clean = re.sub(r'[®™]', '', clean).strip()

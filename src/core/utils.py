@@ -10,6 +10,7 @@ import atexit
 import subprocess
 from pathlib import Path
 from typing import Optional, Dict
+import hashlib
 from dotenv import set_key
 
 # Platform detection
@@ -228,3 +229,13 @@ def save_json(obj, path: Path):
     except Exception as e:
         logger.error(f"Error guardando JSON {path}: {e}")
 
+def calculate_file_hash(path: Path, algorithm: str = "sha256") -> Optional[str]:
+    try:
+        hash_func = getattr(hashlib, algorithm)()
+        with open(path, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                hash_func.update(chunk)
+        return hash_func.hexdigest()
+    except Exception as e:
+        logger.error(f"Error calculando hash de {path}: {e}")
+        return None

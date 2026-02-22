@@ -73,7 +73,8 @@ class CookieManager:
     def get_cookie_with_selenium(self, 
                                  headless: bool = False, 
                                  profile_dir: str = "Default", 
-                                 confirm_callback: Optional[Callable[[str, str], bool]] = None) -> Optional[str]:
+                                 confirm_callback: Optional[Callable[[str, str], bool]] = None,
+                                 _is_retry: bool = False) -> Optional[str]:
         try:
             # Check if Edge is running
             edge_running = any(
@@ -143,19 +144,27 @@ class CookieManager:
 
             # Detecta exactamente el error de versión
             if "only supports Microsoft Edge version" in msg or "Unable to obtain driver for MicrosoftEdge" in msg:
+                if _is_retry:
+                    logger.error("❌ Ya se intentó actualizar el WebDriver y falló. Abortando para evitar bucle infinito.")
+                    return None
+
                 logger.warning("🔄 Edge WebDriver desactualizado. Intentando actualizar...")
 
                 try:
                     from src.core.edge_updater import EdgeDriverUpdater
                     driver_updater = EdgeDriverUpdater(parent_widget=None)
                     driver_updater.update()
+                    
+                    # Refrescar la ruta del driver copiada en los temporales
+                    self.driver_path = str(ensure_driver_executable(DRIVER_PATH))
                     logger.info("🆗 WebDriver actualizado correctamente. Reintentando Selenium...")
 
                     # Reintentar UNA sola vez
                     return self.get_cookie_with_selenium(
                         headless=headless,
                         profile_dir=profile_dir,
-                        confirm_callback=confirm_callback
+                        confirm_callback=confirm_callback,
+                        _is_retry=True
                     )
 
                 except Exception as update_error:

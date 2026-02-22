@@ -6,12 +6,121 @@ import subprocess
 import tempfile
 from pathlib import Path
 from PyQt5.QtWidgets import (
-    QDialog, QVBoxLayout, QLabel, QPushButton, QProgressBar, QMessageBox, QHBoxLayout
+    QDialog, QVBoxLayout, QLabel, QPushButton, QProgressBar, QMessageBox, QHBoxLayout,
+    QScrollArea
 )
 from PyQt5.QtCore import QThread, pyqtSignal, Qt
 
 from src.version import VERSION
 from src.utils.i18n import t
+from src.core.utils import ASSETS_DIR
+from PyQt5.QtGui import QIcon
+
+# Common Stylesheet to match the rest of the app (Copied from dialogs.py to avoid circular imports)
+GAMING_STYLESHEET = """
+    QDialog {
+        background-color: #0d0e10;
+        border: 2px solid #1b1f23;
+        border-radius: 14px;
+    }
+
+    QLabel {
+        font-size: 14px;
+        font-family: "Segoe UI";
+        color: #e0e0e0;
+        padding-bottom: 4px;
+    }
+    
+    QLabel#title_label {
+        font-size: 18px;
+        font-weight: bold;
+        color: #ffffff;
+        padding-bottom: 8px;
+    }
+
+    QLineEdit, QSpinBox {
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #2c2f33;
+        border-radius: 6px;
+        background: #1a1b1d;
+        color: #ffffff;
+        font-family: "Segoe UI";
+        font-weight: bold;
+    }
+
+    QLineEdit:focus, QSpinBox:focus {
+        border: 2px solid #454C55;
+    }
+
+    QPushButton {
+        background-color: #045D0E;
+        color: #FFFFFF;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: "Segoe UI";
+        font-weight: bold;
+    }
+
+    QPushButton:hover {
+        background-color: #12881F;
+    }
+    
+    QPushButton:pressed {
+        background-color: #03420a;
+    }
+
+    QPushButton#secondary {
+        background-color: #2c2f33;
+        color: #e6e6e6;
+    }
+
+    QPushButton#secondary:hover {
+        background-color: #3c3f43;
+    }
+
+    /* LIST WIDGET & SCROLLBARS */
+    QListWidget {
+        background: #131416;
+        border: 1px solid #1f2428;
+        border-radius: 8px;
+        padding: 6px;
+        font-size: 13px;
+        font-family: Consolas, monospace;
+        color: #cfcfcf;
+    }
+
+    QListWidget::item {
+        padding: 8px;
+        border-radius: 4px;
+        color: #dfdfdf;
+    }
+
+    QListWidget::item:selected {
+        background-color: #00e676;
+        color: #0e0f11;
+        font-weight: bold;
+    }
+
+    QScrollBar:vertical {
+        background: transparent;
+        width: 8px;
+        margin: 4px 0;
+    }
+    QScrollBar::handle:vertical {
+        background: #383a3d;
+        border-radius: 4px;
+        min-height: 30px;
+    }
+    QScrollBar::handle:vertical:hover {
+        background: #4a4d50;
+    }
+    QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+        height: 0; 
+        background: none; 
+    }
+"""
 
 logger = logging.getLogger('geforce_presence')
 
@@ -51,7 +160,7 @@ class UpdateWorker(QThread):
             latest_version_str = data.get("tag_name", "v0.0.0")
             latest_version = parse_version(latest_version_str)
             current_version = parse_version(VERSION)
-
+            
             logger.info(f"Current version: {VERSION}, Latest version: {latest_version_str}")
 
             if latest_version > current_version:
@@ -108,23 +217,32 @@ class UpdateDialog(QDialog):
         self.version = version
         self.url = url
         self.setWindowTitle(t.get("update_available_title", "Update Available"))
+        self.setWindowIcon(QIcon(str(ASSETS_DIR / "geforce.ico")))
         self.setFixedSize(400, 300)
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        self.setStyleSheet(GAMING_STYLESHEET)
 
         layout = QVBoxLayout()
 
         lbl_title = QLabel(f"<b>{t.get('new_version_found', 'New version found:')} {version}</b>")
+        lbl_title.setObjectName("title_label")
         lbl_title.setAlignment(Qt.AlignCenter)
         layout.addWidget(lbl_title)
 
         lbl_notes = QLabel(t.get("release_notes", "Release Notes:"))
         layout.addWidget(lbl_notes)
 
+        self.notes_area = QScrollArea()
+        self.notes_area.setWidgetResizable(True)
+        self.notes_area.setStyleSheet("QScrollArea { border: none; background-color: transparent; }")
+
         self.notes_box = QLabel(release_notes)
         self.notes_box.setWordWrap(True)
-        self.notes_box.setStyleSheet("background-color: #f0f0f0; padding: 10px; border-radius: 5px;")
+        self.notes_box.setStyleSheet("background-color: #1a1b1d; padding: 10px; border-radius: 5px; color: #cfcfcf; border: 1px solid #2c2f33;")
         self.notes_box.setAlignment(Qt.AlignTop | Qt.AlignLeft)
-        layout.addWidget(self.notes_box)
+        
+        self.notes_area.setWidget(self.notes_box)
+        layout.addWidget(self.notes_area)
         
         layout.addStretch()
 
@@ -136,6 +254,7 @@ class UpdateDialog(QDialog):
         self.btn_update = QPushButton(t.get("update_now", "Update Now"))
         self.btn_update.clicked.connect(self.start_download)
         self.btn_cancel = QPushButton(t.get("cancel", "Cancel"))
+        self.btn_cancel.setObjectName("secondary")
         self.btn_cancel.clicked.connect(self.reject)
 
         btn_layout.addWidget(self.btn_update)
@@ -189,3 +308,4 @@ class Updater:
             dialog.exec_()
         elif not silent:
             QMessageBox.information(self.parent_widget, t.get("no_updates", "No Updates"), t.get("latest_version_msg", "You are using the latest version."))
+    

@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2025 KarmaDevz
+Copyright (c) 2026 KarmaDevz
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,43 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+================================================================================
+DISCLAIMER OF LIABILITY AND USAGE TERMS
+================================================================================
+
+1. NO AFFILIATION: 
+This software is an independent, community-driven project. It is NOT affiliated 
+with, endorsed by, or sponsored by NVIDIA Corporation, GeForce NOW, Discord Inc., 
+Valve Corporation (Steam), or any other third-party companies. All product names, 
+logos, and brands are property of their respective owners.
+
+2. THIRD-PARTY TERMS OF SERVICE (ToS):
+This application utilizes methods to interact with Discord's Rich Presence (RPC) 
+API and creates/runs dummy executable processes to trigger game detection in 
+third-party applications. Additionally, this software accesses and utilizes 
+browser cookies to read information from your Steam account. 
+
+By using this software, you acknowledge that these actions might violate the 
+Terms of Service or End User License Agreements of the respective platforms 
+(Discord, Steam, NVIDIA). You are solely responsible for ensuring that your use 
+of this software complies with all applicable ToS.
+
+3. ACCOUNT SAFETY AND PENALTIES:
+The author(s) and contributors of this software shall NOT be held liable for any 
+disciplinary actions taken against your accounts—including, but not limited to, 
+account suspensions, bans, API rate limits, or warnings—by Discord, Steam, or 
+any other third party. YOU USE THIS APPLICATION ENTIRELY AT YOUR OWN RISK.
+
+4. DATA PRIVACY AND SECURITY:
+This software accesses highly sensitive authentication data (e.g., Steam cookies) 
+stored on your device to automate library synchronization. While the software is 
+designed to use this data locally and only communicate with official platform 
+APIs, the author(s) cannot guarantee absolute security. You are solely responsible 
+for the security of your device. The author(s) expressly disclaim any liability 
+for unauthorized access, stolen tokens, or account theft resulting from your 
+usage of this software or from malware present on your system.
+
+By downloading, compiling, or executing this software, you explicitly acknowledge 
+that you have read, understood, and agreed to be bound by these terms in addition 
+to the standard MIT License.

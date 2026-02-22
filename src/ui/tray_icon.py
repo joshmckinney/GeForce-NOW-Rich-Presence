@@ -7,8 +7,9 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog
 from src.core.utils import ASSETS_DIR, LOG_FILE
 from src.core.app_launcher import AppLauncher
-from src.ui.dialogs import AskGameDialog, MatchSelectionDialog, GamingMessageBox, GamingInputDialog, QuestListDialog, CustomPresenceDialog, GAMING_STYLESHEET
+from src.ui.dialogs import AskGameDialog, MatchSelectionDialog, GamingMessageBox, GamingInputDialog, QuestListDialog, CustomPresenceDialog, AboutDialog, GFNRepairDialog, GAMING_STYLESHEET
 from src.core.utils import get_lang_from_registry, load_locale
+from src.core.reinstaller import GFNReinstallerWorker
 
 try:
     LANG = get_lang_from_registry()
@@ -56,11 +57,16 @@ class SystemTrayIcon(QSystemTrayIcon):
             }
         """)
 
+        
+        self._reinstaller_worker = None
+        self._repair_dialog = None
+
         self.create_menu()
         self.setContextMenu(self.menu)
         
         # Connect signals
         self.pm.request_match_selection.connect(self.on_match_selection_requested)
+        self.pm.gfn_error_detected.connect(self.on_gfn_error_detected)
         self.activated.connect(self.on_activated)
         self.menu.aboutToShow.connect(self.update_menu)
 
@@ -112,6 +118,11 @@ class SystemTrayIcon(QSystemTrayIcon):
         logs_action = QAction(TEXTS.get("tray_open_logs", "Open logs"), self.menu)
         logs_action.triggered.connect(self.open_logs)
         self.menu.addAction(logs_action)
+
+        # About
+        about_action = QAction(TEXTS.get("about", "About"), self.menu)
+        about_action.triggered.connect(self.open_about)
+        self.menu.addAction(about_action)
         
         self.menu.addSeparator()
         
@@ -142,21 +153,22 @@ class SystemTrayIcon(QSystemTrayIcon):
             return
 
         dialog = AskGameDialog(title=TEXTS.get("force_game", "Force Game"), message=TEXTS.get("game_name", "Game Name:"))
+        
+        def on_quest_opened():
+            dialog.reject()
+            dlg = QuestListDialog(self.pm)
+            dlg.set_add_game_callback(self.process_quest_input)
+            dlg.exec_()
+            
+        dialog.quest_mode_requested.connect(on_quest_opened)
+
         if dialog.exec_() == QDialog.Accepted:
             game_name = dialog.get_game_name()
             if not game_name:
                 return
             
-            if dialog.is_quest_mode():
-                 success = self.process_quest_input(game_name)
-                 # Check if now we have active quests (success might be deferred if we show match dialog? No, exec blocks)
-                 if success and self.pm.active_quests:
-                     # Open the list immediately
-                     dlg = QuestListDialog(self.pm)
-                     dlg.set_add_game_callback(self.process_quest_input)
-                     dlg.exec_()
-            else:
-                 self.process_force_game(game_name)
+            # Normal force game
+            self.process_force_game(game_name)
 
     def process_quest_input(self, game_name):
         """
@@ -298,6 +310,10 @@ class SystemTrayIcon(QSystemTrayIcon):
         else:
             self.showMessage(TEXTS.get("logs_title", "Logs"), TEXTS.get("open_logs_error", "No log file found."), QSystemTrayIcon.Warning, 3000)
 
+    def open_about(self):
+        dlg = AboutDialog()
+        dlg.exec_()
+
     def open_custom_presence_dialog(self):
         game = self.pm.forced_game or self.pm.last_game
         if not game:
@@ -376,3 +392,36 @@ class SystemTrayIcon(QSystemTrayIcon):
             self.progress.close()
             self.progress = None
         GamingMessageBox.show_warning(None, "Error de Sincronización", f"Ocurrió un error: {error_msg}")
+
+    def on_gfn_error_detected(self):
+        if self._reinstaller_worker and self._reinstaller_worker.isRunning():
+            return
+        
+        # We create and show the dialog non-modally or modally
+        if self._repair_dialog is None:
+            self._repair_dialog = GFNRepairDialog()
+            
+        self._repair_dialog.show()
+        
+        self._reinstaller_worker = GFNReinstallerWorker()
+        
+        # Connect signals
+        self._reinstaller_worker.started_reinstall.connect(self.on_reinstall_started)
+        self._reinstaller_worker.progress_update.connect(self._repair_dialog.on_progress)
+        self._reinstaller_worker.status_update.connect(self._repair_dialog.on_status)
+        self._reinstaller_worker.error_occurred.connect(self._repair_dialog.on_error)
+        self._reinstaller_worker.error_occurred.connect(self.on_reinstall_error)
+        self._reinstaller_worker.finished_reinstall.connect(self._repair_dialog.on_finished)
+        self._reinstaller_worker.finished_reinstall.connect(self.on_reinstall_finished)
+        
+        self._reinstaller_worker.start()
+
+    def on_reinstall_started(self):
+        self.showMessage("GeForce NOW Error", "Recurso corrupto detectado. Reparando e instalando GFN...", QSystemTrayIcon.Information, 5000)
+
+    def on_reinstall_finished(self):
+        self.showMessage("GeForce NOW Reparado", "GeForce NOW se ha reinstalado correctamente.", QSystemTrayIcon.Information, 5000)
+        AppLauncher.launch_geforce_now()
+
+    def on_reinstall_error(self, err):
+        self.showMessage("Error de Reparación", f"No se pudo reinstalar GFN: {err}", QSystemTrayIcon.Warning, 5000)

@@ -230,7 +230,11 @@ class GamingInputDialog(QDialog):
         return value, False
 
 
+from PyQt5.QtCore import pyqtSignal
+
 class AskGameDialog(QDialog):
+    quest_mode_requested = pyqtSignal()
+
     def __init__(self, parent=None, title=TEXTS.get("force_game", "Force Game"),
                  message=TEXTS.get("game_name", "GAME NAME:")):
         super().__init__(parent)
@@ -257,11 +261,11 @@ class AskGameDialog(QDialog):
         self.entry = QLineEdit()
         layout.addWidget(self.entry)
 
-        # Checkbox for Quest Mode
-        from PyQt5.QtWidgets import QCheckBox
-        self.quest_mode_cb = QCheckBox(TEXTS.get("quest_mode", "Discord Quest Mode (Multiple Games)"))
-        self.quest_mode_cb.setStyleSheet("color: #e0e0e0; font-size: 13px; font-weight: bold;")
-        layout.addWidget(self.quest_mode_cb)
+        # Button for Quest Mode (Multiples games)
+        self.quest_mode_btn = QPushButton(TEXTS.get("quest_mode", "Discord Quest Mode (Multiple Games)"))
+        self.quest_mode_btn.setObjectName("secondary")
+        self.quest_mode_btn.clicked.connect(self.on_quest_mode_clicked)
+        layout.addWidget(self.quest_mode_btn)
 
         # Botones más compactos
         btn_layout = QHBoxLayout()
@@ -282,11 +286,11 @@ class AskGameDialog(QDialog):
 
         # ---- 🎞️ ANIMATED BACKGROUND ----
         self.bg_label = QLabel(self)
-        self.gif = QMovie(str(ASSETS_DIR / "nvidia.gif"))
+        self.gif = QMovie(str(ASSETS_DIR / "gfn2.gif"))
         self.bg_label.setMovie(self.gif)
         self.bg_label.setScaledContents(True)
         self.gif.start()
-        # Ensure it stays behind
+        
         self.bg_label.lower()
 
     def resizeEvent(self, event):
@@ -298,7 +302,10 @@ class AskGameDialog(QDialog):
         return self.entry.text()
 
     def is_quest_mode(self):
-        return self.quest_mode_cb.isChecked()
+        return False  # Deprecated logic from checkbox, handled directly via button now
+
+    def on_quest_mode_clicked(self):
+        self.quest_mode_requested.emit()
 
 
 class QuestListDialog(QDialog):
@@ -436,7 +443,7 @@ class QuestListDialog(QDialog):
             # Progress status
             import time
             elapsed = time.time() - data['start_time']
-            duration = 15 * 60 # 15 mins
+            duration = (16 * 60) + 30 # 16 mins 30 secs
             remaining = max(0, duration - elapsed)
             
             progress = QProgressBar()
@@ -497,7 +504,8 @@ class MatchSelectionDialog(QDialog):
     def __init__(self, game_key, candidates, parent=None):
         super().__init__(parent)
 
-        self.setWindowTitle(TEXTS.get("apply_discord_match", "Discord Match"))
+        title_text = TEXTS.get("match_title", "Coincidencias para: {busqueda}").replace("{busqueda}", game_key)
+        self.setWindowTitle(title_text)
         self.setWindowIcon(QIcon(str(ASSETS_DIR / "geforce.ico")))
         self.setMinimumWidth(540)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
@@ -513,21 +521,66 @@ class MatchSelectionDialog(QDialog):
         layout.setContentsMargins(20, 20, 20, 15)
         layout.setSpacing(15)
 
-        lbl = QLabel(
-            TEXTS.get(
-                "ask_discord_match",
-                f"Se encontró un posible juego: '{game_key}'.\nSelecciona la coincidencia correcta:"
-            )
-        )
-        layout.addWidget(lbl)
+        from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QAbstractItemView, QHeaderView
+        
+        self.table_widget = QTableWidget(len(candidates), 3)
+        self.table_widget.setHorizontalHeaderLabels([
+            TEXTS.get("match_col_name", "Nombre"),
+            TEXTS.get("match_col_score", "Coincidencia"),
+            TEXTS.get("match_col_quests", "Misiones de discord")
+        ])
+        
+        self.table_widget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.table_widget.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.table_widget.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.table_widget.verticalHeader().setVisible(False)
+        self.table_widget.horizontalHeader().setStretchLastSection(False)
+        self.table_widget.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
+        self.table_widget.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        self.table_widget.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
 
-        self.list_widget = QListWidget()
-        for c in candidates:
-            exe = c.get("exe") or ""
-            text = f"{c['name']}  ({c['score']:.2f})  [{exe}]  id={c.get('id') or '—'}"
-            self.list_widget.addItem(text)
+        self.table_widget.setStyleSheet(GAMING_STYLESHEET + """
+            QTableWidget {
+                background: #131416;
+                border: 1px solid #1f2428;
+                border-radius: 8px;
+                color: #cfcfcf;
+                gridline-color: #2c2f33;
+            }
+            QHeaderView::section {
+                background-color: #1a1b1d;
+                color: #ffffff;
+                font-weight: bold;
+                padding: 4px;
+                border: 1px solid #2c2f33;
+            }
+            QTableWidget::item {
+                padding: 4px;
+            }
+            QTableWidget::item:selected {
+                background-color: #00e676;
+                color: #0e0f11;
+                font-weight: bold;
+            }
+        """)
 
-        layout.addWidget(self.list_widget)
+        for row, c in enumerate(candidates):
+            name_item = QTableWidgetItem(c['name'])
+            score_item = QTableWidgetItem(f"{c['score'] * 100:.1f}%")
+            score_item.setTextAlignment(Qt.AlignCenter)
+            
+            has_id = bool(c.get('id'))
+            has_exe = bool(c.get('exe'))
+            eligible = has_id and has_exe
+            quests_str = "✅" if eligible else "❌"
+            quests_item = QTableWidgetItem(quests_str)
+            quests_item.setTextAlignment(Qt.AlignCenter)
+            
+            self.table_widget.setItem(row, 0, name_item)
+            self.table_widget.setItem(row, 1, score_item)
+            self.table_widget.setItem(row, 2, quests_item)
+
+        layout.addWidget(self.table_widget)
 
         # ---- BOTONES ----
         btn_layout = QHBoxLayout()
@@ -546,7 +599,7 @@ class MatchSelectionDialog(QDialog):
         self.setLayout(layout)
 
     def on_confirm(self):
-        row = self.list_widget.currentRow()
+        row = self.table_widget.currentRow()
         if row >= 0:
             self.selected_match = self.candidates[row]
             self.accept()
@@ -641,3 +694,168 @@ class CustomPresenceDialog(QDialog):
             "custom_party_size_max": self.party_max.value()
         }
         self.accept()
+
+class ClickableIconLabel(QLabel):
+    def __init__(self, icon_path, url, parent=None):
+        super().__init__(parent)
+        self.url = url
+        from PyQt5.QtGui import QPixmap
+        pixmap = QPixmap(str(ASSETS_DIR / icon_path))
+        if not pixmap.isNull():
+            # Apply some smoothing if it's scaled down
+            self.setPixmap(pixmap.scaled(48, 48, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        self.setCursor(Qt.PointingHandCursor)
+        self.setToolTip(url)
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            import webbrowser
+            webbrowser.open(self.url)
+
+class AboutDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle(TEXTS.get("about", "About"))
+        self.setWindowIcon(QIcon(str(ASSETS_DIR / "geforce.ico")))
+        self.setFixedSize(400, 250)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
+        self.setStyleSheet(GAMING_STYLESHEET)
+        
+        layout = QVBoxLayout()
+        layout.setContentsMargins(25, 25, 25, 25)
+        layout.setSpacing(15)
+        
+        # Title
+        title = QLabel("GeForce NOW Rich Presence")
+        title.setObjectName("title_label")
+        title.setAlignment(Qt.AlignCenter)
+        layout.addWidget(title)
+        
+        # Description
+        desc = QLabel(TEXTS.get("about_desc", "This program was made by KarmaDevz, consider support the program"))
+        desc.setWordWrap(True)
+        desc.setAlignment(Qt.AlignCenter)
+        desc.setStyleSheet("font-size: 14px; color: #cfcfcf;")
+        layout.addWidget(desc)
+        
+        layout.addSpacing(10)
+        
+        # Icons Layout
+        icons_layout = QHBoxLayout()
+        icons_layout.setSpacing(30)
+        icons_layout.setAlignment(Qt.AlignCenter)
+        
+        github_icon = ClickableIconLabel("github.png", "https://github.com/KarmaDevz/GeForce-NOW-Rich-Presence", self)
+        discord_icon = ClickableIconLabel("discord.png", "https://discord.com/users/karmadevz", self)
+        paypal_icon = ClickableIconLabel("paypal.png", "https://www.paypal.com/paypalme/KarmaDevz", self)
+        
+        icons_layout.addWidget(github_icon)
+        icons_layout.addWidget(discord_icon)
+        icons_layout.addWidget(paypal_icon)
+        
+        layout.addLayout(icons_layout)
+        # Close Button
+        self.close_btn = QPushButton(TEXTS.get("close", "Close"))
+        self.close_btn.setObjectName("secondary")
+        self.close_btn.clicked.connect(self.accept)
+        
+        # Add a stretch before the close button to push it to the bottom
+        layout.addStretch()
+        
+        # We can center the close button by placing it in its own layout
+        close_layout = QHBoxLayout()
+        close_layout.addStretch()
+        close_layout.addWidget(self.close_btn)
+        close_layout.addStretch()
+        
+        layout.addLayout(close_layout)
+        
+        self.setLayout(layout)
+
+    def open_url(self, url):
+        import webbrowser
+        webbrowser.open(url)
+
+class GFNRepairDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle(TEXTS.get("repair_title", "Repairing GeForce NOW"))
+        self.setWindowIcon(QIcon(str(ASSETS_DIR / "geforce.ico")))
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
+        self.setFixedSize(450, 180)
+        self.setStyleSheet(GAMING_STYLESHEET)
+        
+        layout = QVBoxLayout()
+        layout.setContentsMargins(25, 25, 25, 25)
+        layout.setSpacing(15)
+        
+        # Title
+        title_lbl = QLabel(TEXTS.get("repair_title", "Repairing GeForce NOW"))
+        title_lbl.setObjectName("title_label")
+        title_lbl.setAlignment(Qt.AlignCenter)
+        layout.addWidget(title_lbl)
+        
+        # Status text
+        self.status_lbl = QLabel(TEXTS.get("repair_status_init", "Starting repair..."))
+        self.status_lbl.setAlignment(Qt.AlignCenter)
+        self.status_lbl.setStyleSheet("color: #cfcfcf;")
+        layout.addWidget(self.status_lbl)
+        
+        # Progress Bar
+        from PyQt5.QtWidgets import QProgressBar
+        self.progress = QProgressBar()
+        self.progress.setRange(0, 100)
+        self.progress.setValue(0)
+        self.progress.setTextVisible(True)
+        self.progress.setAlignment(Qt.AlignCenter)
+        self.progress.setStyleSheet("""
+            QProgressBar {
+                background-color: #1a1b1d;
+                border: 1px solid #2c2f33;
+                border-radius: 6px;
+                color: #ffffff;
+                font-weight: bold;
+                text-align: center;
+                height: 22px;
+            }
+            QProgressBar::chunk {
+                background-color: #045D0E;
+                border-radius: 4px;
+            }
+        """)
+        layout.addWidget(self.progress)
+        
+        # Button layout (Hidden until error or done)
+        self.btn_layout = QHBoxLayout()
+        self.ok_btn = QPushButton(TEXTS.get("close", "Close"))
+        self.ok_btn.clicked.connect(self.accept)
+        self.ok_btn.setVisible(False)
+        self.btn_layout.addStretch()
+        self.btn_layout.addWidget(self.ok_btn)
+        self.btn_layout.addStretch()
+        
+        layout.addLayout(self.btn_layout)
+        self.setLayout(layout)
+
+    def on_progress(self, percent):
+        self.progress.setValue(percent)
+
+    def on_status(self, lang_key):
+        self.status_lbl.setText(TEXTS.get(lang_key, lang_key))
+
+    def on_error(self, err_msg):
+        self.progress.setStyleSheet("""
+            QProgressBar { background-color: #1a1b1d; border: 1px solid #d32f2f; border-radius: 6px; color: #ffffff; text-align: center; height: 22px; }
+            QProgressBar::chunk { background-color: #d32f2f; border-radius: 4px; }
+        """)
+        msg = TEXTS.get("repair_status_error", "Error: {error}").replace("{error}", err_msg)
+        self.status_lbl.setText(msg)
+        self.status_lbl.setStyleSheet("color: #ff5252; font-weight: bold;")
+        self.ok_btn.setVisible(True)
+
+    def on_finished(self):
+        self.status_lbl.setText(TEXTS.get("repair_status_done", "Repair completed."))
+        self.status_lbl.setStyleSheet("color: #00e676; font-weight: bold;")
+        self.progress.setValue(100)
+        self.ok_btn.setVisible(True)
+

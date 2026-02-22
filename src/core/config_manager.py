@@ -37,7 +37,7 @@ class ConfigManager:
         if isinstance(data, dict):
             self.games_config = data
             self.games_config_path = fixed_path
-            logger.info(TEXTS.get("games_config_merged", "✅ games_config_merged.json cargado automáticamente: {fixed_path}"))
+            logger.info(TEXTS.get("games_config_merged", "✅ games_config_merged.json cargado automáticamente: {fixed_path}").format(fixed_path=fixed_path))
             self._log_games_summary()
         else:
             logger.warning(TEXTS.get("games_config_invalid", "⚠️ games_config_merged.json no contiene un objeto JSON válido."))
@@ -50,7 +50,7 @@ class ConfigManager:
             logger.warning(TEXTS.get("no_games_found", "⚠️ No se encontraron juegos en la configuración."))
             return
         
-        logger.info(TEXTS.get("games_loaded", "📦 Juegos cargados: {count}"))
+        logger.info(TEXTS.get("games_loaded", "📦 Juegos cargados: {count}").format(count=count))
 
     def get_game_mapping(self):
         return self.games_config
