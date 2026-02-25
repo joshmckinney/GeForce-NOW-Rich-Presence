@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction, QApplication, QMess
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog
-from src.core.utils import ASSETS_DIR, LOG_FILE
+from src.core.utils import ASSETS_DIR, LOG_FILE, set_autostart_windows
 from src.core.app_launcher import AppLauncher
 from src.ui.dialogs import AskGameDialog, MatchSelectionDialog, GamingMessageBox, GamingInputDialog, QuestListDialog, CustomPresenceDialog, AboutDialog, GFNRepairDialog, GAMING_STYLESHEET
 from src.core.utils import get_lang_from_registry, load_locale
@@ -21,9 +21,10 @@ except Exception:
 logger = logging.getLogger('geforce_presence')
 
 class SystemTrayIcon(QSystemTrayIcon):
-    def __init__(self, presence_manager, texts, parent=None):
+    def __init__(self, presence_manager, texts, config_manager, parent=None):
         super().__init__(parent)
         self.pm = presence_manager
+        self.config_manager = config_manager
         TEXTS = texts
         
         self.setIcon(QIcon(str(ASSETS_DIR / "geforce.ico")))
@@ -108,6 +109,35 @@ class SystemTrayIcon(QSystemTrayIcon):
             cp_action.triggered.connect(self.open_custom_presence_dialog)
             self.menu.addAction(cp_action)
 
+        # Configuración Submenú
+        config_menu = self.menu.addMenu(TEXTS.get("tray_config", "Configuración"))
+        
+        # 1. Iniciar con Windows
+        start_win_action = QAction(TEXTS.get("config_start_windows", "Iniciar con Windows"), self.menu, checkable=True)
+        start_win_action.setChecked(self.config_manager.get_setting("start_with_windows", False))
+        start_win_action.triggered.connect(self.toggle_start_windows)
+        config_menu.addAction(start_win_action)
+
+        # 2. Iniciar GeForce NOW
+        start_gfn_action = QAction(TEXTS.get("config_start_gfn", "Iniciar GeForce NOW con la aplicación"), self.menu, checkable=True)
+        start_gfn_action.setChecked(self.config_manager.get_setting("start_gfn_on_launch", True))
+        start_gfn_action.triggered.connect(lambda chk: self.config_manager.set_setting("start_gfn_on_launch", chk))
+        config_menu.addAction(start_gfn_action)
+
+        # 3. Iniciar Discord
+        start_discord_action = QAction(TEXTS.get("config_start_discord", "Iniciar Discord con la aplicación"), self.menu, checkable=True)
+        start_discord_action.setChecked(self.config_manager.get_setting("start_discord_on_launch", True))
+        start_discord_action.triggered.connect(lambda chk: self.config_manager.set_setting("start_discord_on_launch", chk))
+        config_menu.addAction(start_discord_action)
+
+        # 4. Obtener cookie al iniciar
+        start_cookie_action = QAction(TEXTS.get("config_get_cookie", "Obtener cookie al iniciar la aplicación"), self.menu, checkable=True)
+        start_cookie_action.setChecked(self.config_manager.get_setting("get_cookie_on_launch", True))
+        start_cookie_action.triggered.connect(lambda chk: self.config_manager.set_setting("get_cookie_on_launch", chk))
+        config_menu.addAction(start_cookie_action)
+
+        self.menu.addSeparator()
+
         # Sync Games
         sync_text = TEXTS.get("tray_sync_games", "Sync games")
         sync_action = QAction(sync_text, self.menu)
@@ -137,6 +167,10 @@ class SystemTrayIcon(QSystemTrayIcon):
     def on_activated(self, reason):
         if reason == QSystemTrayIcon.DoubleClick:
             self.open_geforce()
+
+    def toggle_start_windows(self, checked):
+        self.config_manager.set_setting("start_with_windows", checked)
+        set_autostart_windows(checked)
 
     def toggle_force_game(self):
         # 0. Check for running quests

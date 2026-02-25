@@ -73,15 +73,18 @@ def main():
     updater = Updater()
     updater.check_for_updates(silent=True)
 
+    # 6. Initialize Managers First (moved up so we can read settings)
+    config_manager = ConfigManager(CONFIG_DIR / "config_path.txt")
+
     # 5.1 Launch Apps
-    AppLauncher.launch_discord()
-    AppLauncher.launch_geforce_now()
+    if config_manager.get_setting("start_discord_on_launch", True):
+        AppLauncher.launch_discord()
+    
+    if config_manager.get_setting("start_gfn_on_launch", True):
+        AppLauncher.launch_geforce_now()
 
     # 5.2 Update Edge Driver
     #MOVE TO TRAY ICON
-
-    # 6. Initialize Managers
-    config_manager = ConfigManager(CONFIG_DIR / "config_path.txt")
     
     test_rich_url = os.getenv("TEST_RICH_URL", "").strip()
     client_id = os.getenv("CLIENT_ID", "").strip() or "1095416975028650046"
@@ -99,12 +102,19 @@ def main():
         update_interval=update_interval
     )
 
+    # 6.1 Optional Cookie Fetch
+    if config_manager.get_setting("get_cookie_on_launch", True):
+        logger.info("Intentando obtener cookie de Steam al inicio (según configuración)...")
+        cookie = cookie_manager.get_steam_cookie(confirm_callback=None)
+        if cookie:
+            presence_manager.update_cookie(cookie)
+
     # Cleanup residues from previous sessions
     logger.info("Limpiando residuos de sesiones anteriores...")
     presence_manager.close_fake_executable()
 
     # 7. Initialize UI
-    tray_icon = SystemTrayIcon(presence_manager, texts)
+    tray_icon = SystemTrayIcon(presence_manager, texts, config_manager)
     tray_icon.show()
 
     # 8. Start Monitoring

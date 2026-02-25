@@ -259,11 +259,13 @@ class AskGameDialog(QDialog):
         layout.addWidget(self.label)
 
         self.entry = QLineEdit()
+        self.entry.returnPressed.connect(self.accept)
         layout.addWidget(self.entry)
 
         # Button for Quest Mode (Multiples games)
         self.quest_mode_btn = QPushButton(TEXTS.get("quest_mode", "Discord Quest Mode (Multiple Games)"))
         self.quest_mode_btn.setObjectName("secondary")
+        self.quest_mode_btn.setAutoDefault(False)
         self.quest_mode_btn.clicked.connect(self.on_quest_mode_clicked)
         layout.addWidget(self.quest_mode_btn)
 
@@ -272,6 +274,7 @@ class AskGameDialog(QDialog):
         btn_layout.setSpacing(12)
 
         self.ok_btn = QPushButton(TEXTS.get("ok", "OK"))
+        self.ok_btn.setDefault(True)
         self.cancel_btn = QPushButton(TEXTS.get("cancel", "Cancel"))
         self.cancel_btn.setObjectName("secondary")
 
@@ -365,8 +368,7 @@ class QuestListDialog(QDialog):
         
         # Let's import AskGameDialog locally to avoid circulars if any, though we are in same file
         dlg = AskGameDialog(parent=self, message="Nombre del juego para Quest:")
-        dlg.quest_mode_cb.setChecked(True)
-        dlg.quest_mode_cb.setEnabled(False) # Force quest mode if adding from here
+        dlg.quest_mode_btn.hide() # Force quest mode if adding from here
         
         if dlg.exec_() == QDialog.Accepted:
             game_name = dlg.get_game_name()

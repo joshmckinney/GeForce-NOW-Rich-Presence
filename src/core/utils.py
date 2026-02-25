@@ -95,6 +95,33 @@ def _normalize_lang(lang_str: str, default: str) -> str:
         return "en"
     return default
 
+def set_autostart_windows(enable: bool):
+    if not IS_WINDOWS:
+        return
+        
+    app_name = "GeForceNOWRichPresence"
+    # El ejecutable real si está empaquetado; si no, el sys.executable y main.py
+    if getattr(sys, 'frozen', False):
+        exe_path = sys.executable
+    else:
+        # Modo desarrollo
+        exe_path = f'"{sys.executable}" "{Path(__file__).resolve().parent.parent.parent / "main.py"}"'
+        
+    try:
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run", 0, winreg.KEY_SET_VALUE | winreg.KEY_READ)
+        if enable:
+            winreg.SetValueEx(key, app_name, 0, winreg.REG_SZ, exe_path)
+            logger.info("✅ Aplicación configurada para iniciar con Windows.")
+        else:
+            try:
+                winreg.DeleteValue(key, app_name)
+                logger.info("✅ Aplicación eliminada del inicio de Windows.")
+            except FileNotFoundError:
+                pass # Ya no estaba
+        winreg.CloseKey(key)
+    except Exception as e:
+        logger.error(f"Error modificando el registro de inicio de Windows: {e}")
+
 def load_locale(lang: str = "en") -> dict:
     path = LANG_DIR / f"{lang}.json"
     if path.exists():

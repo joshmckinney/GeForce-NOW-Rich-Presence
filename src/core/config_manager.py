@@ -1,7 +1,7 @@
 import logging
 from pathlib import Path
 from typing import Dict, Optional
-from src.core.utils import safe_json_load, CONFIG_DIR
+from src.core.utils import safe_json_load, save_json, CONFIG_DIR
 from src.core.utils import get_lang_from_registry, load_locale
 
 try:
@@ -19,11 +19,27 @@ class ConfigManager:
         self.config_path_file = Path(config_path_file)
         self.games_config: Dict = {}
         self.games_config_path: Optional[Path] = None
+        self.app_settings: Dict = {
+            "start_with_windows": False,
+            "start_gfn_on_launch": True,
+            "start_discord_on_launch": True,
+            "get_cookie_on_launch": True
+        }
+        self.app_settings_path = CONFIG_DIR / "app_settings.json"
         self._load()
 
     def _load(self):
         # Ruta fija al archivo que siempre queremos cargar
         fixed_path = CONFIG_DIR / "games_config_merged.json"
+        
+        # Cargar app_settings.json
+        if self.app_settings_path.exists():
+            data_settings = safe_json_load(self.app_settings_path)
+            if isinstance(data_settings, dict):
+                # Update defaults with loaded settings
+                self.app_settings.update(data_settings)
+        else:
+            save_json(self.app_settings, self.app_settings_path)
 
         # Si no existe, mostrar error en logs pero NO abrir Tkinter
         if not fixed_path.exists():
@@ -54,3 +70,10 @@ class ConfigManager:
 
     def get_game_mapping(self):
         return self.games_config
+
+    def get_setting(self, key: str, default=None):
+        return self.app_settings.get(key, default)
+
+    def set_setting(self, key: str, value):
+        self.app_settings[key] = value
+        save_json(self.app_settings, self.app_settings_path)
