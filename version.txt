@@ -20,7 +20,7 @@ VSVersionInfo(
             StringStruct(u'FileDescription', u'GeForce NOW Rich Presence'),
             StringStruct(u'FileVersion', u'3.0.14.0'),
             StringStruct(u'InternalName', u'GeForce NOW Rich Presence'),
-            StringStruct(u'OriginalFilename', u'geforce_presence.exe'),
+            StringStruct(u'OriginalFilename', u'GeForceNOWRichPresence.exe'),
             StringStruct(u'ProductName', u'GeForce NOW Rich Presence'),
             StringStruct(u'ProductVersion', u'3.0.14.0')
           ]

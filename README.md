@@ -16,6 +16,9 @@
   <a href="https://github.com/KarmaDevz/GeForce-NOW-Rich-Presence/releases">
     <img src="https://img.shields.io/github/downloads/KarmaDevz/discord-rich-presence-for-geforcenow/total?style=for-the-badge&color=2962FF&logo=github&label=Total%20Downloads"/>
   </a>
+  <a href="https://github.com/KarmaDevz/GeForce-NOW-Rich-Presence/releases">
+    <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FUSUARIO%2FREPO.json&style=for-the-badge&color=2962FF&label=Total%20Views"/>
+  </a>
 </div>
 
 ---
