@@ -2,6 +2,8 @@ import os
 import psutil
 import subprocess
 import logging
+import json
+import time
 from pathlib import Path
 from typing import Optional
 from src.core.utils import get_lang_from_registry, load_locale
@@ -39,10 +41,66 @@ class AppLauncher:
         return False
 
     @staticmethod
+    def kill_process_by_name(target_name: str):
+        try:
+            for proc in psutil.process_iter(attrs=['name']):
+                name = (proc.info.get('name') or "").lower()
+                if name == target_name.lower() or target_name.lower() in name:
+                    proc.kill()
+        except Exception as e:
+            logger.error(f"Error al cerrar {target_name}: {e}")
+
+    @staticmethod
+    def disable_native_rich_presence() -> tuple[bool, bool]:
+        """
+        Deshabilita el Rich Presence nativo de GeForce NOW en el archivo sharedstorage.json.
+        Retorna (success, modified)
+        """
+        config_path = Path(os.environ.get("LOCALAPPDATA", "")) / "NVIDIA Corporation" / "GeForceNOW" / "sharedstorage.json"
+        
+        if not config_path.exists():
+            logger.warning(TEXTS.get("gfn_config_not_found", "Archivo no encontrado: sharedstorage.json"))
+            return False, False
+            
+        try:
+            with open(config_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except (json.JSONDecodeError, IOError) as e:
+            logger.error(f"JSON corrupto o error de lectura: {e}")
+            return False, False
+            
+        try:
+            if "appSettingsConfig" not in data:
+                data["appSettingsConfig"] = {}
+                
+            if data["appSettingsConfig"].get("discordRpEnabled", False) is True:
+                data["appSettingsConfig"]["discordRpEnabled"] = False
+                with open(config_path, "w", encoding="utf-8") as f:
+                    json.dump(data, f, indent=4)
+                logger.info("Flag modificado. Operación completada correctamente.")
+                return True, True
+            else:
+                logger.info("Flag ya deshabilitado. Operación completada correctamente.")
+                return True, False
+        except Exception as e:
+            logger.error(f"Error inesperado al procesar JSON: {e}")
+            return False, False
+
+    @staticmethod
     def launch_geforce_now() -> bool:
-        if AppLauncher._is_process_running_by_name("GeForceNOW.exe"):
-            logger.info(TEXTS.get("already_running", "💡 GeForce NOW is already running"))
-            return True
+        success, modified = AppLauncher.disable_native_rich_presence()
+        
+        is_running = AppLauncher._is_process_running_by_name("GeForceNOW.exe")
+        
+        if is_running:
+            if modified:
+                logger.info("Reiniciando GeForce NOW para aplicar la desactivación del Rich Presence nativo...")
+                AppLauncher.kill_process_by_name("GeForceNOW.exe")
+                time.sleep(1.5)  # Esperar a que se cierre completamente
+            else:
+                logger.info(TEXTS.get("already_running", "💡 GeForce NOW is already running"))
+                return True
+
         path = AppLauncher.find_geforce_now()
         if path:
             logger.info(TEXTS.get("launching", "🚀 Launching GeForce NOW..."))
