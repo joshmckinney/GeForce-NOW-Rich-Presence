@@ -99,28 +99,55 @@ def set_autostart_windows(enable: bool):
     if not IS_WINDOWS:
         return
         
+    try:
+        import winshell
+    except ImportError:
+        logger.error("winshell no está instalado o falló su importación.")
+        return
+
     app_name = "GeForceNOWRichPresence"
-    # El ejecutable real si está empaquetado; si no, el sys.executable y main.py
+    startup_folder = winshell.startup()
+    shortcut_path = os.path.join(startup_folder, f"{app_name}.lnk")
+    
+    # El ejecutable real si está empaquetado; si no, el sys.executable y el script
     if getattr(sys, 'frozen', False):
-        exe_path = sys.executable
+        target_path = sys.executable
+        arguments = "--delay 60"
     else:
         # Modo desarrollo
-        exe_path = f'"{sys.executable}" "{Path(__file__).resolve().parent.parent.parent / "main.py"}"'
+        target_path = sys.executable
+        script_path = str(Path(__file__).resolve().parent.parent.parent / "src" / "GeForceNOWRichPresence.py")
+        arguments = f'"{script_path}" --delay 60'
         
     try:
-        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run", 0, winreg.KEY_SET_VALUE | winreg.KEY_READ)
+        # Limpiar registro y schtasks antiguo por si acaso
+        try:
+            import winreg
+            key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run", 0, winreg.KEY_SET_VALUE | winreg.KEY_READ)
+            winreg.DeleteValue(key, app_name)
+            winreg.CloseKey(key)
+        except Exception:
+            pass
+            
+        try:
+            subprocess.run(["schtasks", "/delete", "/tn", app_name, "/f"], creationflags=0x08000000)
+        except Exception:
+            pass
+
         if enable:
-            winreg.SetValueEx(key, app_name, 0, winreg.REG_SZ, exe_path)
-            logger.info("✅ Aplicación configurada para iniciar con Windows.")
+            # Crear el acceso directo en Inicio
+            with winshell.shortcut(shortcut_path) as shortcut:
+                shortcut.path = target_path
+                shortcut.arguments = arguments
+                shortcut.description = "Start GeForce NOW Rich Presence"
+            logger.info("✅ Acceso directo creado en shell:startup para iniciar con Windows (retraso 60s).")
         else:
-            try:
-                winreg.DeleteValue(key, app_name)
-                logger.info("✅ Aplicación eliminada del inicio de Windows.")
-            except FileNotFoundError:
-                pass # Ya no estaba
-        winreg.CloseKey(key)
+            # Eliminar el acceso directo
+            if os.path.exists(shortcut_path):
+                os.remove(shortcut_path)
+            logger.info("✅ Acceso directo eliminado de shell:startup.")
     except Exception as e:
-        logger.error(f"Error modificando el registro de inicio de Windows: {e}")
+        logger.error(f"Error modificando inicio de Windows (winshell): {e}")
 
 def load_locale(lang: str = "en") -> dict:
     path = LANG_DIR / f"{lang}.json"

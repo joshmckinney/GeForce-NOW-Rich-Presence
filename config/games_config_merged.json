@@ -149,8 +149,13 @@
     },
     "Overwatch": {
         "name": "Overwatch",
-        "steam_appid": null,
-        "client_id": "356875221078245376"
+        "steam_appid": "2357570",
+        "client_id": "356875221078245376",
+        "executable_path": "overwatch.exe",
+        "custom_details": "",
+        "custom_state": "",
+        "custom_party_size_current": 0,
+        "custom_party_size_max": 5
     },
     "Minecraft": {
         "name": "Minecraft",
@@ -183,12 +188,14 @@
     "Grand Theft Auto V": {
         "name": "Grand Theft Auto V",
         "steam_appid": 271590,
-        "client_id": "356876176465199104"
+        "client_id": "356876176465199104",
+        "executable_path": "grand theft auto v/fivem.exe"
     },
     "Tom Clancy's Rainbow Six Siege": {
         "name": "Tom Clancy's Rainbow Six Siege",
         "steam_appid": 359550,
-        "client_id": "356876590342340608"
+        "client_id": "356876590342340608",
+        "executable_path": "tom clancy's rainbow six siege/rainbowsix_vulkan.exe"
     },
     "Rocket League": {
         "name": "Rocket League",
@@ -278,7 +285,8 @@
     "FINAL FANTASY XIV": {
         "name": "FINAL FANTASY XIV",
         "steam_appid": null,
-        "client_id": "356889262362329098"
+        "client_id": "356889262362329098",
+        "executable_path": "pol.exe"
     },
     "Geometry Dash": {
         "name": "Geometry Dash",
@@ -733,7 +741,8 @@
     "Heroes & Generals": {
         "name": "Heroes & Generals",
         "steam_appid": 227940,
-        "client_id": "363409597312008212"
+        "client_id": "363409597312008212",
+        "executable_path": "heroes & generals/hng_be.exe"
     },
     "Shadowverse": {
         "name": "Shadowverse",
@@ -812,7 +821,8 @@
     "STAR WARS Battlefront": {
         "name": "STAR WARS Battlefront",
         "steam_appid": null,
-        "client_id": "363412167934083072"
+        "client_id": "363412167934083072",
+        "executable_path": "starwarsbattlefront.exe"
     },
     "Mount & Blade: Warband": {
         "name": "Mount & Blade: Warband",
@@ -1331,7 +1341,8 @@
     "STAR WARS Battlefront II": {
         "name": "STAR WARS Battlefront II",
         "steam_appid": 6060,
-        "client_id": "363429717698936852"
+        "client_id": "363429717698936852",
+        "executable_path": "starwarsbattlefrontii.exe"
     },
     "Cuphead": {
         "name": "Cuphead",
@@ -4495,7 +4506,8 @@
     "Estranged: Act II": {
         "name": "Estranged: Act II",
         "steam_appid": 582890,
-        "client_id": "443136903814971445"
+        "client_id": "443136903814971445",
+        "executable_path": "estranged act i/hl2.exe"
     },
     "Archeage": {
         "name": "Archeage",
@@ -4530,7 +4542,8 @@
     "Universe Sandbox ²": {
         "name": "Universe Sandbox ²",
         "steam_appid": 230290,
-        "client_id": "443156067434889236"
+        "client_id": "443156067434889236",
+        "executable_path": "universe sandbox x64.exe"
     },
     "Aura Kingdom": {
         "name": "Aura Kingdom",
@@ -5049,7 +5062,8 @@
     "STAR WARS™: Knights of the Old Republic™": {
         "name": "STAR WARS™: Knights of the Old Republic™",
         "steam_appid": 32370,
-        "client_id": "450293931301666826"
+        "client_id": "450293931301666826",
+        "executable_path": "swkotor.exe"
     },
     "The Stanley Parable": {
         "name": "The Stanley Parable",
@@ -5538,7 +5552,8 @@
     "Black Desert Online SA": {
         "name": "Black Desert Online SA",
         "steam_appid": 706220,
-        "client_id": "451544197632229376"
+        "client_id": "451544197632229376",
+        "executable_path": "blackdesert64.exe"
     },
     "Grand Theft Auto: Vice City": {
         "name": "Grand Theft Auto: Vice City",
@@ -7866,7 +7881,8 @@
     "The Dig": {
         "name": "The Dig",
         "steam_appid": 6040,
-        "client_id": "487683851519393822"
+        "client_id": "487683851519393822",
+        "executable_path": "the dig.exe"
     },
     "Deus Ex: Game of the Year Edition": {
         "name": "Deus Ex: Game of the Year Edition",
@@ -8272,7 +8288,8 @@
     "The Secret of Monkey Island: Special Edition": {
         "name": "The Secret of Monkey Island: Special Edition",
         "steam_appid": 32360,
-        "client_id": "492134756914429975"
+        "client_id": "492134756914429975",
+        "executable_path": "misec.exe"
     },
     "STAR WARS™ Jedi Knight II: Jedi Outcast™": {
         "name": "STAR WARS™ Jedi Knight II: Jedi Outcast™",
@@ -8283,7 +8300,8 @@
     "Star Wars: Knights of the Old Republic": {
         "name": "Star Wars: Knights of the Old Republic",
         "steam_appid": 32370,
-        "client_id": "492136872714305566"
+        "client_id": "492136872714305566",
+        "executable_path": "swkotor.exe"
     },
     "Star Wars: Dark Forces": {
         "name": "Star Wars: Dark Forces",
@@ -8363,7 +8381,8 @@
     "Indiana Jones and the Fate of Atlantis": {
         "name": "Indiana Jones and the Fate of Atlantis",
         "steam_appid": 6010,
-        "client_id": "492162663976140810"
+        "client_id": "492162663976140810",
+        "executable_path": "indiana jones and the fate of atlantis.exe"
     },
     "Monkey Island 2: Special Edition": {
         "name": "Monkey Island 2: Special Edition",
@@ -9639,7 +9658,8 @@
     "ONI": {
         "name": "ONI",
         "steam_appid": null,
-        "client_id": "498979842277113857"
+        "client_id": "498979842277113857",
+        "executable_path": "oni-roadtobethemightiestoni/oni.exe"
     },
     "Peggle Deluxe": {
         "name": "Peggle Deluxe",
@@ -11157,7 +11177,8 @@
     "Darkfall Rise of Agon": {
         "name": "Darkfall Rise of Agon",
         "steam_appid": null,
-        "client_id": "505498499043819520"
+        "client_id": "505498499043819520",
+        "executable_path": "darkfall roa/darkfall_roa.exe"
     },
     "Rosenkreuzstilette": {
         "name": "Rosenkreuzstilette",
@@ -56423,7 +56444,8 @@
         "steam_appid": null,
         "client_id": "1318732472728420494",
         "cmsId": "102366411",
-        "uuid": "4decec84-2eba-46b1-8ba3-f17d6a5a69ea"
+        "uuid": "4decec84-2eba-46b1-8ba3-f17d6a5a69ea",
+        "executable_path": "win64/moria-win64-shipping.exe"
     },
     "Substance 3D Painter 2024": {
         "name": "Substance 3D Painter 2024",
@@ -63929,7 +63951,8 @@
     "UV Slayer Playground": {
         "name": "UV Slayer Playground",
         "steam_appid": null,
-        "client_id": "1402418701516668981"
+        "client_id": "1402418701516668981",
+        "executable_path": "slayer-playground.exe"
     },
     "Grand Theft Auto V Legacy": {
         "name": "Grand Theft Auto V Legacy",
@@ -64260,7 +64283,8 @@
         "image": "steam",
         "cmsId": "100285111",
         "uuid": "5a6f9b10-923b-43cf-a722-c19e2f1fc6e2",
-        "appStore": "steam"
+        "appStore": "steam",
+        "executable_path": "afop/afop.exe"
     },
     "The Witcher® 3: Wild Hunt": {
         "name": "The Witcher 3: Wild Hunt",
@@ -64278,8 +64302,8 @@
         "uuid": "6130fc4f-c128-4f1c-a4c3-99d4cfb7d2c5",
         "shortName": null,
         "appStore": "STEAM",
-        "client_id": "",
-        "executable_path": "",
+        "client_id": "1408314811003179089",
+        "executable_path": "win64/voidbreaker-win64-shipping.exe",
         "name": "VOID/BREAKER"
     },
     "Fortnite®": {
@@ -64309,8 +64333,8 @@
         "uuid": "8bfa0687-60fc-425e-9f10-6232693b90d7",
         "shortName": "",
         "appStore": "steam",
-        "client_id": "",
-        "executable_path": ""
+        "client_id": "1402418487745581248",
+        "executable_path": "cod23/cod23-cod.exe"
     },
     "Rocket Racing": {
         "title": "Rocket Racing",
@@ -64349,8 +64373,8 @@
         "uuid": "08a208cc-7549-4ec5-a2d5-8614c91584b1",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
-        "executable_path": ""
+        "client_id": "425460666930036736",
+        "executable_path": "southpark_tfbw.exe"
     },
     "Saviors of Sapphire Wings / Stranger of Sword City Revisited": {
         "title": "Saviors of Sapphire Wings / Stranger of Sword City Revisited",
@@ -64369,8 +64393,8 @@
         "uuid": "4f02b6e8-e49f-4c05-82ee-240f2c83f30e",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
-        "executable_path": ""
+        "client_id": "1129504706566307850",
+        "executable_path": "win64/sessiongame-win64-shipping.exe"
     },
     "SAMURAI SHODOWN NEOGEO COLLECTION": {
         "title": "SAMURAI SHODOWN NEOGEO COLLECTION",
@@ -64389,8 +64413,8 @@
         "uuid": "5d57bc1b-7031-4252-ac7d-0feaff63593a",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
-        "executable_path": ""
+        "client_id": "1170090044510457936",
+        "executable_path": "star ocean the second story r/so2r.exe"
     },
     "Space Colony: Steam Edition": {
         "title": "Space Colony: Steam Edition",
@@ -64449,7 +64473,7 @@
         "uuid": "e8d32583-64fe-4ca8-af0b-f2ca70483f2b",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440136539157041293",
         "executable_path": ""
     },
     "Severed Steel": {
@@ -64459,7 +64483,7 @@
         "uuid": "c45bcc72-11b4-47c2-b65c-4e9e43988122",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440541103408287804",
         "executable_path": ""
     },
     "Soccer Story": {
@@ -64469,7 +64493,7 @@
         "uuid": "6365fb8d-c063-45c2-b426-e190447bb652",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440129657486835872",
         "executable_path": ""
     },
     "Spacebase Startopia": {
@@ -64479,7 +64503,7 @@
         "uuid": "8343225f-5703-4778-8160-2f1a08157a19",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1442733663413473434",
         "executable_path": ""
     },
     "Sumerian Six": {
@@ -64489,7 +64513,7 @@
         "uuid": "a6f605ca-f9e6-4074-a625-8bf0e38ea546",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1428178213485416570",
         "executable_path": ""
     },
     "System Shock": {
@@ -64499,8 +64523,8 @@
         "uuid": "5c1c0879-33f4-4eb2-89e0-1bfda20e67e2",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
-        "executable_path": ""
+        "client_id": "1402416882711007272",
+        "executable_path": "system shock.exe"
     },
     "Split Fiction Friend's Pass": {
         "title": "Split Fiction Friend's Pass",
@@ -64539,7 +64563,7 @@
         "uuid": "3abf425e-0325-41f6-a262-e08cd0708795",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1428170758634602658",
         "executable_path": ""
     },
     "Stick It to the Stickman": {
@@ -64549,8 +64573,8 @@
         "uuid": "87c4b1ed-d905-4ce1-be12-f54ee887a2f5",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
-        "executable_path": ""
+        "client_id": "1407318241881358397",
+        "executable_path": "stick it to the stickman/stick it to the stickman.exe"
     },
     "Slayers X: Terminal Aftermath: Vengance of the Slayer": {
         "title": "Slayers X: Terminal Aftermath: Vengance of the Slayer",
@@ -64559,7 +64583,7 @@
         "uuid": "b4290174-4c8e-4d3a-a192-b054be5e34b2",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1439434552228577362",
         "executable_path": ""
     },
     "Sid Meier's Civilization® IV": {
@@ -64569,8 +64593,8 @@
         "uuid": "7b810518-5a36-4411-ac24-12f3a0c5adc8",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
-        "executable_path": ""
+        "client_id": "358421904601776138",
+        "executable_path": "civilizationv_dx11.exe"
     },
     "Saints Row IV: Re-Elected": {
         "title": "Saints Row IV: Re-Elected",
@@ -64579,7 +64603,7 @@
         "uuid": "3b8472ca-83b0-4ec3-ba5e-508293acb323",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440141735886979082",
         "executable_path": ""
     },
     "Saints Row": {
@@ -64589,7 +64613,7 @@
         "uuid": "aa91cc89-36a3-4472-be82-8a47ab0dd127",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1445222039123136574",
         "executable_path": ""
     },
     "Saltsea Chronicles": {
@@ -64609,7 +64633,7 @@
         "uuid": "5aea9d7b-200e-4603-ac8c-eff92533b759",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1441986880512983050",
         "executable_path": ""
     },
     "Sands of Aura": {
@@ -64619,7 +64643,7 @@
         "uuid": "bba7ff10-a351-47c3-b46a-d91c6752ea2c",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1439431985599615057",
         "executable_path": ""
     },
     "Saturnalia": {
@@ -64709,7 +64733,7 @@
         "uuid": "231bfc01-1897-4980-8095-ccf460b286a0",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440141347045773312",
         "executable_path": ""
     },
     "A-Train: All Aboard! Tourism": {
@@ -64749,7 +64773,7 @@
         "uuid": "a8bd3e62-9944-433a-ac87-279562161f94",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1439430281353236521",
         "executable_path": ""
     },
     "ABRISS - build to destroy": {
@@ -64779,8 +64803,8 @@
         "uuid": "b562554e-4557-4eb9-b5e0-09f2eb3b5757",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
-        "executable_path": ""
+        "client_id": "1287352740112105536",
+        "executable_path": "ace attorney investigations collection/gk12.exe"
     },
     "Ad Infinitum": {
         "title": "Ad Infinitum",
@@ -64789,7 +64813,7 @@
         "uuid": "06578184-ffe6-4395-b9e3-9d1c2405ed2f",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440541380937252884",
         "executable_path": ""
     },
     "AEW: Fight Forever": {
@@ -64799,7 +64823,7 @@
         "uuid": "aa12e689-c9c3-445f-8266-a45f817bdea3",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440143533330927647",
         "executable_path": ""
     },
     "Agatha Christie - Murder on the Orient Express": {
@@ -64809,7 +64833,7 @@
         "uuid": "ded39483-34d8-43c9-b6a5-39416de3b836",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1428172623988129862",
         "executable_path": ""
     },
     "Age of Empires IV: Anniversary Edition": {
@@ -64819,8 +64843,8 @@
         "uuid": "55e36e24-07c5-48d4-8850-242f4ad5981d",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
-        "executable_path": ""
+        "client_id": "1129504181414273136",
+        "executable_path": "age of empires iv/reliccardinal.exe"
     },
     "Ageless": {
         "title": "Ageless",
@@ -64839,7 +64863,7 @@
         "uuid": "0cf69430-f381-411a-a7ac-a41204f473d7",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440541369071308850",
         "executable_path": ""
     },
     "Aimlabs": {
@@ -64859,7 +64883,7 @@
         "uuid": "335701dc-d8af-4f2a-a61b-fb929f951c9c",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440131520332431484",
         "executable_path": ""
     },
     "Alaloth - Champions of The Four Kingdoms": {
@@ -64869,7 +64893,7 @@
         "uuid": "4a0fbde1-149e-4e3c-b423-76745326082c",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1439067197250080870",
         "executable_path": ""
     },
     "Alan Wake 2": {
@@ -64879,7 +64903,7 @@
         "uuid": "b6e5ff85-6ce0-4b53-820e-7b4f089d7f3b",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440541650085740694",
         "executable_path": ""
     },
     "Alchemist Adventure": {
@@ -64909,7 +64933,7 @@
         "uuid": "273289c8-898b-4aaf-8af0-78ae7b6c3810",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1439067047530070076",
         "executable_path": ""
     },
     "Apollo 11 Lunar Landing Demo": {
@@ -64949,7 +64973,7 @@
         "uuid": "ad0c5c3b-8156-445c-aa89-b4596ff6ee78",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1428176969920417964",
         "executable_path": ""
     },
     "The Architect Paris": {
@@ -64969,7 +64993,7 @@
         "uuid": "2db40db3-c798-4009-99d2-d6d7cd38d798",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1442728401445060638",
         "executable_path": ""
     },
     "Gerda: A Flame in Winter": {
@@ -64989,7 +65013,7 @@
         "uuid": "7644e72b-ccf7-45ab-9ca7-34f27cd5b0dd",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1442737235056394351",
         "executable_path": ""
     },
     "SEASON®: A letter to the future": {
@@ -64999,7 +65023,7 @@
         "uuid": "bbc52225-cc57-4bf0-8ebc-2575450c8450",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1474971988144558193",
         "executable_path": ""
     },
     "Tortuga - A Pirate's Tale": {
@@ -65029,7 +65053,7 @@
         "uuid": "ceeaf71c-80c2-44af-9685-4fb996f96348",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1442716666155765802",
         "executable_path": ""
     },
     "Axilon: Legend of Artifacts - Prologue": {
@@ -65049,7 +65073,7 @@
         "uuid": "a96c3377-f2bd-48a8-82f3-4071dd6d0fb4",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1439432273802956922",
         "executable_path": ""
     },
     "Assassin's Creed™: Director's Cut Edition": {
@@ -65069,7 +65093,7 @@
         "uuid": "7682c025-a678-49ad-9176-bfa778ae68d8",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1442727532221693953",
         "executable_path": ""
     },
     "Asterigos: Curse of the Stars": {
@@ -65079,7 +65103,7 @@
         "uuid": "3441a89e-aebc-437f-84b4-2731e0164aa3",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440541501321904249",
         "executable_path": ""
     },
     "Asterix & Obelix: Heroes": {
@@ -65099,7 +65123,7 @@
         "uuid": "cedf7cbf-7462-4f67-8621-5da35a741e8d",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1441992561895014432",
         "executable_path": ""
     },
     "Atlas Fallen: Reign of Sand": {
@@ -65119,7 +65143,7 @@
         "uuid": "d78652a9-269d-4306-9f78-cc1abe25cf7b",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1442733259594272829",
         "executable_path": ""
     },
     "Batman™: Arkham Asylum Game of the Year Edition": {
@@ -65129,8 +65153,8 @@
         "uuid": "a9dc3058-dfc3-4eeb-904c-fd82a2c27585",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
-        "executable_path": ""
+        "client_id": "425727574539370529",
+        "executable_path": "shippingpc-bmgame.exe"
     },
     "Cosmoteer: Starship Architect & Commander": {
         "title": "Cosmoteer: Starship Architect & Commander",
@@ -65139,7 +65163,7 @@
         "uuid": "0d138518-8653-4b47-9e2a-2a8efb0ad9e1",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1428170704960094291",
         "executable_path": ""
     },
     "Raji™: An Ancient Epic Enhanced Edition": {
@@ -65159,7 +65183,7 @@
         "uuid": "7780c752-eca2-4dd0-8ef6-f93e28e6e01e",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440540934340346007",
         "executable_path": ""
     },
     "Jagged Alliance - Back in Action": {
@@ -65179,7 +65203,7 @@
         "uuid": "a50fd00f-6d69-4a97-801a-abc7c652a0fa",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1439433133224104039",
         "executable_path": ""
     },
     "Crowns and Pawns: Kingdom of Deceit": {
@@ -65199,8 +65223,8 @@
         "uuid": "9580cbb8-740a-4fbb-ade7-b4eb619a69b0",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
-        "executable_path": ""
+        "client_id": "425442752562462720",
+        "executable_path": "deadage.exe"
     },
     "Destroy All Humans!": {
         "title": "Destroy All Humans!",
@@ -65209,7 +65233,7 @@
         "uuid": "6bfdeeb8-0363-46a5-84a9-c1fb792a4cc4",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440142597040640020",
         "executable_path": ""
     },
     "Destroy All Humans! 2 - Reprobed": {
@@ -65219,7 +65243,7 @@
         "uuid": "c05d84c6-801a-426d-b7a6-e15d9731a902",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440541514622304417",
         "executable_path": ""
     },
     "Die After Sunset": {
@@ -65239,7 +65263,7 @@
         "uuid": "e49e9d64-6573-4d57-bb09-8fadbb282754",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1442734303384436828",
         "executable_path": ""
     },
     "Jagged Alliance: Rage!": {
@@ -65259,8 +65283,8 @@
         "uuid": "3f974579-0a93-4628-8024-5f6d8ebaf891",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
-        "executable_path": ""
+        "client_id": "1454443907176861696",
+        "executable_path": "king arthur legion ix/ka_lix.exe"
     },
     "Knights and Merchants": {
         "title": "Knights and Merchants",
@@ -65269,7 +65293,7 @@
         "uuid": "c0ff1bed-44ce-45ac-96d1-cc34beea782a",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1437628707434004511",
         "executable_path": ""
     },
     "Lost At Sea": {
@@ -65289,7 +65313,7 @@
         "uuid": "40292b01-74bf-4a9f-bfc1-a4a29940ac3e",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440130319276572852",
         "executable_path": ""
     },
     "New Arc Line": {
@@ -65299,7 +65323,7 @@
         "uuid": "ed31d606-fe29-47d3-90f7-768b417179cf",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1428175190721826847",
         "executable_path": ""
     },
     "NieR: Automata™ Game of the YoRHa Edition": {
@@ -65309,7 +65333,7 @@
         "uuid": "0b4ecadd-07ae-4882-a948-151ffe7c02d5",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440142166360850724",
         "executable_path": ""
     },
     "RESEARCH and DESTROY": {
@@ -65319,7 +65343,7 @@
         "uuid": "4760dfa8-ea41-4b7b-b39c-b46791061b7b",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1439433062348882090",
         "executable_path": ""
     },
     "Sword and Fairy": {
@@ -65329,7 +65353,7 @@
         "uuid": "4d77ad29-3b9f-42e3-ae78-cf58187c7380",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440541592447357009",
         "executable_path": ""
     },
     "Sword and Fairy 2": {
@@ -65339,7 +65363,7 @@
         "uuid": "5480f0e9-7c49-42e5-b913-a15024465fd9",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440541592447357009",
         "executable_path": ""
     },
     "Sword and Fairy 7": {
@@ -65349,7 +65373,7 @@
         "uuid": "b71babd1-3a5d-435c-a6ba-a1555474a8cb",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440541592447357009",
         "executable_path": ""
     },
     "Sword and Fairy Inn 2": {
@@ -65369,8 +65393,8 @@
         "uuid": "e27e3387-4a56-4829-9bcc-d43d60af6609",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
-        "executable_path": ""
+        "client_id": "1443617488599253204",
+        "executable_path": "win64/stormground.exe"
     },
     "Zombie Army 4": {
         "title": "Zombie Army 4",
@@ -65389,7 +65413,7 @@
         "uuid": "707c9455-1ae4-4f2c-a6a9-a214f3a95718",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440142881129238699",
         "executable_path": ""
     },
     "Ikonei Island: An Earthlock Adventure": {
@@ -65399,7 +65423,7 @@
         "uuid": "2c4c7b05-cff9-4232-837e-002330b4b762",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1439434254080675901",
         "executable_path": ""
     },
     "Cepheus Protocol Anthology Season 1": {
@@ -65459,8 +65483,8 @@
         "uuid": "65f14efa-2e0b-4dff-a83d-a954cd1adb1b",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
-        "executable_path": ""
+        "client_id": "1129504263014457374",
+        "executable_path": "potion craft/potion craft.exe"
     },
     "Red Wings: Aces of the Sky": {
         "title": "Red Wings: Aces of the Sky",
@@ -65489,7 +65513,7 @@
         "uuid": "1037734a-4c82-4dc7-be49-eb88d19e495a",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440143503324610610",
         "executable_path": ""
     },
     "Chinese Paladin: Sword and Fairy": {
@@ -65509,7 +65533,7 @@
         "uuid": "38aadf13-3ede-4e89-aad8-278970809819",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1442733376556498994",
         "executable_path": ""
     },
     "The Dark Pictures Anthology: Little Hope": {
@@ -65519,7 +65543,7 @@
         "uuid": "83858533-6cfb-4236-b57f-b0a2c8be9399",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440142822442270780",
         "executable_path": ""
     },
     "Diplomacy is Not an Option Demo": {
@@ -65529,8 +65553,8 @@
         "uuid": "15d7c711-737e-422f-bad7-25da2c66c109",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
-        "executable_path": ""
+        "client_id": "1124353341850390630",
+        "executable_path": "diplomacy is not an option/diplomacy is not an option.exe"
     },
     "Hello Neighbor: Hide and Seek": {
         "title": "Hello Neighbor: Hide and Seek",
@@ -65539,7 +65563,7 @@
         "uuid": "882e2be7-9b9c-432a-b802-a1848d0833a2",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1440142339682205757",
         "executable_path": ""
     },
     "Black Future '88": {
@@ -65579,7 +65603,7 @@
         "uuid": "769c2f7c-3239-450d-a249-a9d67324dbd6",
         "shortName": null,
         "appStore": null,
-        "client_id": "",
+        "client_id": "1441988870508904529",
         "executable_path": ""
     },
     "Blast Brigade vs. the Evil Legion of Dr. Cread": {
@@ -70931,5 +70955,12 @@
     "John Carpenter's Toxic Commando": {
         "client_id": "1442714232331436062",
         "executable_path": "bin/pc/John Carpenter's Toxic Commando.exe"
+    },
+    "Resident Evil Requiem": {
+        "name": "Resident Evil Requiem",
+        "steam_appid": "3764200",
+        "image": "steam",
+        "client_id": "1456485028350656512",
+        "executable_path": "RESIDENT EVIL requiem BIOHAZARD requiem/re9.exe"
     }
 }

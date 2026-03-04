@@ -10,7 +10,8 @@ from PyQt5.QtWidgets import QApplication
 
 from src.core.utils import (
     BASE_DIR, CONFIG_DIR, LOGS_DIR, LANG_DIR, ASSETS_DIR, LOG_FILE, ENV_PATH,
-    get_lang_from_registry, load_locale, ensure_env_file, acquire_lock, release_lock
+    get_lang_from_registry, load_locale, ensure_env_file, acquire_lock, release_lock,
+    set_autostart_windows
 )
 from src.core.config_manager import ConfigManager
 from src.core.cookie_manager import CookieManager
@@ -44,6 +45,17 @@ logger.debug(f"Config directory: {CONFIG_DIR}")
 logger.debug(f"Logs directory: {LOGS_DIR}")
 
 def main():
+    import argparse
+    import time
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--delay", type=int, default=0, help="Delay startup by N seconds")
+    args, unknown = parser.parse_known_args()
+    
+    if args.delay > 0:
+        logger.info(f"Esperando {args.delay} segundos antes de iniciar...")
+        time.sleep(args.delay)
+
     # 1. Ensure .env and load it
     actual_env_path = ensure_env_file(ENV_PATH)
     try:
@@ -75,6 +87,19 @@ def main():
 
     # 6. Initialize Managers First (moved up so we can read settings)
     config_manager = ConfigManager(CONFIG_DIR / "config_path.txt")
+
+    if config_manager.get_setting("start_with_windows", False):
+        try:
+            import winshell
+            app_name = "GeForceNOWRichPresence"
+            shortcut_path = os.path.join(winshell.startup(), f"{app_name}.lnk")
+            if not os.path.exists(shortcut_path):
+                logger.info("Creando acceso directo de inicio de Windows faltante...")
+                set_autostart_windows(True)
+        except ImportError:
+            logger.debug("winshell no disponible para comprobar acceso directo.")
+        except Exception as e:
+            logger.error(f"Error comprobando acceso directo de inicio de Windows: {e}")
 
     # 5.1 Launch Apps
     if config_manager.get_setting("start_discord_on_launch", False):
@@ -110,7 +135,7 @@ def main():
             presence_manager.update_cookie(cookie)
 
     # Cleanup residues from previous sessions
-    logger.info("Limpiando residuos de sesiones anteriores...")
+    logger.info(" 🧹 Limpiando residuos de sesiones anteriores...")
     presence_manager.close_fake_executable()
 
     # 7. Initialize UI

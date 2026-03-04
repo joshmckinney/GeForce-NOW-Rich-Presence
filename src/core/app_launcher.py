@@ -73,10 +73,30 @@ class AppLauncher:
             if "appSettingsConfig" not in data:
                 data["appSettingsConfig"] = {}
                 
-            if data["appSettingsConfig"].get("discordRpEnabled", False) is True:
-                data["appSettingsConfig"]["discordRpEnabled"] = False
+            app_settings = data["appSettingsConfig"]
+            modified = False
+            
+            if "discordRpEnabled" not in app_settings:
+                modified = True
+            elif app_settings["discordRpEnabled"] is True:
+                modified = True
+                
+            if modified:
+                new_app_settings = {}
+                for k, v in app_settings.items():
+                    if k == "discordRpEnabled":
+                        continue
+                    new_app_settings[k] = v
+                    if k == "clipboardPaste":
+                        new_app_settings["discordRpEnabled"] = False
+                        
+                if "discordRpEnabled" not in new_app_settings:
+                    new_app_settings["discordRpEnabled"] = False
+                    
+                data["appSettingsConfig"] = new_app_settings
+                
                 with open(config_path, "w", encoding="utf-8") as f:
-                    json.dump(data, f, indent=4)
+                    json.dump(data, f, separators=(',', ':'))
                 logger.info("Flag modificado. Operación completada correctamente.")
                 return True, True
             else:

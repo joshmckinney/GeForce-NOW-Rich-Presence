@@ -152,7 +152,7 @@ class UpdateWorker(QThread):
 
     def check_updates(self):
         try:
-            logger.info("Checking for updates...")
+            logger.info("📦 Buscando actualizaciones...")
             response = requests.get(GITHUB_RELEASES_URL, timeout=10)
             response.raise_for_status()
             data = response.json()
@@ -161,7 +161,7 @@ class UpdateWorker(QThread):
             latest_version = parse_version(latest_version_str)
             current_version = parse_version(VERSION)
             
-            logger.info(f"Current version: {VERSION}, Latest version: {latest_version_str}")
+            logger.info(f"📦 Version actual: {VERSION}, Última versión GitHub: {latest_version_str}")
 
             if latest_version > current_version:
                 # Find .exe asset
@@ -174,18 +174,18 @@ class UpdateWorker(QThread):
                 if exe_url:
                     self.check_finished.emit(True, latest_version_str, exe_url, data.get("body", ""))
                 else:
-                    logger.warning("New version found but no .exe asset.")
+                    logger.warning("Nueva versión encontrada pero no se encontró el archivo .exe.")
                     self.check_finished.emit(False, "", "", "")
             else:
                 self.check_finished.emit(False, "", "", "")
 
         except Exception as e:
-            logger.error(f"Error checking for updates: {e}")
+            logger.error(f"Error al buscar actualizaciones: {e}")
             self.error_occurred.emit(str(e))
 
     def download_update(self):
         try:
-            logger.info(f"Downloading update from {self.download_url}")
+            logger.info(f"Descargando actualización desde {self.download_url}")
             response = requests.get(self.download_url, stream=True, timeout=30)
             response.raise_for_status()
 
@@ -208,7 +208,7 @@ class UpdateWorker(QThread):
             self.download_finished.emit(str(installer_path))
 
         except Exception as e:
-            logger.error(f"Error downloading update: {e}")
+            logger.error(f"Error al descargar actualización: {e}")
             self.error_occurred.emit(str(e))
 
 class UpdateDialog(QDialog):

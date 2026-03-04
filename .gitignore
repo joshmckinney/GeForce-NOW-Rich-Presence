@@ -13,3 +13,5 @@ rocket/
 pyinstaller.bat
 instalador.iss
 mejoras_pendientes.txt
+innosetup.txt
+compile.txt

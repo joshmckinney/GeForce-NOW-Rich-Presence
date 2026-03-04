@@ -98,6 +98,7 @@ class SteamScraper:
         """
         Extrae el valor de steam_player_group_size de la tabla HTML
         """
+        group_size = 0
         try:
             # Buscar la fila que contiene 'steam_player_group_size'
             rows = soup.find_all('tr')

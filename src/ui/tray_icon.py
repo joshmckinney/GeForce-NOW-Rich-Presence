@@ -113,11 +113,10 @@ class SystemTrayIcon(QSystemTrayIcon):
         config_menu = self.menu.addMenu(TEXTS.get("tray_config", "Configuración"))
         
         # 1. Iniciar con Windows
-        # TODO: Función implementada, pero carga excesivamente pesada para el sistema
-        #start_win_action = QAction(TEXTS.get("config_start_windows", "Iniciar con Windows"), self.menu, checkable=True)
-        #start_win_action.setChecked(self.config_manager.get_setting("start_with_windows", False))
-        #start_win_action.triggered.connect(self.toggle_start_windows)
-        #config_menu.addAction(start_win_action)
+        start_win_action = QAction(TEXTS.get("config_start_windows", "Iniciar con Windows"), self.menu, checkable=True)
+        start_win_action.setChecked(self.config_manager.get_setting("start_with_windows", False))
+        start_win_action.triggered.connect(self.toggle_start_windows)
+        config_menu.addAction(start_win_action)
 
         # 2. Iniciar GeForce NOW
         start_gfn_action = QAction(TEXTS.get("config_start_gfn", "Iniciar GeForce NOW con la aplicación"), self.menu, checkable=True)
@@ -410,10 +409,11 @@ class SystemTrayIcon(QSystemTrayIcon):
         logger.info("Solicitando cancelación de sincronización...")
         self.pm.cancel_sync()
 
-    def on_sync_progress(self, current, total):
+    def on_sync_progress(self, current, total, updated, eta_str):
         if getattr(self, 'progress', None):
             self.progress.setMaximum(total)
             self.progress.setValue(current)
+            self.progress.setLabelText(f"Sincronizando juegos...\nRevisados: {current}/{total} - Nuevos/Actualizados: {updated}\nTiempo restante: {eta_str}")
 
     def on_sync_finished(self, updated, total):
         if getattr(self, 'progress', None):

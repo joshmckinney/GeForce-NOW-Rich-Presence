@@ -12,8 +12,10 @@ except ImportError:
 import re
 import sys
 from pathlib import Path
+import os
 from typing import Optional, Dict, List
 import threading
+from src.core.app_launcher import AppLauncher
 
 from PyQt5.QtCore import QObject, pyqtSignal, QTimer
 
@@ -41,7 +43,7 @@ class PresenceManager(QObject):
     log_message = pyqtSignal(str, str) # level, message
     log_message = pyqtSignal(str, str) # level, message
     request_match_selection = pyqtSignal(str, list) # game_key, candidates
-    sync_progress = pyqtSignal(int, int) # current, total
+    sync_progress = pyqtSignal(int, int, int, str) # current, total, updated, eta_str
     sync_finished = pyqtSignal(int, int) # updated_count, total_processed
     sync_error = pyqtSignal(str)
     gfn_error_detected = pyqtSignal()
@@ -211,38 +213,95 @@ class PresenceManager(QObject):
             total_games = len(current_games)
             processed = 0
             
+            # Identify games that actually need syncing
+            games_to_process = []
             for game_key, info in current_games.items():
-                if self._cancel_sync_flag:
-                    logger.info("🛑 Sincronización cancelada por el usuario.")
-                    break
-                
-                processed += 1
-                if processed % 5 == 0:
-                    self.sync_progress.emit(processed, total_games)
-
                 if not info.get("client_id") or not info.get("executable_path"):
-                    candidates = self._find_discord_matches(game_key, max_candidates=1)
-                    if candidates:
-                        top = candidates[0]
-                        if top.get("score", 0) >= DISCORD_AUTO_APPLY_THRESHOLD:
-                            # We found a match!
-                            match = top
-                            entry = info.copy()
-                            changed = False
+                    games_to_process.append((game_key, info))
+                else:
+                    processed += 1 # Already done
+            
+            # Update progress with skipping count instantly
+            if processed > 0:
+                 self.sync_progress.emit(processed, total_games, updated_count, "Calculando...")
+                 
+            from concurrent.futures import ThreadPoolExecutor
+            import threading
+            
+            progress_lock = threading.Lock()
+            
+            start_time = time.time()
+            last_emit_time = 0
+            
+            def format_eta(seconds):
+                if seconds < 0: return "..."
+                if seconds > 3600:
+                    return f"{int(seconds // 3600)}h {int((seconds % 3600) // 60)}m"
+                m, s = divmod(int(seconds), 60)
+                return f"{m:02d}:{s:02d}"
+            
+            def process_game(item):
+                game_key, info = item
+                if self._cancel_sync_flag:
+                    return None
+                    
+                changed_info = None
+                candidates = self._find_discord_matches(game_key, max_candidates=1)
+                
+                if candidates:
+                    top = candidates[0]
+                    if top.get("score", 0) >= DISCORD_AUTO_APPLY_THRESHOLD:
+                        # We found a match!
+                        match = top
+                        entry = info.copy()
+                        changed = False
+                        
+                        if match.get("exe") and not entry.get("executable_path"):
+                            entry["executable_path"] = match["exe"]
+                            changed = True
+                        
+                        if match.get("id") and not entry.get("client_id"):
+                            entry["client_id"] = match["id"]
+                            changed = True
+                        
+                        if changed:
+                            changed_info = (game_key, entry)
+                
+                return changed_info
+
+            # Process in parallel
+            with ThreadPoolExecutor(max_workers=min(32, (os.cpu_count() or 1) * 4)) as executor:
+                for result in executor.map(process_game, games_to_process):
+                    if self._cancel_sync_flag:
+                        logger.info("🛑 Sincronización cancelada por el usuario.")
+                        break
+                        
+                    with progress_lock:
+                        processed += 1
+                        if result:
+                            key, val = result
+                            games_to_update[key] = val
+                            updated_count += 1
+                            if updated_count % 10 == 0:
+                                logger.debug(f"Sync progreso: {updated_count} juegos actualizados...")
+                        
+                        current_time = time.time()
+                        
+                        # Throttle to approximately 10 frames per second max, OR last emit, to prevent GUI freezing.
+                        if (current_time - last_emit_time) >= 0.1 or processed == total_games:
+                            # Calculate ETA 
+                            elapsed = current_time - start_time
+                            # To prevent division by zero or unrealistic ETA on first items
+                            if elapsed > 1 and processed > 0:
+                                items_per_sec = processed / elapsed
+                                remaining = total_games - processed
+                                eta = remaining / items_per_sec if items_per_sec > 0 else -1
+                                eta_str = format_eta(eta)
+                            else:
+                                eta_str = "Calculando..."
                             
-                            if match.get("exe") and not entry.get("executable_path"):
-                                entry["executable_path"] = match["exe"]
-                                changed = True
-                            
-                            if match.get("id") and not entry.get("client_id"):
-                                entry["client_id"] = match["id"]
-                                changed = True
-                            
-                            if changed:
-                                games_to_update[game_key] = entry
-                                updated_count += 1
-                                if updated_count % 10 == 0:
-                                    logger.debug(f"Sync progreso: {updated_count} juegos actualizados...")
+                            self.sync_progress.emit(processed, total_games, updated_count, eta_str)
+                            last_emit_time = current_time
 
             if updated_count > 0:
                 # Bulk update
@@ -289,7 +348,11 @@ class PresenceManager(QObject):
                 self._connected_client_id = client_id
                 logger.info(f"✅ Conectado a Discord RPC con client_id={client_id}")
             except Exception as e:
-                logger.error(f"❌ Error conectando a Discord RPC: {e}")
+                if e == "Could not find Discord installed and running on this machine.":
+                    logger.error(f"💨 Relanzando Discord...")
+                    AppLauncher.launch_discord()
+                else:
+                    logger.error(f"❌ Error conectando a Discord RPC: {e}")
                 self.rpc = None
                 self._connected_client_id = None
 
@@ -303,7 +366,7 @@ class PresenceManager(QObject):
             self.forced_game = None
             self.last_game = None
             
-            logger.debug("Calling close_fake_executable from stop_force_game")
+            logger.debug("🧹close_fake_executable desde stop_force_game")
             self.close_fake_executable()
             
             try:
@@ -967,7 +1030,7 @@ class PresenceManager(QObject):
                 if self.rpc: self.rpc.clear()
             except Exception:
                 pass
-            logger.debug("Calling close_fake_executable from check_presence exception handler")
+            logger.debug("🧹close_fake_executable desde check_presence exception handler")
             self.close_fake_executable()
 
     def find_active_game(self) -> Optional[dict]:
@@ -989,7 +1052,7 @@ class PresenceManager(QObject):
                         proc_name = psutil.Process(pid).name().lower()
                     except Exception:
                         continue
-                    if "geforcenow" not in proc_name:
+                    if proc_name != "geforcenow.exe":
                         continue
                     title = win32gui.GetWindowText(hwnd)
                     break
@@ -1144,11 +1207,11 @@ class PresenceManager(QObject):
             for proc in psutil.process_iter(attrs=['name']):
                 name = (proc.info.get('name') or "").lower()
                 if IS_WINDOWS:
-                    if "geforcenow" in name:
+                    if name == "geforcenow.exe":
                         return True
                 elif IS_MACOS:
                     # Verify exact process name on macOS
-                    if "geforcenow" in name: # Likely "GeForceNOW"
+                    if name == "geforcenow": # Likely "GeForceNOW"
                         return True
         except Exception as e:
             logger.debug(f"Error comprobando procesos: {e}")
@@ -1204,7 +1267,7 @@ class PresenceManager(QObject):
             logger.info(f"   OLD: {self.last_game}")
             logger.info(f"   NEW: {current_game}")
             
-            logger.debug(f"Calling close_fake_executable from update_presence (game_changed)")
+            logger.debug(f"🧹close_fake_executable desde update_presence (game_changed)")
             self.close_fake_executable()
             if current_game and current_game.get("executable_path"):
                 self.launch_fake_executable(current_game["executable_path"])
@@ -1449,7 +1512,7 @@ class PresenceManager(QObject):
                 self.rpc.close()
                 time.sleep(0.1)  # Allow loop to close gracefully
                 self._connected_client_id = None
-                logger.debug("Calling close_fake_executable from close")
+                logger.debug("🧹close_fake_executable desde close")
                 self.close_fake_executable()
                 logger.info("🔴 Discord RPC cerrado correctamente.")
             except Exception:
