@@ -28,7 +28,9 @@
 - 🎮 **Automatic game detection** — reads the GeForce NOW Electron window title via GNOME Shell extension D-Bus
 - 🖼️ **Zero-Auth Metadata Pipeline** — queries public Steam and GOG APIs to push live HTTP box-art URLs to Discord natively without developer keys
 - 🌟 **Native Discord Apps Tracking** — dynamically syncs with Discord's 22,000+ app database. Fuzzy matches game strings directly to official Client IDs to natively display the game on your profile.
-- 🚀 **Auto-start support** — systemd user service for background operation on login
+- 🚀 **Auto-start support** — systemd user service for background operation on login (toggleable via UI)
+- ⚙️ **Persistent Configuration** — Polling intervals, startup delays, and language settings are saved and easily editable via the System Tray.
+- 📂 **Quick Access** — Open logs or configuration folders directly from the tray.
 - 🧩 **Multi-compositor support** — GNOME (Wayland), X11 (xprop/xdotool), Hyprland, with fallback chain
 - 🔒 **Single instance** — lock file prevents duplicate processes
 - 🌐 **i18n** — locale detection with language files in `lang/`
@@ -129,9 +131,17 @@ rm -rf ~/.config/geforcenow-presence
 # Run in foreground (useful for debugging)
 ./geforcenow-presence
 
-# With options
-./geforcenow-presence --delay 10    # wait 10s before starting (useful for autostart)
-./geforcenow-presence --interval 5  # poll every 5 seconds (default: 10)
+# With options (CLI flags override persistent settings)
+./geforcenow-presence --delay 10    # wait 10s before starting
+./geforcenow-presence --interval 5  # poll every 5 seconds
+
+# Tray Management
+The System Tray provides easy access to:
+- **Polling Interval**: (5s, 10s, 30s, 60s)
+- **Startup Delay**: (0s, 5s, 10s, 30s)
+- **Auto-start on Login**: Enable/Disable the background service
+- **Language**: Switch between available translations
+- **Open Config Folder**: Quickly access your local settings
 
 # Service management
 make status     # check service status

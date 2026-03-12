@@ -8,7 +8,7 @@ geforcenow-presence/
 ├── Makefile                         # Build, install, uninstall targets
 ├── go.mod                           # Go module (zero external dependencies)
 ├── internal/
-│   ├── config/config.go             # Game database and settings loader
+│   ├── config/config.go             # Persistent settings (Interval, Delay, Auto-start)
 │   ├── detector/detector.go         # Window title detection (multi-method)
 │   ├── detector/extension.js        # GNOME Shell extension (embedded in binary)
 │   ├── detector/metadata.json       # Extension metadata (embedded in binary)

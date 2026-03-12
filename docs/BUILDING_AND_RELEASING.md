@@ -29,8 +29,6 @@ This will:
 
 The generated archive will be located in the `release/` directory.
 
-The generated archive will be located in the `release/` directory.
-
 ## 📦 Generating All Artifacts (`make dist`)
 
 For a complete release, use the `dist` command. This consolidates the source tarball, DEB package, and RPM package into the `release/` folder and generates a collective `SHA256SUMS` file.
@@ -41,6 +39,12 @@ make dist
 ```
 
 This is the recommended command to run before tagging a release on GitHub.
+
+## 🤖 Automated CI/CD
+
+The project uses GitHub Actions for continuous quality assurance:
+*   **Continuous Integration (`ci.yml`)**: Every push to `main` and all Pull Requests trigger a suite of tests including `go vet`, `go test`, and a full `make build` across standard Ubuntu environments.
+*   **Automated Releases (`release.yml`)**: Tagging a release (e.g., `git tag v1.0.0`) automatically triggers a full `make dist` and uploads the resulting tarball, DEB, and RPM packages directly to the GitHub Release page.
 
 ## 🏗️ Installation Methods: Local vs. System
 

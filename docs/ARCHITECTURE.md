@@ -18,7 +18,7 @@
 ## The Pipeline
 
 ### 1. Process Detection
-A local Linux timer loop scans `/proc` every 10 seconds (configurable via `--interval`) looking for a running `geforcenow-electron` background process. 
+A local Linux timer loop scans `/proc` looking for a running `geforcenow-electron` background process. The frequency is configurable (5s - 60s) via the System Tray or `--interval` flag (default: 10s).
 
 ### 2. Window Title Scraping (Local System D-Bus)
 Because Wayland completely isolates applications from reading each other's window titles natively, the application utilizes a tiny generic GNOME Shell extension (`window-title-server@geforcenow-presence`). 
