@@ -15,6 +15,9 @@
   <a href="https://github.com/joshmckinney/geforcenow-presence/releases">
     <img src="https://img.shields.io/github/downloads/joshmckinney/geforcenow-presence/total?style=for-the-badge&color=2962FF&logo=github&label=Downloads" alt="Total Downloads"/>
   </a>
+  <a href="https://github.com/joshmckinney/geforcenow-presence/actions/workflows/ci.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/joshmckinney/geforcenow-presence/ci.yml?branch=main&style=for-the-badge&logo=github&label=Build" alt="Build Status"/>
+  </a>
 </div>
 
 ---
