@@ -28,7 +28,9 @@
 - 🖼️ **Zero-Auth Metadata Pipeline** — queries public Steam and GOG APIs to push live HTTP box-art URLs to Discord natively without developer keys
 - 🌟 **Native Discord Apps Tracking** — dynamically syncs with Discord's 22,000+ app database. Fuzzy matches game strings directly to official Client IDs to natively display the game on your profile.
 - 🚀 **Auto-start support** — systemd user service for background operation on login (toggleable via UI)
-- ⚙️ **Persistent Configuration** — Polling intervals (default 10s), startup delays (default 5s), and language settings are saved and easily editable via the System Tray.
+- ⚙️ **Persistent Configuration** — Polling intervals, startup delays, and language settings are saved and easily editable via the System Tray.
+- 🎨 **Custom Status Colors** — Personalize your tray icon's "Playing", "Idle", and "Error" states via a built-in color picker.
+- 🚀 **Update Checker** — Automatic background checks for new releases on startup + manual check button.
 - 📂 **Quick Access** — Open logs or configuration folders directly from the tray.
 - 🧩 **Multi-compositor support** — GNOME (Wayland), X11 (xprop/xdotool), Hyprland, with fallback chain
 - 🔒 **Single instance** — lock file prevents duplicate processes
@@ -144,6 +146,8 @@ The System Tray provides easy access to:
 - **Delay**: Current startup delay (Click to change to any integer)
 - **Auto-start on Login**: Enable/Disable the background service
 - **Language**: Switch between available translations
+- **Custom Status Colors**: Choose colors for app states via Zenity
+- **Check for Updates**: Manually trigger a version check
 - **Open Config Folder**: Quickly access your local settings
 
 # Service management

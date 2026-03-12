@@ -230,6 +230,11 @@ func getPaths() (string, string) {
 		return userConfigDir, wd
 	}
 
+	// User config check (installed via Makefile to ~/.config/geforcenow-presence/lang)
+	if _, err := os.Stat(filepath.Join(userConfigDir, "lang")); err == nil {
+		return userConfigDir, userConfigDir
+	}
+
 	// System-wide install (/usr/share)
 	systemAssetDir := "/usr/share/geforcenow-presence"
 	if _, err := os.Stat(filepath.Join(systemAssetDir, "lang")); err == nil {
