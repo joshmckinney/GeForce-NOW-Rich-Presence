@@ -52,7 +52,8 @@ func (d *Detector) IsGFNRunning() bool {
 		if err != nil {
 			continue
 		}
-		if strings.Contains(strings.ToLower(string(cmdline)), strings.ToLower(gfnProcessName)) {
+		cmdStr := strings.ToLower(string(cmdline))
+		if strings.Contains(cmdStr, strings.ToLower(gfnProcessName)) && !strings.Contains(cmdStr, "geforcenow-presence") {
 			return true
 		}
 	}
@@ -115,7 +116,7 @@ func cleanTitle(title string) string {
 	// Ignore generic titles
 	lowerClean := strings.ToLower(clean)
 	if lowerClean == "" || lowerClean == "geforce now" || lowerClean == "games" ||
-		lowerClean == "geforce now - games" || lowerClean == "geforcenow" {
+		lowerClean == "geforce now - games" || lowerClean == "geforcenow" || lowerClean == "geforcenow-presence" {
 		return ""
 	}
 
@@ -297,7 +298,7 @@ func (d *Detector) getGFNTitleXprop() string {
 		}
 
 		classStr := strings.ToLower(string(classOut))
-		if !strings.Contains(classStr, "geforce") && !strings.Contains(classStr, "geforcenow") {
+		if (!strings.Contains(classStr, "geforce") && !strings.Contains(classStr, "geforcenow")) || strings.Contains(classStr, "geforcenow-presence") {
 			continue
 		}
 
@@ -336,7 +337,7 @@ func (d *Detector) getGFNTitleXdotool() string {
 			continue
 		}
 		title := strings.TrimSpace(string(nameOut))
-		if title != "" {
+		if title != "" && !strings.Contains(strings.ToLower(title), "geforcenow-presence") {
 			return title
 		}
 	}

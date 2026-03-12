@@ -29,7 +29,8 @@ func IsProcessRunning(nameSubstr string) bool {
 			continue
 		}
 
-		if strings.Contains(strings.ToLower(string(cmdline)), nameL) {
+		cmdlineStr := strings.ToLower(string(cmdline))
+		if strings.Contains(cmdlineStr, nameL) && !strings.Contains(cmdlineStr, "geforcenow-presence") {
 			return true
 		}
 	}
