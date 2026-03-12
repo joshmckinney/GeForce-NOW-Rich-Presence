@@ -1,6 +1,7 @@
 [Unit]
 Description=GeForce NOW Discord Rich Presence
 After=graphical-session.target
+PartOf=graphical-session.target
 
 [Service]
 Type=simple
@@ -8,6 +9,8 @@ ExecStart=/usr/bin/geforcenow-presence --delay 5
 Restart=on-failure
 RestartSec=10
 Environment=XDG_RUNTIME_DIR=/run/user/%U
+Environment=DISPLAY=:0
+Environment=WAYLAND_DISPLAY=wayland-0
 
 [Install]
 WantedBy=default.target
