@@ -31,5 +31,9 @@
     "launching_discord": "🚀 Launching Discord...",
     "lock_exists_running": "Another instance is running",
     "tray_custom_prompt_interval": "Enter polling interval in seconds:",
-    "tray_custom_prompt_delay": "Enter startup delay in seconds:"
+    "tray_custom_prompt_delay": "Enter startup delay in seconds:",
+    "tray_update_available": "New Update Available!",
+    "tray_update_to": "Version %s Available",
+    "tray_check_updates": "Check for Updates",
+    "update_up_to_date": "You are on the latest version!"
 }

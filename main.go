@@ -20,6 +20,7 @@ import (
 	"github.com/joshmckinney/geforcenow-presence/internal/launcher"
 	"github.com/joshmckinney/geforcenow-presence/internal/presence"
 	"github.com/joshmckinney/geforcenow-presence/internal/ui"
+	"github.com/joshmckinney/geforcenow-presence/internal/updater"
 )
 
 const version = "0.1.0-beta"
@@ -136,8 +137,30 @@ func main() {
 				openConfigDir(configDir)
 			case val := <-uiActs.ToggleAutoStart:
 				toggleAutoStart(val)
+			case <-uiActs.UpdateClicked:
+				openURL(updater.GetReleasesURL())
+			case <-uiActs.CheckUpdates:
+				log.Println("🔍 Manual update check requested")
+				newTag, err := updater.CheckForUpdate(version)
+				if err != nil {
+					ui.ShowMessage("Update Check", "Error checking for updates: "+err.Error())
+				} else if newTag != "" {
+					ui.ShowUpdateAvailable(newTag)
+				} else {
+					ui.ShowMessage(i18n.T("tray_title", "GeForce NOW Presence"), i18n.T("update_up_to_date", "You are on the latest version!"))
+				}
 			}
 	}
+	}()
+
+	// Background Update check
+	go func() {
+		// Wait a bit before checking so we don't slow down startup
+		time.Sleep(3 * time.Second)
+		newTag, err := updater.CheckForUpdate(version)
+		if err == nil && newTag != "" {
+			ui.ShowUpdateAvailable(newTag)
+		}
 	}()
 
 	cacheFile := filepath.Join(configDir, "discord_apps_cache.json")
@@ -253,8 +276,12 @@ func restartApp() {
 }
 
 func openConfigDir(path string) {
-	if err := exec.Command("xdg-open", path).Start(); err != nil {
-		log.Printf("❌ Failed to open directory: %v", err)
+	openURL(path)
+}
+
+func openURL(url string) {
+	if err := exec.Command("xdg-open", url).Start(); err != nil {
+		log.Printf("❌ Failed to open URL/Path: %v", err)
 	}
 }
 

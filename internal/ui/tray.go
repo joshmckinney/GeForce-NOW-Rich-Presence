@@ -23,6 +23,8 @@ type Actions struct {
 	SetDelay         chan int
 	OpenConfigDir    chan struct{}
 	ToggleAutoStart  chan bool
+	UpdateClicked    chan struct{}
+	CheckUpdates     chan struct{}
 	QuitChan         chan struct{}
 }
 
@@ -32,6 +34,7 @@ var sysLangDir string
 var mPlaying *systray.MenuItem
 var mInterval *systray.MenuItem
 var mDelay *systray.MenuItem
+var mUpdate *systray.MenuItem
 
 // StartTray initializes and starts the system tray.
 func StartTray(mgr *config.Manager, langDir string) Actions {
@@ -46,6 +49,8 @@ func StartTray(mgr *config.Manager, langDir string) Actions {
 		SetDelay:         make(chan int, 1),
 		OpenConfigDir:    make(chan struct{}, 1),
 		ToggleAutoStart:  make(chan bool, 1),
+		UpdateClicked:    make(chan struct{}, 1),
+		CheckUpdates:     make(chan struct{}, 1),
 		QuitChan:         make(chan struct{}),
 	}
 	go systray.Run(onReady, onExit)
@@ -96,6 +101,9 @@ func onReady() {
 	systray.SetTitle(i18n.T("tray_title", "GeForce NOW Presence"))
 	systray.SetTooltip(i18n.T("tray_title", "GeForce NOW Presence"))
 
+	mUpdate = systray.AddMenuItem(i18n.T("tray_update_available", "Update Available!"), "")
+	mUpdate.Hide()
+
 	mPlaying = systray.AddMenuItem(i18n.T("status_initializing", "Status: Initializing..."), "")
 	mPlaying.Disable()
 	// Always keep mPlaying visible now so the user can see what's going on
@@ -140,6 +148,7 @@ func onReady() {
 
 	mAutoStart := mConfig.AddSubMenuItemCheckbox(i18n.T("tray_auto_start", "Auto-start on Login"), "", isAutoStartEnabled())
 
+	mCheck := systray.AddMenuItem(i18n.T("tray_check_updates", "Check for Updates"), "")
 	systray.AddSeparator()
 	mExit := systray.AddMenuItem(i18n.T("tray_exit", "Exit"), "")
 
@@ -193,12 +202,30 @@ func onReady() {
 					mAutoStart.Uncheck()
 				}
 				acts.ToggleAutoStart <- val
+			case <-mUpdate.ClickedCh:
+				acts.UpdateClicked <- struct{}{}
+			case <-mCheck.ClickedCh:
+				acts.CheckUpdates <- struct{}{}
 			case <-mExit.ClickedCh:
 				close(acts.QuitChan)
 				return
 			}
 		}
 	}()
+}
+
+// ShowUpdateAvailable makes the update menu item visible with a specific tag name.
+func ShowUpdateAvailable(tagName string) {
+	if mUpdate != nil {
+		mUpdate.SetTitle(fmt.Sprintf(i18n.T("tray_update_to", "Update Available: %s"), tagName))
+		mUpdate.Show()
+	}
+}
+
+// ShowMessage shows a desktop notification/dialog with a message.
+func ShowMessage(title, msg string) {
+	// Use Zenity for simple info dialog
+	exec.Command("zenity", "--info", "--title", title, "--text", msg, "--no-wrap").Run()
 }
 
 func onExit() {
