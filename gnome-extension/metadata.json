@@ -1,0 +1,8 @@
+{
+    "uuid": "window-title-server@geforcenow-presence",
+    "name": "Window Title Server",
+    "description": "Exposes window titles via D-Bus for GeForce NOW Rich Presence",
+    "shell-version": ["45", "46", "47", "48", "49"],
+    "version": 1,
+    "url": ""
+}

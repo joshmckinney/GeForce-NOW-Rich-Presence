@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=GeForce NOW Rich Presence
+Comment=Discord Rich Presence for GeForce NOW
+Exec=/usr/bin/geforcenow-presence
+Terminal=false
+Type=Application
+Categories=Game;Utility;
+X-GNOME-Autostart-enabled=true

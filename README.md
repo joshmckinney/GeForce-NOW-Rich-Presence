@@ -1,126 +1,172 @@
 <div align="center">
-  <img src="assets/asset1.jpg" alt="GeForce NOW Rich Presence Banner" width="100%" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" />
-  <br/>
-  <h1>🎮 GeForce NOW Rich Presence for Discord</h1>
+  <h1>🎮 GeForce NOW Rich Presence for Discord — Linux</h1>
   <p>
-    <strong>Show your real game on Discord while playing on GeForce NOW — automatically and beautifully.</strong>
+    <strong>Show your real game on Discord while playing on GeForce NOW — automatically, on Linux.</strong>
   </p>
-  
-  [🇪🇸 Leer en Español](./README.es.md) • [📥 Download Latest](#-installation) • [💬 Support](#-about--support)
-  
-  <br/>
+  <p>
+    A compiled Go binary that monitors the <a href="https://github.com/hmlendea/gfn-electron">GeForce NOW Electron</a> Flatpak,
+    detects the game you're playing via the window title, and updates your Discord Rich Presence
+    with the correct game name, artwork, and elapsed time.
+  </p>
 
-  <a href="https://github.com/KarmaDevz/discord-rich-presence-for-geforcenow/releases/latest">
-    <img src="https://img.shields.io/github/v/release/KarmaDevz/GeForce-NOW-Rich-Presence?style=for-the-badge&color=00C853&logo=github&label=Latest%20Release" alt="Latest Release"/>
+  <a href="https://github.com/joshmckinney/geforcenow-presence/releases/latest">
+    <img src="https://img.shields.io/github/v/release/joshmckinney/geforcenow-presence?style=for-the-badge&color=00C853&logo=github&label=Latest%20Release" alt="Latest Release"/>
   </a>
-  <a href="https://github.com/KarmaDevz/GeForce-NOW-Rich-Presence/releases">
-    <img src="https://img.shields.io/github/downloads/KarmaDevz/GeForce-NOW-Rich-Presence/total?style=for-the-badge&color=2962FF&logo=github&label=Downloads" alt="Total Downloads"/>
+  <a href="https://github.com/joshmckinney/geforcenow-presence/releases">
+    <img src="https://img.shields.io/github/downloads/joshmckinney/geforcenow-presence/total?style=for-the-badge&color=2962FF&logo=github&label=Downloads" alt="Total Downloads"/>
   </a>
-  
 </div>
-
----
-
-## 🕹️ What is this?
-
-**GeForce NOW Rich Presence for Discord** lets you display the **actual game you're playing on GeForce NOW** directly on your Discord profile. No more vague "Playing GeForce NOW" statuses! 
-
-Now you can show off the **real title, game art, and custom status** in real time. Perfect for streamers, gamers, and anyone who wants their Discord presence to truly reflect their gaming sessions. 🎮💚
 
 ---
 
 ## ✨ Features
 
-- ✅ **Automatic Detection**: Instantly recognizes the game you're running on GeForce NOW.
-- 🖼️ **Rich Game Art**: Displays real game names and high-quality images on Discord.
-- 🖱️ **System Tray Menu**: Easily force a game, open GeForce NOW, or exit from the Windows taskbar.
-- ⚡ **Plug & Play**: Works immediately out of the box — **no Python, no setup, no configuration**.
-- 📦 **Simple Installation**: Lightweight installer built with Inno Setup.
-- 💻 **Perfect Compatibility**: Fully compatible with Windows and Discord Desktop.
+- 🐧 **Native Linux support** — compiled Go binary, zero runtime dependencies
+- 🎮 **Automatic game detection** — reads the GeForce NOW Electron window title via GNOME Shell extension D-Bus
+- 🖼️ **Zero-Auth Metadata Pipeline** — queries public Steam and GOG APIs to push live HTTP box-art URLs to Discord natively without developer keys
+- 🌟 **Native Discord Apps Tracking** — dynamically syncs with Discord's 22,000+ app database. Fuzzy matches game strings directly to official Client IDs to natively display the game on your profile.
+- 🚀 **Auto-start support** — systemd user service for background operation on login
+- 🧩 **Multi-compositor support** — GNOME (Wayland), X11 (xprop/xdotool), Hyprland, with fallback chain
+- 🔒 **Single instance** — lock file prevents duplicate processes
+- 🌐 **i18n** — locale detection with language files in `lang/`
 
 ---
 
-## � Installation
+## 📋 Requirements
 
-Get up and running in less than a minute!
+| Requirement | Details |
+|:---|:---|
+| **OS** | Linux (tested on Fedora 43, should work on any distro with GNOME 45+) |
+| **GeForce NOW** | [GFN Electron Flatpak](https://github.com/hmlendea/gfn-electron) (`io.github.hmlendea.geforcenow-electron`) |
+| **Discord** | Native install (RPM/DEB) or Flatpak |
+| **Go** | 1.21+ (build only — not needed to run the binary) |
+| **Build Dependencies** | `libayatana-appindicator3-dev` (Debian/Ubuntu) or `libayatana-appindicator-gtk3-devel` (Fedora/RHEL)<br>`libgtk-3-dev` (Debian/Ubuntu) or `gtk3-devel` (Fedora/RHEL) |
+| **Desktop** | GNOME on Wayland (primary), X11, Hyprland (experimental) |
 
-1. Download the latest installer from the [Releases Page](https://github.com/KarmaDevz/discord-rich-presence-for-geforcenow/releases/latest).
-2. Run the `.exe` installer and follow the simple steps.
-3. Open the app — it will automatically run in the background.
-4. Launch a game on GeForce NOW and watch your Discord Rich Presence update automatically! 😎
-
----
-
-## 🧠 How it Works
-
-The application runs quietly and efficiently in the background:
-1. **Monitors** GeForce NOW activity.
-2. **Matches** the launched game against a robust built-in game list.
-3. **Pushes** the accurate Rich Presence data to your Discord client.
-4. **Maintains** the status as long as you're playing.
-
-*It’s 100% automatic — you literally don't have to configure anything.*
+> **Note:** Running GeForce NOW via Chrome/Edge browser is **not currently supported** — only the Electron Flatpak app. Browser support could be added by detecting the browser window title similarly.
 
 ---
 
-## ⚙️ Tray Icon Options
+## 🚀 Quick Start
 
-Access powerful features directly from your Windows system tray (bottom-right corner):
+```bash
+# Clone and build
+git clone https://github.com/joshmckinney/geforcenow-presence.git
+cd geforcenow-presence
+make build
 
-| Option | Description |
-| :--- | :--- |
-| 🎮 **Force Game** | Manually override and choose a specific game to display. |
-| ✅ **Get Steam Cookie**| Extract your Steam cookie to show deeper Steam Rich Presence. |
-| 🚀 **Open GeForce NOW**| Quickly launch the NVIDIA GeForce NOW app. |
-| 📊 **Sync Games** | Refresh and update the internal game recognition list. |
-| 👥 **Set Max party size**| Customize your displayed maximum party size. |
-| 📝 **Open Logs** | Access troubleshooting logs easily. |
-| ❌ **Exit** | Close the application completely. |
+# Run directly (development mode — uses config/ in the repo)
+./geforcenow-presence
 
----
+# Install system-wide for the current user (installs to ~/.local/bin)
+make install
+```
 
-## 📸 In Action
-
-<div align="center">
-  <img src="assets/instructions.png" width="90%" alt="Discord Rich Presence Instructions" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);"/>
-</div>
+After the first run, **log out and back in** to activate the GNOME Shell extension.
 
 ---
 
-## 🧩 FAQ
+## 📥 Installation (`make install`)
 
-**Q: Do I need Python or any dependencies installed?**  
-A: Nope! Everything is fully bundled in the executable. Just install and run.
+`make install` sets up everything needed for production use:
 
-**Q: Does it work with Steam or Epic Games?**  
-A: Yes! It detects games streamed through GeForce NOW, regardless of the underlying storefront platform.
+| Component | Location | Purpose |
+|:---|:---|:---|
+| **Binary** | `~/.local/bin/geforcenow-presence` | The compiled Go executable |
+| **Config** | `~/.config/geforcenow-presence/` | `app_settings.json` and local cache files, `lang/` |
+| **GNOME Extension** | `~/.local/share/gnome-shell/extensions/window-title-server@geforcenow-presence/` | Reads Wayland-native window titles via D-Bus |
+| **Systemd Service** | `~/.config/systemd/user/geforcenow-presence.service` | Runs the binary as a background daemon on login |
+| **Desktop Entry** | `~/.local/share/applications/geforcenow-presence.desktop` | Shows in application launcher |
 
-**Q: Is it safe to use?**  
-A: Absolutely. It's 100% safe. No login credentials or account information are ever required.
+After installing, enable auto-start:
+
+```bash
+# Start now + enable on login
+make enable
+# or equivalently:
+systemctl --user enable --now geforcenow-presence
+```
+
+### First-Time Setup
+
+On GNOME Wayland, the GNOME Shell extension needs a session restart to load:
+
+1. Run `make install`
+2. **Log out and back in** (or restart GNOME Shell)
+3. Run `make enable`
+4. Launch a game on GeForce NOW — your Discord status will update automatically
 
 ---
 
-## 💬 About & Support
+## 🗑️ Uninstalling (`make uninstall`)
 
-This project was passionately created by [**KarmaDevz**](https://github.com/KarmaDevz) to make the **GeForce NOW + Discord** integration as seamless as possible.
+```bash
+make uninstall
+```
 
-⭐️ **Love the project?** Please consider giving this repository a star! It helps a lot!
+This cleanly removes:
+- ✅ Stops and disables the systemd service
+- ✅ Removes the binary from `~/.local/bin/`
+- ✅ Removes the systemd service file
+- ✅ Removes the desktop entry
+- ✅ Removes the GNOME Shell extension
+- ✅ Reloads systemd daemon
 
-<div align="center">
-  <a href="https://github.com/KarmaDevz/discord-rich-presence-for-geforcenow/releases/latest">
-    <img src="https://img.shields.io/badge/Download%20Now%20➡️-1B5E20?style=for-the-badge&logo=nvidia&logoColor=white" alt="Download now"/>
-  </a>
-  <a href="https://paypal.me/KarmaDevz" target="_blank">
-    <img src="https://img.shields.io/badge/💖%20Sponsor%20this%20Project-0070ba?style=for-the-badge&logo=paypal&logoColor=white" alt="Paypal Donations">
-  </a>
-</div>
+Config files at `~/.config/geforcenow-presence/` are **preserved**. To remove those too:
 
-<br/>
+```bash
+rm -rf ~/.config/geforcenow-presence
+```
 
-<div align="center">
-  <h3>🆘 Need Support?</h3>
-  <p>Join the official <strong>GeForce NOW by Digevo</strong> server to get help from the community!</p>
-  <a href="https://discord.gg/geforce-now-by-digevo-1412524071878525050">
-    <img src="https://img.shields.io/badge/Join%20Discord%20Server-2962FF?style=for-the-badge&logo=discord&logoColor=white" alt="GeForce NOW by Digevo"/>
-  </a>
-</div>
+---
+
+## ⚙️ Usage
+
+```bash
+# Run in foreground (useful for debugging)
+./geforcenow-presence
+
+# With options
+./geforcenow-presence --delay 10    # wait 10s before starting (useful for autostart)
+./geforcenow-presence --interval 5  # poll every 5 seconds (default: 10)
+
+# Service management
+make status     # check service status
+make restart    # restart the service
+make disable    # stop and disable auto-start
+```
+
+---
+
+## 📚 Documentation
+
+Detailed technical information for developers and advanced users has been moved to our `docs/` directory:
+
+- [**Architecture & Design**](docs/ARCHITECTURE.md) - Explains the D-Bus flow, Zero-Auth metadata pipeline, and Discord IPC mechanisms.
+- [**Building and Releasing**](docs/BUILDING_AND_RELEASING.md) - Explains how to compile from source, generate generic Linux `.tar.gz` distribution artifacts, and build `.deb`/`.rpm` packages.
+- [**Extending & Modifying**](docs/CONTRIBUTING.md) - Displays the project source tree and explains how to add support for web browsers, new Wayland compositors, and custom game overrides.
+
+---
+
+## 🤝 Support & Contributing
+
+If you encounter issues or have feature requests for this Linux Go rewrite, please open an issue on [the GitHub repository](https://github.com/joshmckinney/geforcenow-presence/issues).
+
+Contributions are welcome! Areas where help is appreciated:
+
+- 🖥️ **More compositors** — Sway, KDE Plasma (KWin), River, etc.
+- 🧪 **Testing** — on different distros and desktop environments
+
+---
+
+## 📜 License & Credits
+
+This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
+
+This is a Linux fork of the original [GeForce NOW Rich Presence](https://github.com/KarmaDevz/GeForce-NOW-Rich-Presence) by [KarmaDevz](https://github.com/KarmaDevz), completely rewritten from Python to Go for native Linux/Wayland support by [Josh McKinney](https://github.com/joshmckinney). 
+
+---
+
+## ⚠️ Disclaimer
+
+This software is **not affiliated with** NVIDIA, GeForce NOW, Discord, or Valve. All product names and logos are property of their respective owners. This application interacts with Discord's Rich Presence IPC API — use at your own discretion. See [LICENSE](LICENSE) for full terms.

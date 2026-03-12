@@ -1,17 +1,14 @@
-.env
-.venv*
-__pycache__/
-*.pyc
-config/config_path.txt
+# Go binaries
+geforcenow-presence
+GeForce-NOW-Rich-Presence
+
+# Logs
 *.log
-*.spec
-dist/
-build/
-scripts/
-pagina/
-rocket/
-pyinstaller.bat
-instalador.iss
-mejoras_pendientes.txt
-innosetup.txt
-compile.txt
+
+# Config
+config/config_path.txt
+.env
+
+# IDE
+.idea/
+.vscode/
