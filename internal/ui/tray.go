@@ -36,11 +36,13 @@ var mPlaying *systray.MenuItem
 var mInterval *systray.MenuItem
 var mDelay *systray.MenuItem
 var mUpdate *systray.MenuItem
+var appVersion string
 
 // StartTray initializes and starts the system tray.
-func StartTray(mgr *config.Manager, langDir string) Actions {
+func StartTray(mgr *config.Manager, langDir, version string) Actions {
 	configMgr = mgr
 	sysLangDir = langDir
+	appVersion = version
 	acts = Actions{
 		OverrideChan:     make(chan string, 1),
 		ToggleConfigGFN:  make(chan bool, 1),
@@ -157,6 +159,8 @@ func onReady() {
 
 	mCheck := systray.AddMenuItem(i18n.T("tray_check_updates", "Check for Updates"), "")
 	systray.AddSeparator()
+	mVersion := systray.AddMenuItem("v"+appVersion, "")
+	mVersion.Disable()
 	mExit := systray.AddMenuItem(i18n.T("tray_exit", "Exit"), "")
 
 	go func() {

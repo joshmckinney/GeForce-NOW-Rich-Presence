@@ -23,7 +23,7 @@ import (
 	"github.com/joshmckinney/geforcenow-presence/internal/updater"
 )
 
-const version = "0.1.0-beta"
+var version = "dev"
 
 func main() {
 	delay := flag.Int("delay", 0, "Delay startup by N seconds")
@@ -96,7 +96,7 @@ func main() {
 		log.Printf("⚠️ DBus service could not start: %v", err)
 	}
 
-	uiActs := ui.StartTray(configMgr, langDir)
+	uiActs := ui.StartTray(configMgr, langDir, version)
 	defer ui.QuitTray()
 
 	globalOverrideChan := make(chan string, 10)

@@ -1,6 +1,7 @@
 BINARY      = geforcenow-presence
 MODULE      = github.com/joshmckinney/geforcenow-presence
-VERSION     = 0.1.0-beta
+VERSION     ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo "0.1.0-beta")
+LDFLAGS     = -ldflags="-s -w -X main.version=$(VERSION)"
 
 PREFIX      ?= $(HOME)/.local
 BINDIR      = $(PREFIX)/bin
@@ -15,7 +16,7 @@ DESKTOPDIR  = $(HOME)/.local/share/applications
 all: build
 
 build:
-	CGO_CFLAGS="-w" go build -ldflags="-s -w" -o $(BINARY) .
+	CGO_CFLAGS="-w" go build -ldflags="-s -w -X main.version=$(VERSION)" -o $(BINARY) .
 
 clean:
 	rm -f $(BINARY)
