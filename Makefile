@@ -135,7 +135,7 @@ release: build
 	cp README.md LICENSE Makefile release/$(BINARY)-$(VERSION)/
 	cd release && tar -czvf $(BINARY)-linux-amd64-$(VERSION).tar.gz $(BINARY)-$(VERSION)/
 	@echo "── Generating Checksums ──"
-	cd release && sha256sum $(BINARY)-linux-amd64-v$(VERSION).tar.gz > SHA256SUMS
+	cd release && sha256sum $(BINARY)-linux-amd64-$(VERSION).tar.gz > SHA256SUMS
 	@echo "✅ Release archive and checksums created in release/"
 
 dist: release package
