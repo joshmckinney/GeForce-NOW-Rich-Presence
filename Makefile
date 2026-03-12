@@ -161,10 +161,12 @@ $(NFPM_BIN):
 
 deb: build $(NFPM_BIN)
 	@echo "── Building DEB package ──"
+	@mkdir -p release
 	VERSION=$(VERSION) $(NFPM_BIN) pkg --packager deb --target release/
 
 rpm: build $(NFPM_BIN)
 	@echo "── Building RPM package ──"
+	@mkdir -p release
 	VERSION=$(VERSION) $(NFPM_BIN) pkg --packager rpm --target release/
 
 package: deb rpm
