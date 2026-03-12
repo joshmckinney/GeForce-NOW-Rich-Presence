@@ -1,6 +1,6 @@
 module github.com/joshmckinney/geforcenow-presence
 
-go 1.25.7
+go 1.25.0
 
 require (
 	github.com/getlantern/systray v1.2.2
