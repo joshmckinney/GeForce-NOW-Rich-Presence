@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"fmt"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -16,6 +17,10 @@ type Actions struct {
 	ToggleConfigGFN  chan bool
 	ToggleConfigDisc chan bool
 	ChangeLanguage   chan string
+	SetInterval      chan int
+	SetDelay         chan int
+	OpenConfigDir    chan struct{}
+	ToggleAutoStart  chan bool
 	QuitChan         chan struct{}
 }
 
@@ -23,6 +28,8 @@ var acts Actions
 var configMgr *config.Manager
 var sysLangDir string
 var mPlaying *systray.MenuItem
+var mIntervalItems map[int]*systray.MenuItem
+var mDelayItems map[int]*systray.MenuItem
 
 // StartTray initializes and starts the system tray.
 func StartTray(mgr *config.Manager, langDir string) Actions {
@@ -33,6 +40,10 @@ func StartTray(mgr *config.Manager, langDir string) Actions {
 		ToggleConfigGFN:  make(chan bool, 1),
 		ToggleConfigDisc: make(chan bool, 1),
 		ChangeLanguage:   make(chan string, 1),
+		SetInterval:      make(chan int, 1),
+		SetDelay:         make(chan int, 1),
+		OpenConfigDir:    make(chan struct{}, 1),
+		ToggleAutoStart:  make(chan bool, 1),
 		QuitChan:         make(chan struct{}),
 	}
 	go systray.Run(onReady, onExit)
@@ -112,6 +123,38 @@ func onReady() {
 	mStartGFN := mConfig.AddSubMenuItemCheckbox(i18n.T("config_start_gfn", "Start GeForce NOW on launch"), "", configMgr.GetSettings().StartGFNOnLaunch)
 	mStartDisc := mConfig.AddSubMenuItemCheckbox(i18n.T("config_start_discord", "Start Discord on launch"), "", configMgr.GetSettings().StartDiscordOnLaunch)
 
+	mInterval := mConfig.AddSubMenuItem(i18n.T("tray_polling_interval", "Polling Interval"), "")
+	mIntervalItems = make(map[int]*systray.MenuItem)
+	intervals := []int{5, 10, 30, 60}
+	currInterval := configMgr.GetSettings().PollingInterval
+	for _, v := range intervals {
+		item := mInterval.AddSubMenuItemCheckbox(fmt.Sprintf("%ds", v), "", currInterval == v)
+		mIntervalItems[v] = item
+		go func(menuItem *systray.MenuItem, val int) {
+			for range menuItem.ClickedCh {
+				acts.SetInterval <- val
+			}
+		}(item, v)
+	}
+
+	mDelayItems = make(map[int]*systray.MenuItem)
+	mDelay := mConfig.AddSubMenuItem(i18n.T("tray_startup_delay", "Startup Delay"), "")
+	delays := []int{0, 5, 10, 30}
+	currDelay := configMgr.GetSettings().StartupDelay
+	for _, v := range delays {
+		item := mDelay.AddSubMenuItemCheckbox(fmt.Sprintf("%ds", v), "", currDelay == v)
+		mDelayItems[v] = item
+		go func(menuItem *systray.MenuItem, val int) {
+			for range menuItem.ClickedCh {
+				acts.SetDelay <- val
+			}
+		}(item, v)
+	}
+
+	mOpenConfig := mConfig.AddSubMenuItem(i18n.T("tray_open_config_dir", "Open Configuration Folder"), "")
+
+	mAutoStart := mConfig.AddSubMenuItemCheckbox(i18n.T("tray_auto_start", "Auto-start on Login"), "", isAutoStartEnabled())
+
 	systray.AddSeparator()
 	mExit := systray.AddMenuItem(i18n.T("tray_exit", "Exit"), "")
 
@@ -143,6 +186,16 @@ func onReady() {
 					mStartDisc.Uncheck()
 				}
 				acts.ToggleConfigDisc <- val
+			case <-mOpenConfig.ClickedCh:
+				acts.OpenConfigDir <- struct{}{}
+			case <-mAutoStart.ClickedCh:
+				val := !mAutoStart.Checked()
+				if val {
+					mAutoStart.Check()
+				} else {
+					mAutoStart.Uncheck()
+				}
+				acts.ToggleAutoStart <- val
 			case <-mExit.ClickedCh:
 				close(acts.QuitChan)
 				return
@@ -153,6 +206,34 @@ func onReady() {
 
 func onExit() {
 	// Clean up if needed
+}
+
+// UpdateIntervalItems updates the checked state for the interval submenu.
+func UpdateIntervalItems(current int) {
+	for val, item := range mIntervalItems {
+		if val == current {
+			item.Check()
+		} else {
+			item.Uncheck()
+		}
+	}
+}
+
+// UpdateDelayItems updates the checked state for the delay submenu.
+func UpdateDelayItems(current int) {
+	for val, item := range mDelayItems {
+		if val == current {
+			item.Check()
+		} else {
+			item.Uncheck()
+		}
+	}
+}
+
+func isAutoStartEnabled() bool {
+	cmd := exec.Command("systemctl", "--user", "is-enabled", "geforcenow-presence")
+	err := cmd.Run()
+	return err == nil
 }
 
 func promptForString(prompt string) string {

@@ -13,6 +13,8 @@ type AppSettings struct {
 	Language             string `json:"language"`
 	StartGFNOnLaunch     bool   `json:"start_gfn_on_launch"`
 	StartDiscordOnLaunch bool   `json:"start_discord_on_launch"`
+	PollingInterval      int    `json:"polling_interval"`
+	StartupDelay         int    `json:"startup_delay"`
 }
 
 // Manager handles loading and saving configuration.
@@ -32,6 +34,8 @@ func NewManager(configDir string) *Manager {
 			Language:             "",
 			StartGFNOnLaunch:     false,
 			StartDiscordOnLaunch: false,
+			PollingInterval:      10,
+			StartupDelay:         0,
 		},
 	}
 	m.load()

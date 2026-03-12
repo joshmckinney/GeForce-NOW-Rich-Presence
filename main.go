@@ -55,10 +55,7 @@ func main() {
 
 	log.Printf("GeForce NOW Rich Presence v%s (Linux/Go)", version)
 
-	if *delay > 0 {
-		log.Printf("⏳ Waiting %d seconds before starting...", *delay)
-		time.Sleep(time.Duration(*delay) * time.Second)
-	}
+	log.Printf("GeForce NOW Rich Presence v%s (Linux/Go)", version)
 
 	lockFile := filepath.Join(os.TempDir(), "geforce_presence.lock")
 	if !acquireLock(lockFile) {
@@ -73,6 +70,14 @@ func main() {
 	}
 	configMgr := config.NewManager(configDir)
 	settings := configMgr.GetSettings()
+
+	if *delay == 0 {
+		*delay = settings.StartupDelay
+	}
+	if *delay > 0 {
+		log.Printf("⏳ Waiting %d seconds before starting...", *delay)
+		time.Sleep(time.Duration(*delay) * time.Second)
+	}
 
 	langDir := filepath.Join(baseDir, "lang")
 	lang := i18n.DetectLanguage(settings.Language)
@@ -119,6 +124,22 @@ func main() {
 				configMgr.SetSettings(s)
 				log.Printf("🌐 Language changed to %s. Restarting...", lang)
 				restartApp()
+			case val := <-uiActs.SetInterval:
+				s := configMgr.GetSettings()
+				s.PollingInterval = val
+				configMgr.SetSettings(s)
+				ui.UpdateIntervalItems(val)
+				log.Printf("⏱️ Polling interval set to %ds", val)
+			case val := <-uiActs.SetDelay:
+				s := configMgr.GetSettings()
+				s.StartupDelay = val
+				configMgr.SetSettings(s)
+				ui.UpdateDelayItems(val)
+				log.Printf("⏳ Startup delay set to %ds", val)
+			case <-uiActs.OpenConfigDir:
+				openConfigDir(configDir)
+			case val := <-uiActs.ToggleAutoStart:
+				toggleAutoStart(val)
 			}
 	}
 	}()
@@ -126,7 +147,11 @@ func main() {
 	cacheFile := filepath.Join(configDir, "discord_apps_cache.json")
 	appsCache := discord.NewAppsCache(cacheFile)
 
-	pollInterval := time.Duration(*interval) * time.Second
+	pInterval := *interval
+	if pInterval == 10 && settings.PollingInterval != 0 {
+		pInterval = settings.PollingInterval
+	}
+	pollInterval := time.Duration(pInterval) * time.Second
 	pm := presence.New(configMgr, det, appsCache, pollInterval)
 
 	stop := make(chan struct{})
@@ -219,4 +244,21 @@ func restartApp() {
 	exe, _ := os.Executable()
 	exec.Command(exe).Start()
 	os.Exit(0)
+}
+
+func openConfigDir(path string) {
+	exec.Command("xdg-open", path).Start()
+}
+
+func toggleAutoStart(enable bool) {
+	action := "disable"
+	if enable {
+		action = "enable"
+	}
+	cmd := exec.Command("systemctl", "--user", action, "geforcenow-presence")
+	if err := cmd.Run(); err != nil {
+		log.Printf("❌ Failed to %s auto-start: %v", action, err)
+	} else {
+		log.Printf("✅ Auto-start %sd", action)
+	}
 }
