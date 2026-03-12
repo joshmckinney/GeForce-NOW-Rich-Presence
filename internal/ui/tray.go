@@ -2,6 +2,7 @@ package ui
 
 import (
 	"fmt"
+	"log"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -255,5 +256,7 @@ func openLogs() {
 		return
 	}
 	logFile := filepath.Join(configMgr.GetConfigDir(), "logs", "geforce_presence.log")
-	exec.Command("xdg-open", logFile).Start()
+	if err := exec.Command("xdg-open", logFile).Start(); err != nil {
+		log.Printf("❌ Failed to open log file: %v", err)
+	}
 }

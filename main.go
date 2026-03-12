@@ -32,7 +32,9 @@ func main() {
 	baseDir := getBaseDir()
 
 	logDir := filepath.Join(baseDir, "logs")
-	os.MkdirAll(logDir, 0755)
+	if err := os.MkdirAll(logDir, 0755); err != nil {
+		fmt.Fprintf(os.Stderr, "Error creating log directory: %v\n", err)
+	}
 
 	logFile, err := os.OpenFile(
 		filepath.Join(logDir, "geforce_presence.log"),
@@ -228,7 +230,7 @@ type multiWriter struct {
 
 func (mw *multiWriter) Write(p []byte) (int, error) {
 	for _, w := range mw.writers {
-		w.w.Write(p)
+		_, _ = w.w.Write(p)
 	}
 	return len(p), nil
 }
@@ -240,12 +242,16 @@ func restartApp() {
 	}
 
 	exe, _ := os.Executable()
-	exec.Command(exe).Start()
+	if err := exec.Command(exe).Start(); err != nil {
+		log.Printf("❌ Failed to start process: %v", err)
+	}
 	os.Exit(0)
 }
 
 func openConfigDir(path string) {
-	exec.Command("xdg-open", path).Start()
+	if err := exec.Command("xdg-open", path).Start(); err != nil {
+		log.Printf("❌ Failed to open directory: %v", err)
+	}
 }
 
 func toggleAutoStart(enable bool) {

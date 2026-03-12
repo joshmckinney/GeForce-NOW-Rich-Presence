@@ -193,7 +193,10 @@ func (d *Detector) ensureExtension() {
 
 	if !installed {
 		log.Println("📦 Installing GNOME Shell extension for window title detection...")
-		os.MkdirAll(extDir, 0755)
+		if err := os.MkdirAll(extDir, 0755); err != nil {
+			log.Printf("❌ Failed to create extension directory: %v", err)
+			return
+		}
 
 		// Copy embedded files
 		for _, name := range []string{"extension.js", "metadata.json"} {
@@ -218,7 +221,7 @@ func (d *Detector) ensureExtension() {
 	} else {
 		// Make sure it's enabled
 		cmd := exec.Command("gnome-extensions", "enable", extensionUUID)
-		cmd.CombinedOutput() // best effort
+		_, _ = cmd.CombinedOutput() // best effort
 	}
 
 	// Test if the extension's D-Bus service is available right now

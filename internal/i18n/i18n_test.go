@@ -54,8 +54,12 @@ func TestLoadLocale(t *testing.T) {
 	enData := `{"hello": "hello", "_language_name": "English"}`
 	esData := `{"hello": "hola", "_language_name": "Español"}`
 
-	os.WriteFile(filepath.Join(tmpDir, "en.json"), []byte(enData), 0644)
-	os.WriteFile(filepath.Join(tmpDir, "es.json"), []byte(esData), 0644)
+	if err := os.WriteFile(filepath.Join(tmpDir, "en.json"), []byte(enData), 0644); err != nil {
+		t.Fatalf("Failed to write mock config: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(tmpDir, "es.json"), []byte(esData), 0644); err != nil {
+		t.Fatalf("Failed to write mock config: %v", err)
+	}
 
 	LoadLocale(tmpDir, "es")
 	if T("hello", "") != "hola" {
@@ -76,7 +80,9 @@ func TestGetAvailableLanguages(t *testing.T) {
 	defer os.RemoveAll(tmpDir)
 
 	enData := `{"_language_name": "English"}`
-	os.WriteFile(filepath.Join(tmpDir, "en.json"), []byte(enData), 0644)
+	if err := os.WriteFile(filepath.Join(tmpDir, "en.json"), []byte(enData), 0644); err != nil {
+		t.Fatalf("Failed to write mock config: %v", err)
+	}
 	
 	langNoName := `{"key": "value"}`
 	os.WriteFile(filepath.Join(tmpDir, "de.json"), []byte(langNoName), 0644)

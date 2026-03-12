@@ -100,9 +100,9 @@ func (r *RPC) SetActivity(activity *Activity) error {
 	}
 
 	// Read response (but don't block forever)
-	r.conn.SetReadDeadline(time.Now().Add(5 * time.Second))
+	_ = r.conn.SetReadDeadline(time.Now().Add(5 * time.Second))
 	_, _, err := r.recv()
-	r.conn.SetReadDeadline(time.Time{})
+	_ = r.conn.SetReadDeadline(time.Time{})
 	return err
 }
 
@@ -128,9 +128,9 @@ func (r *RPC) ClearActivity() error {
 		return err
 	}
 
-	r.conn.SetReadDeadline(time.Now().Add(5 * time.Second))
+	_ = r.conn.SetReadDeadline(time.Now().Add(5 * time.Second))
 	_, _, err := r.recv()
-	r.conn.SetReadDeadline(time.Time{})
+	_ = r.conn.SetReadDeadline(time.Time{})
 	return err
 }
 
