@@ -5,7 +5,7 @@ This document explains how to compile the application and generate portable dist
 ## Native Compilation
 The application is designed to be built organically with zero external dependencies (other than GTK dev headers for the system tray).
 
-1. Install Go 1.21+
+1. Install Go 1.25+
 2. Install C libraries:
    * **Debian/Ubuntu:** `sudo apt install libgtk-3-dev libayatana-appindicator3-dev`
    * **Fedora/RHEL:** `sudo dnf install gtk3-devel libayatana-appindicator-gtk3-devel`
@@ -23,8 +23,8 @@ make release
 
 This will:
 1. Compile the Go binary natively using your host's toolchain.
-2. Bundle the binary, config stubs, translation files, and GNOME extensions into `release/geforcenow-presence-v1.0.0/`.
-3. Compress the folder into a portable `geforcenow-presence-linux-amd64-v1.0.0.tar.gz` archive.
+2. Bundle the binary, config stubs, translation files, and GNOME extensions into `release/geforcenow-presence-v0.1.0-beta/`.
+3. Compress the folder into a portable `geforcenow-presence-linux-amd64-v0.1.0-beta.tar.gz` archive.
 4. Calculate cryptographic `SHA256SUMS` to guarantee file integrity.
 
 The generated archive will be located in the `release/` directory.
@@ -44,7 +44,7 @@ This is the recommended command to run before tagging a release on GitHub.
 
 The project uses GitHub Actions for continuous quality assurance:
 *   **Continuous Integration (`lint.yml`, `test.yml`, `build.yml`)**: Quality assurance is split into granular stages. Every push to `main` and all Pull Requests trigger dedicated workflows for `lint` (vet/linting), `test` (unit tests), and `build` (compilation) to provide detailed feedback via individual status badges.
-*   **Automated Releases (`release.yml`)**: Tagging a release (e.g., `git tag v1.0.0`) automatically triggers a full `make dist` and uploads the resulting tarball, DEB, and RPM packages directly to the GitHub Release page.
+*   **Automated Releases (`release.yml`)**: Tagging a release (e.g., `git tag v0.1.0-beta`) automatically triggers a full `make dist` and uploads the resulting tarball, DEB, and RPM packages directly to the GitHub Release page.
 
 ## 🏗️ Installation Methods: Local vs. System
 

@@ -22,7 +22,7 @@ import (
 	"github.com/joshmckinney/geforcenow-presence/internal/ui"
 )
 
-const version = "1.0.0"
+const version = "0.1.0-beta"
 
 func main() {
 	delay := flag.Int("delay", 0, "Delay startup by N seconds")
