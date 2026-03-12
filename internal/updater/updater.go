@@ -63,8 +63,8 @@ func isNewer(current, latest string) bool {
 	// Compare numeric parts
 	for i := 0; i < len(v1) && i < len(v2); i++ {
 		var n1, n2 int
-		fmt.Sscanf(v1[i], "%d", &n1)
-		fmt.Sscanf(v2[i], "%d", &n2)
+		_, _ = fmt.Sscanf(v1[i], "%d", &n1)
+		_, _ = fmt.Sscanf(v2[i], "%d", &n2)
 		if n1 < n2 {
 			return true
 		}

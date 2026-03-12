@@ -266,7 +266,7 @@ func ShowUpdateAvailable(tagName string) {
 // ShowMessage shows a desktop notification/dialog with a message.
 func ShowMessage(title, msg string) {
 	// Use Zenity for simple info dialog
-	exec.Command("zenity", "--info", "--title", title, "--text", msg, "--no-wrap").Run()
+	_ = exec.Command("zenity", "--info", "--title", title, "--text", msg, "--no-wrap").Run()
 }
 
 func pickColor(current string) string {

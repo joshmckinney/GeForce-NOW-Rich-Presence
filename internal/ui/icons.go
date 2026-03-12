@@ -67,7 +67,7 @@ func parseColor(s string) color.RGBA {
 		s = strings.TrimPrefix(s, "rgba(")
 		s = strings.TrimPrefix(s, "rgb(")
 		s = strings.TrimSuffix(s, ")")
-		fmt.Sscanf(strings.ReplaceAll(s, ",", " "), "%d %d %d", &r, &g, &b)
+		_, _ = fmt.Sscanf(strings.ReplaceAll(s, ",", " "), "%d %d %d", &r, &g, &b)
 		return color.RGBA{R: r, G: g, B: b, A: 255}
 	}
 
