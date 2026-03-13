@@ -182,6 +182,8 @@ func (m *Manager) clearPresence() {
 			log.Printf("⚠️ Error clearing presence: %v", err)
 		}
 	}
+	m.launcher.Stop()
+	m.dummyPID = 0
 }
 
 func (m *Manager) cleanup() {
