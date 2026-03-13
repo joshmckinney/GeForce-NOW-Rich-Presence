@@ -29,15 +29,39 @@ func IsProcessRunning(nameSubstr string) bool {
 		}
 
 		parts := strings.Split(string(cmdline), "\x00")
-		if len(parts) == 0 || parts[0] == "" {
+		var cleanParts []string
+		for _, p := range parts {
+			if p != "" {
+				cleanParts = append(cleanParts, p)
+			}
+		}
+		if len(cleanParts) == 0 {
 			continue
 		}
 
-		exeBase := strings.ToLower(filepath.Base(parts[0]))
+		exeBase := strings.ToLower(filepath.Base(cleanParts[0]))
 		cmdlineStr := strings.ToLower(string(cmdline))
 
-		// Strict match on the binary name or generic substring match for flatpaks
-		matches := strings.Contains(exeBase, nameL) || (nameL == "geforcenow" && strings.Contains(cmdlineStr, "com.nvidia.geforcenow"))
+		// Check if it's a helper process (zygote, etc.)
+		isHelper := false
+		for i := 1; i < len(cleanParts); i++ {
+			if strings.HasPrefix(cleanParts[i], "--type=") {
+				isHelper = true
+				break
+			}
+		}
+
+		// Tight match on the binary name or generic substring match for flatpaks
+		var matches bool
+		if nameL == "geforcenow" {
+			// Special handling for GFN to ignore zygotes/helpers and ghosts (no args)
+			matches = (exeBase == "geforcenow" && !isHelper && len(cleanParts) > 1) ||
+				(strings.Contains(cmdlineStr, "com.nvidia.geforcenow") &&
+					(strings.Contains(exeBase, "flatpak") || strings.Contains(exeBase, "bwrap")) &&
+					!strings.Contains(exeBase, "spawn"))
+		} else {
+			matches = strings.Contains(exeBase, nameL)
+		}
 
 		if matches &&
 			!strings.Contains(cmdlineStr, "geforcenow-presence") &&

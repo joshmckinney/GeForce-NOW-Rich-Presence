@@ -52,28 +52,49 @@ func (d *Detector) IsGFNRunning() bool {
 			continue
 		}
 
-		// cmdline uses null bytes as separators. The first part is the executable path.
+		// cmdline uses null bytes as separators.
 		parts := strings.Split(string(cmdline), "\x00")
-		if len(parts) == 0 || parts[0] == "" {
+		var cleanParts []string
+		for _, p := range parts {
+			if p != "" {
+				cleanParts = append(cleanParts, p)
+			}
+		}
+		if len(cleanParts) == 0 {
 			continue
 		}
 
-		exePath := parts[0]
+		exePath := cleanParts[0]
 		exeBase := filepath.Base(exePath)
-		cmdStr := strings.ToLower(string(cmdline))
 
-		// Check for GeForceNOW or com.nvidia.geforcenow specifically
-		isGFN := strings.EqualFold(exeBase, gfnProcessName) ||
-			strings.Contains(cmdStr, "com.nvidia.geforcenow")
+		// Check if it's a zygote/helper - they always have --type=... as an argument
+		isTypeArgument := false
+		for i := 1; i < len(cleanParts); i++ {
+			if strings.HasPrefix(cleanParts[i], "--type=") {
+				isTypeArgument = true
+				break
+			}
+		}
+
+		// Check for GeForceNOW main process
+		// We expect at least one argument for the main process (ghosts often have none)
+		isGFNMain := strings.EqualFold(exeBase, gfnProcessName) && !isTypeArgument && len(cleanParts) > 1
+
+		// Check for Flatpak/bwrap wrapper
+		cmdStrForWrapper := strings.ToLower(string(cmdline))
+		isFlatpakWrapper := strings.Contains(cmdStrForWrapper, "com.nvidia.geforcenow") &&
+			(strings.Contains(exeBase, "flatpak") || strings.Contains(exeBase, "bwrap")) &&
+			!strings.Contains(strings.ToLower(exeBase), "spawn")
 
 		// Exclusions:
 		// 1. This application itself
 		// 2. The dummy process launcher directory
-		if isGFN {
-			if strings.Contains(cmdStr, "geforcenow-presence") ||
-				strings.Contains(cmdStr, "geforcenow-presence-dummies") {
+		if isGFNMain || isFlatpakWrapper {
+			if strings.Contains(cmdStrForWrapper, "geforcenow-presence") ||
+				strings.Contains(cmdStrForWrapper, "geforcenow-presence-dummies") {
 				continue
 			}
+			log.Printf("🔍 GFN Detection: Matched %s (main: %v, wrapper: %v, args: %d, pid: %s)", exeBase, isGFNMain, isFlatpakWrapper, len(cleanParts)-1, entry.Name())
 			return true
 		}
 	}
