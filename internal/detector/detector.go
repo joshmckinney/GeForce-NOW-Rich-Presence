@@ -37,7 +37,6 @@ func New() *Detector {
 	return d
 }
 
-// IsGFNRunning checks if the GeForce NOW Electron Flatpak is running.
 func (d *Detector) IsGFNRunning() bool {
 	entries, err := os.ReadDir("/proc")
 	if err != nil {
@@ -52,10 +51,29 @@ func (d *Detector) IsGFNRunning() bool {
 		if err != nil {
 			continue
 		}
+
+		// cmdline uses null bytes as separators. The first part is the executable path.
+		parts := strings.Split(string(cmdline), "\x00")
+		if len(parts) == 0 || parts[0] == "" {
+			continue
+		}
+
+		exePath := parts[0]
+		exeBase := filepath.Base(exePath)
 		cmdStr := strings.ToLower(string(cmdline))
-		if strings.Contains(cmdStr, strings.ToLower(gfnProcessName)) &&
-			!strings.Contains(cmdStr, "geforcenow-presence") &&
-			!strings.Contains(cmdStr, "geforcenow-presence-dummies") {
+
+		// Check for GeForceNOW or com.nvidia.geforcenow specifically
+		isGFN := strings.EqualFold(exeBase, gfnProcessName) ||
+			strings.Contains(cmdStr, "com.nvidia.geforcenow")
+
+		// Exclusions:
+		// 1. This application itself
+		// 2. The dummy process launcher directory
+		if isGFN {
+			if strings.Contains(cmdStr, "geforcenow-presence") ||
+				strings.Contains(cmdStr, "geforcenow-presence-dummies") {
+				continue
+			}
 			return true
 		}
 	}

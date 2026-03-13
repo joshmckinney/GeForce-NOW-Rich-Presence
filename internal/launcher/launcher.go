@@ -10,7 +10,6 @@ import (
 
 const gfnFlatpakID = "com.nvidia.geforcenow"
 
-// IsProcessRunning checks if a process with the given name substring is running.
 func IsProcessRunning(nameSubstr string) bool {
 	entries, err := os.ReadDir("/proc")
 	if err != nil {
@@ -29,8 +28,18 @@ func IsProcessRunning(nameSubstr string) bool {
 			continue
 		}
 
+		parts := strings.Split(string(cmdline), "\x00")
+		if len(parts) == 0 || parts[0] == "" {
+			continue
+		}
+
+		exeBase := strings.ToLower(filepath.Base(parts[0]))
 		cmdlineStr := strings.ToLower(string(cmdline))
-		if strings.Contains(cmdlineStr, nameL) &&
+
+		// Strict match on the binary name or generic substring match for flatpaks
+		matches := strings.Contains(exeBase, nameL) || (nameL == "geforcenow" && strings.Contains(cmdlineStr, "com.nvidia.geforcenow"))
+
+		if matches &&
 			!strings.Contains(cmdlineStr, "geforcenow-presence") &&
 			!strings.Contains(cmdlineStr, "geforcenow-presence-dummies") {
 			return true
