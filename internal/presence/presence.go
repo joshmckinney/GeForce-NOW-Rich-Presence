@@ -89,6 +89,17 @@ func (m *Manager) check() {
 		m.logOnce("⚠️ GeForce NOW is not running")
 		return
 	}
+	
+	// Check if Discord is running
+	if !launcher.IsProcessRunning("Discord") {
+		if m.rpc != nil {
+			m.rpc.Close()
+			m.rpc = nil
+		}
+		ui.SetStatus("error", "")
+		m.logOnce("⚠️ Discord is not running")
+		return
+	}
 
 	// GFN is running, now check for a game
 	if m.overrideGame != "" {
@@ -151,7 +162,6 @@ func (m *Manager) check() {
 		m.lastClientID = newClientID
 	}
 
-	var justConnected bool
 	// Connect RPC if needed
 	if m.rpc == nil || !m.rpc.IsConnected() {
 		clientID := m.lastClientID
@@ -166,11 +176,11 @@ func (m *Manager) check() {
 			return
 		}
 		log.Printf("🔁 Connected to Discord RPC with client_id=%s", clientID)
-		justConnected = true
 	}
 
-	// Always update activity if game changed or we just connected
-	if gameChanged || justConnected {
+	// Always update activity if we have a game to ensure connection remains alive
+	// and we detect Discord closure promptly.
+	if gameName != "" {
 		details := gameName
 		if m.lastClientID != defaultClientID {
 			// If we are using the native client ID, Discord already displays the game name
