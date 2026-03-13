@@ -95,7 +95,6 @@ func (d *Detector) IsGFNRunning() bool {
 				strings.Contains(cmdStrForWrapper, "geforcenow-presence-dummies") {
 				continue
 			}
-			log.Printf("🔍 GFN Detection: Matched %s (main: %v, wrapper: %v, args: %d, pid: %s)", exeBase, isGFNMain, isFlatpakWrapper, len(cleanParts)-1, entry.Name())
 			return true
 		}
 	}

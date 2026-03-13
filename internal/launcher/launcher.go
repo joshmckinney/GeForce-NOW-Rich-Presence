@@ -40,7 +40,7 @@ func IsProcessRunning(nameSubstr string) bool {
 		}
 
 		exeBase := strings.ToLower(filepath.Base(cleanParts[0]))
-		cmdlineStr := strings.ToLower(string(cmdline))
+		cmdlineStr := strings.ToLower(strings.Join(cleanParts, " "))
 
 		// Check if it's a helper process (zygote, etc.)
 		isHelper := false
@@ -60,7 +60,8 @@ func IsProcessRunning(nameSubstr string) bool {
 					(strings.Contains(exeBase, "flatpak") || strings.Contains(exeBase, "bwrap")) &&
 					!strings.Contains(exeBase, "spawn"))
 		} else {
-			matches = strings.Contains(exeBase, nameL)
+			// Also check cmdlineStr to catch /proc/self/exe or other shells
+			matches = strings.Contains(exeBase, nameL) || strings.Contains(cmdlineStr, nameL)
 		}
 
 		if matches &&
