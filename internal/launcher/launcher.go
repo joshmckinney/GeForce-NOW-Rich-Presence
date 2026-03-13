@@ -87,7 +87,11 @@ func LaunchGFN() bool {
 		return false
 	}
 	// Reap the process when it exits to avoid zombies
-	go cmd.Wait()
+	go func() {
+		if err := cmd.Wait(); err != nil {
+			log.Printf("ℹ️ GeForce NOW process exited: %v", err)
+		}
+	}()
 	return true
 }
 
@@ -114,7 +118,11 @@ func LaunchDiscord() bool {
 				return false
 			}
 			// Reap the process when it exits to avoid zombies
-			go cmd.Wait()
+			go func() {
+				if err := cmd.Wait(); err != nil {
+					log.Printf("ℹ️ Discord process exited: %v", err)
+				}
+			}()
 			return true
 		}
 	}
@@ -126,6 +134,10 @@ func LaunchDiscord() bool {
 		return false
 	}
 	// Reap the process when it exits to avoid zombies
-	go cmd.Wait()
+	go func() {
+		if err := cmd.Wait(); err != nil {
+			log.Printf("ℹ️ Discord process exited: %v", err)
+		}
+	}()
 	return true
 }
