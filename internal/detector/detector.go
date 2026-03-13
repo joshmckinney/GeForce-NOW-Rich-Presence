@@ -53,7 +53,9 @@ func (d *Detector) IsGFNRunning() bool {
 			continue
 		}
 		cmdStr := strings.ToLower(string(cmdline))
-		if strings.Contains(cmdStr, strings.ToLower(gfnProcessName)) && !strings.Contains(cmdStr, "geforcenow-presence") {
+		if strings.Contains(cmdStr, strings.ToLower(gfnProcessName)) &&
+			!strings.Contains(cmdStr, "geforcenow-presence") &&
+			!strings.Contains(cmdStr, "geforcenow-presence-dummies") {
 			return true
 		}
 	}

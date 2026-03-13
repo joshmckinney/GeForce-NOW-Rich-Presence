@@ -30,7 +30,9 @@ func IsProcessRunning(nameSubstr string) bool {
 		}
 
 		cmdlineStr := strings.ToLower(string(cmdline))
-		if strings.Contains(cmdlineStr, nameL) && !strings.Contains(cmdlineStr, "geforcenow-presence") {
+		if strings.Contains(cmdlineStr, nameL) &&
+			!strings.Contains(cmdlineStr, "geforcenow-presence") &&
+			!strings.Contains(cmdlineStr, "geforcenow-presence-dummies") {
 			return true
 		}
 	}
@@ -40,7 +42,7 @@ func IsProcessRunning(nameSubstr string) bool {
 // LaunchGFN starts the GeForce NOW Electron Flatpak.
 func LaunchGFN() bool {
 	if IsProcessRunning("GeForceNOW") {
-		log.Println("💡 GeForce NOW is already running")
+		log.Println("💡 GeForce NOW is already running (launch skipped)")
 		return true
 	}
 
@@ -56,7 +58,7 @@ func LaunchGFN() bool {
 // LaunchDiscord starts Discord.
 func LaunchDiscord() bool {
 	if IsProcessRunning("Discord") {
-		log.Println("💡 Discord is already running")
+		log.Println("💡 Discord is already running (launch skipped)")
 		return true
 	}
 
